@@ -13,7 +13,7 @@ var fs = require("fs");
 var http = require("http");
 
 
-var systemversion = "1.0.0.56";
+var systemversion = "1.0.0.52";
 
 var commandlist;
 var client = new irc.Client(IRCSERVER, USERNAME, {
