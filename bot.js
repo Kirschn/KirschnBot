@@ -11,7 +11,7 @@ var irc = require("irc"),
         activebotprocessnames = [],
         spawn = require('child_process').spawn,
         mail = require("sendmail")(),
-        linkregex = /\:\/\//ig,
+        linkregex = /\:\/\//ig;;
         timer = [];
 var concat = require('concat-stream');
 var JSONStream = require('JSONStream');
@@ -107,8 +107,12 @@ setTimeout(function() {
     }
 
     function ismodapi(username, channel) {
-        if (activebots["users"][channel]["mods"].indexOf(username) !== -1) {
-            return true;
+        if (activebots["users"][channel] !== undefined) {
+            if (activebots["users"][channel]["mods"].indexOf(username) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -123,41 +127,45 @@ setTimeout(function() {
     }
 
     function getuserlevel(username, channel, nextcode) {
-        if (isglobaladmin(username)) {
-            nextcode(sysconf.globaladminuserlevel);
-        } else {
-            if (username !== channel.substr(1, channel.length)) {
-                if (ismodapi(username, channel)) {
-                    nextcode(activebots["users"][channel].modlevel);
-                } else {
-                    if (activebots["users"][channel]["cache"][username] == undefined) {
-                        util.log("SQL GETTING");
-                        sqlconnection.query("SELECT userlevel FROM users WHERE (channel=\"" + channel + "\" OR channel=\"global\") AND username=\"" + username + "\";", function (err, results) {
-                            if (!err) {
-                                if (results[0] == undefined) {
-                                    if (ismodapi(username, channel)) {
-                                        var usrlevel = activebots["users"][channel].modlevel;
-                                    } else {
-                                        var usrlevel = activebots["users"][channel].regularlevel;
-                                    }
-
-                                } else {
-                                    var usrlevel = results[0]["userlevel"];
-                                }
-                                activebots["users"][channel]["cache"][username] = usrlevel;
-                                nextcode(usrlevel);
-                            } else {
-                            }
-                        });
-                    } else {
-                        util.log("CACHE GETTING");
-                        nextcode(activebots["users"][channel]["cache"][username]);
-                    }
-                }
+        if (activebots["users"][channel] !== undefined) {
+            if (isglobaladmin(username)) {
+                nextcode(sysconf.globaladminuserlevel);
             } else {
-                nextcode(5);
-            }
+                if (username !== channel.substr(1, channel.length)) {
+                    if (ismodapi(username, channel)) {
+                        nextcode(activebots["users"][channel].modlevel);
+                    } else {
+                        if (activebots["users"][channel]["cache"][username] == undefined) {
+                            util.log("SQL GETTING");
+                            sqlconnection.query("SELECT userlevel FROM users WHERE (channel=\"" + channel + "\" OR channel=\"global\") AND username=\"" + username + "\";", function (err, results) {
+                                if (!err) {
+                                    if (results[0] == undefined) {
+                                        if (ismodapi(username, channel)) {
+                                            var usrlevel = activebots["users"][channel].modlevel;
+                                        } else {
+                                            var usrlevel = activebots["users"][channel].regularlevel;
+                                        }
 
+                                    } else {
+                                        var usrlevel = results[0]["userlevel"];
+                                    }
+                                    activebots["users"][channel]["cache"][username] = usrlevel;
+                                    nextcode(usrlevel);
+                                } else {
+                                }
+                            });
+                        } else {
+                            util.log("CACHE GETTING");
+                            nextcode(activebots["users"][channel]["cache"][username]);
+                        }
+                    }
+                } else {
+                    nextcode(5);
+                }
+
+            }
+        } else {
+            nextcode(999);
         }
     }
 
@@ -635,59 +643,71 @@ setTimeout(function() {
     client.on('error', function (message) {
         console.log("ERROR: " + message.nick + " -> " + message.command + "(" + message.args + ")");
     });
-    client.on('message', function (nick, channel, text, message) {
-        util.log("MESSAGE " + channel + " => " + nick + " => " + text);
-        if (activebots["config"][channel].linkfilter) {
-            if(linkregex.test(text)) {
-                util.log("Found Link in Message from " + nick);
-                getuserlevel(nick, channel, function(ul) {
-                    util.log("Initalizing Timeout for Message from " + nick + "(UL: " + ul + ")");
-                    if (activebots["config"][channel].permit !== nick) {
-                    if (ul >= activebots["config"][channel].maxtoul && !ismodapi(nick, channel)) {
-
-                            activebots["config"][channel].linkwhitelist.forEach(function (current) {
-                                if (text.indexOf(current.link) == -1) {
-                                    client.say(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
-                                    if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentlinkto) {
-                                        setTimeout(function () {
-                                                client.say(channel, nick + " -> " + activebots["config"][channel].linktotext);
-                                            }, 500
-                                        );
-                                        setTimeout(function() {
-                                            client.say(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
-                                        }, 1000);
-                                    }
-                                }
-                            });
-                        }
-                    } else {
-                        activebots["config"][channel].permit = "";
-                    }
-                });
-
-
-            }
+    function thischanmodlevel(channel) {
+        if (activebots["users"][channel] !== undefined) {
+            return activebots["users"][channel].modlevel;
+        } else {
+            return 999;
         }
-        if (activebots["config"][channel].blacklistfilter) {
-            var textlowercase = text.toLowerCase();
-            activebots["config"][channel].blacklistwords.forEach(function (current) {
-                if (textlowercase.indexOf(current.word) !== -1) {
-                    getuserlevel(nick, channel, function(ul) {
-                        if (ul >= activebots["config"][channel].maxtoul) {
-                            client.say(channel, ".timeout " + nick + " " + activebots["config"][channel].blacklisttolength);
-                            if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentblacklistto) {
-                                setTimeout(function () {
-                                        client.say(channel, nick + " -> " + activebots["config"][channel].blacklisttotext);
-                                    }, 500
-                                );
-                                setTimeout(function() {
-                                    client.say(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
-                                }, 1000);
+        
+    }
+    function parsecom(nick, channel, text, funcret, tos) {
+        util.log("MESSAGE " + channel + " => " + nick + " => " + text);
+        if (activebots["config"][channel] !== undefined && tos) {
+            if (activebots["config"][channel].linkfilter) {
+                if (linkregex.test(text)) {
+                    util.log("Found Link in Message from " + nick);
+                    getuserlevel(nick, channel, function (ul) {
+                        util.log("Initalizing Timeout for Message from " + nick + "(UL: " + ul + ")");
+                        if (activebots["config"][channel].permit !== nick) {
+                            if (ul >= activebots["config"][channel].maxtoul && !ismodapi(nick, channel)) {
+
+                                activebots["config"][channel].linkwhitelist.forEach(function (current) {
+                                    if (text.indexOf(current.link) == -1) {
+                                        funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
+                                        if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentlinkto) {
+                                            setTimeout(function () {
+                                                    funcret(channel, nick + " -> " + activebots["config"][channel].linktotext);
+                                                }, 500
+                                            );
+                                            setTimeout(function () {
+                                                funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
+                                            }, 1000);
+                                        }
+                                    }
+                                });
                             }
+                        } else {
+                            activebots["config"][channel].permit = "";
                         }
                     });
+
+
                 }
-            })
+            }
+            if (activebots["config"][channel].blacklistfilter) {
+                var textlowercase = text.toLowerCase();
+                activebots["config"][channel].blacklistwords.forEach(function (current) {
+                    if (textlowercase.indexOf(current.word) !== -1) {
+                        getuserlevel(nick, channel, function (ul) {
+                            if (ul >= activebots["config"][channel].maxtoul) {
+                                funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].blacklisttolength);
+                                if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentblacklistto) {
+                                    setTimeout(function () {
+                                            funcret(channel, nick + " -> " + activebots["config"][channel].blacklisttotext);
+                                        }, 500
+                                    );
+                                    setTimeout(function () {
+                                        funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
+                                    }, 1000);
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+        } else {
+
         }
         console.time("commandexec");
         console.time("usercommandexec");
@@ -700,7 +720,7 @@ setTimeout(function() {
                         if (results[0].userlevel >= usrlevel) {
                             // PARAMETER HANDLEN
                             handlecommand(results[0].text, channel, function (callback) {
-                                client.say(channel, String(callback).replace("$username", nick)
+                                funcret(channel, String(callback).replace("$username", nick)
                                     .replace("$query", text.replace(splitmessagenormal[0] + " ", ""))
                                     .replace("$user", nick));
                                 console.timeEnd("usercommandexec");
@@ -714,21 +734,22 @@ setTimeout(function() {
             // GLOBAL COMMANDS
 
             if (splitmessagelowercase[0] == "!botinfo") {
-                client.say(channel, "KirschnBot V2.0.1.6 | Global Bot: ID" + activebots["config"][channel]["id"]);
+
+                funcret(channel, "KirschnBot V2.0.1.8 | Global Bot ID: " + ((activebots["config"][channel] == undefined) ? "WABOT" : activebots["config"][channel]["id"]));
             } else if (splitmessagelowercase[0] == "!getuserlevel") {
                 getuserlevel(splitmessagelowercase[1], channel, function (usrlevel) {
-                    client.say(channel, nick + " -> " + usrlevel);
+                    funcret(channel, nick + " -> " + usrlevel);
                 });
 
             }
             if (splitmessagelowercase[0] == "!dumpvar" && isglobaladmin(nick)) {
-                client.say(channel, eval(String(text).replace("!dumpvar ", "")));
+                funcret(channel, eval(String(text).replace("!dumpvar ", "")));
             }
             //MODCOMMANDS
             if (splitmessagelowercase[0] == "!leave" || splitmessagelowercase[0] == "!kbotleave") {
                 getuserlevel(nick, channel, function (level) {
-                    if (level <= activebots["users"][channel].modlevel) {
-                        client.say(channel, nick + " -> Leaving Channel");
+                    if (level <= thischanmodlevel(channel)) {
+                        funcret(channel, nick + " -> Leaving Channel");
                         leave(channel);
                     }
                 });
@@ -741,9 +762,9 @@ setTimeout(function() {
                     var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[2]) + ",  '" + mysql.escape(splitmessagelowercase[1]) + "',  '');";
                 }
                 sqlconnection.query(sql, function(err, results) {
-                   if (err == null) {
-                       client.say(channel, nick + " -> Item added");
-                   }
+                    if (err == null) {
+                        funcret(channel, nick + " -> Item added");
+                    }
                 });
             }
             if (splitmessagelowercase[0] == "!removeitem" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
@@ -755,18 +776,18 @@ setTimeout(function() {
                 }
                 sqlconnection.query(sql, function(err, results) {
                     if (err == null) {
-                        client.say(channel, nick + " -> Item added");
+                        funcret(channel, nick + " -> Item added");
                     }
                 });
             }
             if (splitmessagelowercase[0] == "!strawpoll") {
                 getuserlevel(nick, channel, function (level) {
-                    if (level <= activebots["users"][channel].modlevel) {
+                    if (level <= thischanmodlevel(channel)) {
                         if (splitmessagenormal[3] !== undefined) {
                             var answers = text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", "").split(" ");
                             console.log(answers);
                             createstrawpoll(splitmessagenormal[1], answers, function(id) {
-                                client.say(channel, nick + " -> Poll \"" + splitmessagenormal[1] + "\" created: http://strawpoll.me/"+id);
+                                funcret(channel, nick + " -> Poll \"" + splitmessagenormal[1] + "\" created: http://strawpoll.me/"+id);
                             })
                         }
                     }
@@ -774,7 +795,7 @@ setTimeout(function() {
             }
             if (splitmessagelowercase[0] == "!addcom" || splitmessagelowercase[0] == "!addcommand") {
                 getuserlevel(nick, channel, function (level) {
-                    if (level <= activebots["users"][channel].modlevel) {
+                    if (level <= thischanmodlevel(channel)) {
 
                         util.log("ADDCOM: Nutzerlevel des Erstellers akzeptiert");
                         if (splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
@@ -782,8 +803,12 @@ setTimeout(function() {
                                 activebots["commands"][channel] = {};
                             }
                             if (activebots["commands"][channel][splitmessagelowercase[1]] == undefined) {
-                                var level = activebots["users"][channel].regularlevel,
-                                    startattwo = true;
+					if (activebots["users"][channel] == undefined) {
+                                        var level = 999;
+                                        } else {
+                                        var level = activebots["users"][channel].regularlevel;
+                                        }
+                                var startattwo = true;
 
                                 if (isNaN(splitmessagelowercase[1])) {
                                     if (splitmessagelowercase[1] == "-ul=mod" || splitmessagelowercase[1] == "-ul=moderator" || splitmessagelowercase[1] == "mod" || splitmessagelowercase[1] == "moderator") {
@@ -797,7 +822,11 @@ setTimeout(function() {
                                         level = 5;
                                     } else {
                                         startattwo = false;
+					if (activebots["users"][channel] == undefined) {
+					level = 999;
+					} else {
                                         level = activebots["users"][channel].regularlevel;
+					}
                                     }
                                 } else {
                                     util.log("Writing Raw Userlevel to Database");
@@ -823,18 +852,18 @@ setTimeout(function() {
                                 sqlconnection.query(sql, function (err, results) {
                                     if (err == null) {
                                         util.log("Added Command to Database");
-                                        client.say(channel, nick + " -> Added command " + commandname);
+                                        funcret(channel, nick + " -> Added command " + commandname);
                                         refreshbotcommands(channel);
                                     } else {
                                         console.log("SQL ERROR: " + err);
                                     }
                                 })
                             } else {
-                                client.say(channel, nick + " -> Command already exists");
+                                funcret(channel, nick + " -> Command already exists");
                             }
                         } else {
                             // INVALID COMMAND SYNTAX
-                            client.say(channel, nick + " -> Invalid Syntax, correct: !addcom -ul=mod !mycommand My Text");
+                            funcret(channel, nick + " -> Invalid Syntax, correct: !addcom -ul=mod !mycommand My Text");
                             util.log("ADDCOM: Invalid Command Syntax");
                         }
 
@@ -843,7 +872,7 @@ setTimeout(function() {
             }
             if (splitmessagelowercase[0] == "!editcom" || splitmessagelowercase[0] == "!editcommand") {
                 getuserlevel(nick, channel, function (level) {
-                    if (level <= activebots["users"][channel].modlevel) {
+                    if (level <= thischanmodlevel(channel)) {
                         if (splitmessagelowercase[1] == "userlevel") {
                             var level = activebots["users"][channel].regularlevel;
                             if (isNaN(splitmessagelowercase[3])) {
@@ -868,29 +897,29 @@ setTimeout(function() {
                             } else {
                                 splitmessagelowercase[2] = "!" + splitmessagelowercase[2];
                             }
-                          var sql = "UPDATE commands SET userlevel=\"" + level + "\" WHERE channel=\"" + channel + "\" AND commandname=" + mysql.escape(splitmessagelowercase[2]) +";";
+                            var sql = "UPDATE commands SET userlevel=\"" + level + "\" WHERE channel=\"" + channel + "\" AND commandname=" + mysql.escape(splitmessagelowercase[2]) +";";
                             sqlconnection.query(sql, function (err, results) {
                                 if (err == null) {
                                     refreshbotconfig(channel);
-                                    client.say(channel, nick + " -> Update successful");
+                                    funcret(channel, nick + " -> Update successful");
                                 } else {
                                     console.log("SQL ERROR: " + err);
                                 }
                             })
                         } else if (splitmessagelowercase[1] == "text" && splitmessagenormal[3] !== undefined) {
                             var instext = text.replace(splitmessagenormal[0] + " text " + splitmessagenormal[2] + " ", "");
-                          var sql = "UPDATE commands SET text=" + mysql.escape(instext) + " WHERE channel=\"" + channel + "\" AND commandname=" + mysql.escape(splitmessagelowercase[2]) + ";";
+                            var sql = "UPDATE commands SET text=" + mysql.escape(instext) + " WHERE channel=\"" + channel + "\" AND commandname=" + mysql.escape(splitmessagelowercase[2]) + ";";
                             sqlconnection.query(sql, function (err, results) {
                                 if (err == null) {
                                     refreshbotconfig(channel);
-                                    client.say(channel, nick + " -> Update successful");
+                                    funcret(channel, nick + " -> Update successful");
                                 } else {
                                     console.log("SQL ERROR: " + err);
                                 }
                             });
 
                         } else {
-                            client.say(channel, nick + " -> Command Syntax Error (!editcommand text !yourcommand new text or !editcommand userlevel !yourcommand moderator)");
+                            funcret(channel, nick + " -> Command Syntax Error (!editcommand text !yourcommand new text or !editcommand userlevel !yourcommand moderator)");
                         }
                         // TODO: Rename Command Function
 
@@ -899,7 +928,7 @@ setTimeout(function() {
             }
             if (splitmessagelowercase[0] == "!delcom" || splitmessagelowercase[0] == "!deletecommand") {
                 getuserlevel(nick, channel, function (level) {
-                    if (level <= activebots["users"][channel].modlevel) {
+                    if (level <= thischanmodlevel(channel)) {
                         if (splitmessagelowercase[1].substr(0, 1) == "!") {
                             var commandname = splitmessagelowercase[1];
                         } else {
@@ -911,12 +940,12 @@ setTimeout(function() {
                             if (results[0] !== undefined) {
                                 sqlconnection.query("DELETE FROM `commands` WHERE `id`=" + results[0].id + ";", function (err, results) {
                                     if (err == null) {
-                                        client.say(channel, nick + " -> Delete successful");
+                                        funcret(channel, nick + " -> Delete successful");
                                         refreshbotconfig(channel);
                                     }
                                 });
                             } else {
-                                client.say(channel, nick + " -> This command doesn't exist");
+                                funcret(channel, nick + " -> This command doesn't exist");
                             }
                         });
 
@@ -927,7 +956,7 @@ setTimeout(function() {
                 getuserlevel(nick, channel, function (level) {
                     if (splitmessagelowercase[1] !== undefined) {
                         activebots["config"][channel].permit = splitmessagelowercase[1];
-                        client.say(channel, nick + " -> " + splitmessagelowercase[1] + " was given permission to post a link.");
+                        funcret(channel, nick + " -> " + splitmessagelowercase[1] + " was given permission to post a link.");
                     }
                 });
             }
@@ -935,7 +964,7 @@ setTimeout(function() {
             if (sysconf.modchan.indexOf(channel) > -1) {
                 if (splitmessagelowercase[0] == "!join") {
                     if (splitmessagelowercase[1] == undefined) {
-                        client.say(channel, "Joining Channel...");
+                        funcret(channel, "Joining Channel...");
                         join("#" + nick);
                     } else {
                         if (splitmessagelowercase[1][0] !== "#") {
@@ -944,7 +973,7 @@ setTimeout(function() {
                         getuserlevel(nick, channel, function (usrlevel) {
                             if (usrlevel <= 4) {
                                 join(splitmessagelowercase[1]);
-                                client.say(channel, nick + " -> Joining #" + splitmessagelowercase[1]);
+                                funcret(channel, nick + " -> Joining #" + splitmessagelowercase[1]);
                             }
                         })
                     }
@@ -956,9 +985,9 @@ setTimeout(function() {
                         if (usrlevel <= 4) {
                             var leavereturn = leave(splitmessagelowercase[1]);
                             if (leavereturn !== undefined) {
-                                client.say(channel, nick + " -> Error: " + leavereturn);
+                                funcret(channel, nick + " -> Error: " + leavereturn);
                             } else {
-                                client.say(channel, nick + " -> Leaving #" + splitmessagelowercase[1]);
+                                funcret(channel, nick + " -> Leaving #" + splitmessagelowercase[1]);
                             }
                         }
                     })
@@ -966,6 +995,11 @@ setTimeout(function() {
             }
             console.timeEnd('commandexec');
         }
+    }
+    client.on('message', function (username, channel, text) {
+        parsecom(username, channel, text, function (retchannel, text) {
+            client.say(retchannel, text)
+        }, true)
     });
 
 
@@ -1005,9 +1039,14 @@ setTimeout(function() {
                     } else if (current.type == "editcommandtext") {
                       var sql = "UPDATE commands SET text=\"" + current.text + "\" WHERE channel=\"" + current.channel + "\" AND commandname=\"" + current.name + "\";";
                         sqlconnection.query(sql);
-                    } else if (current.type="buildbot") {
+                    } else if (current.type=="buildbot") {
                         var sql = "";
                         sqlconnection.query(sql);
+                    } else if (current.type == "WABOTPROCESS") {
+                        util.log("WATSAPP BOT: PARSING MSG");
+                        parsecom(current.name, "#xovigin", current.text, function (chandone, rettext) {
+                            sqlconnection.query("INSERT INTO bottodo (type, channel, text) VALUES ('WABOTSEND', " + mysql.escape(current.channel) +  ", " + mysql.escape(rettext).replace(".me", "Ginnie") + ");");
+                        }, false);
                     }
                   var sql = "INSERT botactionsdone (type, channel, chatbot, initby, name, userlevel, text) SELECT type, channel, chatbot, initby, name, userlevel, text FROM bottodo WHERE id=" + mysql.escape(current.id) + ";";
                     sqlconnection.query(sql, function (err, results) {
@@ -1016,7 +1055,7 @@ setTimeout(function() {
                         } else {
                           var sql = "DELETE FROM `bottodo` WHERE `id`=" + mysql.escape(current.id) + ";";
                             sqlconnection.query(sql, function (err, results) {
-                                if (err !== null) {console.log("SQL ERR: "+ err)};
+                                if (err !== null) {console.log("SQL ERR: "+ err)}
                             });
                         }
 
