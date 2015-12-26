@@ -1,32 +1,36 @@
-var irc = require("irc"),
-    mysql = require('mysql'),
-    util = require("util"),
-    request = require("request");
-    fs = require("fs"),
-    gotcredfromstdin = false,
-    configfile = String(fs.readFileSync("config.dong", "utf-8")).split(",,"),
-    botusername = "kirschnbot",
-    ismaster = true,
-        subprocesses = [],
-        activebotprocessnames = [],
-        spawn = require('child_process').spawn,
-        mail = require("sendmail")(),
-        linkregex = /\:\/\//ig;;
-        timer = [];
-var concat = require('concat-stream');
-var JSONStream = require('JSONStream');
-var strawpoll = require('strawpoll');
+// Code (c) 2015 Malte "Kirschn" Wolff
+// Erstmal alle Libs inkludieren
+var irc = require("irc"), // Wozu sollte auf offener Hand liegen
+    mysql = require('mysql'), // MySQL wird als Datenbankbackend genutzt
+    util = require("util"), // Logging & Debugging
+    request = require("request"); // API Abfragen und http Parameter
+    fs = require("fs"), // Config File lesen
+    gotcredfromstdin = false, // Variable wird genutzt im zu Identifizieren ob es der Master Bot oder Fork mit anderen Crds ist
+    configfile = String(fs.readFileSync("config.dong", "utf-8")).split(",,"), // IRC und MySQL Passwörter aus config.dong auslesen, mit ,, getrennt
+    botusername = "kirschnbot", // Lokalen Nutzernamen festlegen, im Falle, dass er der Master ist
+    ismaster = true, // Identifizierung Fork?
+        subprocesses = [], // Hierrein werden Forkobjekte gelegt
+        activebotprocessnames = [], // Ebenfalls
+        spawn = require('child_process').spawn, // Fork Prozesse geniereren
+        mail = require("sendmail")(), // Komische Mails senden wenn alles explodiert
+        linkregex = /\:\/\//ig;; // Linkerkennung
+        timer = []; // Timer IDs aus SetInterval ablegen
+var concat = require('concat-stream'); // Wird für Strawpoll gebraucht
+var JSONStream = require('JSONStream'); // Ebenfalls für Strawpoll
+var strawpoll = require('strawpoll'); // Backend für !strawpoll
 util.log("KirschnBot V2.0.0.0");
 util.log("Starting Connection to SQL Server");
-process.stdin.setEncoding('utf8');
+// STDIN stuff. Wird genutzt um IRC Creds für Subprozesse zu übergeben, Master forkt sich und schiebt die Creds via stdin an das Child weiter
+process.stdin.setEncoding('utf8'); // Encoding für stdin setzen
 process.stdin.on('readable', function() {
     var chunk = process.stdin.read();
     if (chunk !== null) {
         console.log("Got Data from STDIN");
         if (chunk.split("||") !== chunk) {
-            data = chunk.split("||");
+            data = chunk.split("||"); // || ist seperator um username von passwort bzw. oauth zu trennen
             console.log("Got Data from STDIN");
             if (data[0]=="youare") {
+                // Master Variablen invertieren
                 ismaster = false;
                 gotcredfromstdin = true;
                 botusername = data[1];
@@ -35,43 +39,44 @@ process.stdin.on('readable', function() {
         }
     }
 });
-
+// Init für konstante Variablen fertig
+// 2 Sekunden warten bevor Bootstrap weitergeht. Man weiß ja nie was Bash da mit dem Stdin macht.
 console.log("sysready");
 setTimeout(function() {
     if (!gotcredfromstdin) {
-        botoauthtoken = configfile[0];
+        botoauthtoken = configfile[0]; // Wenn keine Daten aus stdin Passwort aus Datei nutzen
     }
 
 
-    var sqlconnection = mysql.createConnection({
+    var sqlconnection = mysql.createConnection({ //SQL initieren
             host: '127.0.0.1',
             user: 'kirschnbot',
-            password: configfile[1],
+            password: configfile[1], // ist zweiter teil aus config file
             database: 'kirschnbot'
         }),
         sysconf = {
-            modchan: ['#kirschnbot', '#kirschnkiller'],
-            globaladmins: ['kirschnkiller', 'shusky2812', "kirschnbot", 'thekirschn'],
+            modchan: ['#kirschnbot', '#kirschnkiller'], // Aus diesen Kanälen kann !join genutzt werden
+            globaladmins: ['kirschnkiller', 'shusky2812', "kirschnbot", 'thekirschn'], // Hardcoded Level 0
             globaladminuserlevel: 0
         };
 
-    sqlconnection.connect(function (err) {
+    sqlconnection.connect(function (err) { // SQL Verbindung Initieren
         if (err) {
             console.error('error connecting: ' + err.stack);
             return;
         }
 
-        console.log('connected as id ' + sqlconnection.threadId);
+        console.log('connected as id ' + sqlconnection.threadId); // SUCCESS
     });
-
+    // IRC Verbindung starten
     util.log("Connecting to IRC");
     var client = new irc.Client('irc.twitch.tv', botusername,
         {
-            userName: botusername,
-            realName: botusername,
+            userName: botusername, // IRC Name
+            realName: botusername, // Wird nicht wirklich gebraucht
             port: 6667,
             localAddress: null,
-            debug: true,
+            debug: true, // Nur für Testinstanz an, genz nützlich um Pings, etc. zu sehen
             showErrors: true,
             autoRejoin: true,
             autoConnect: true,
@@ -84,20 +89,20 @@ setTimeout(function() {
             sasl: false,
             stripColors: false,
             channelPrefixes: "&#",
-            messageSplit: 512,
+            messageSplit: 999, // 999 ist maximale Twitch Nachrichtenlänge
             encoding: '',
-            password: botoauthtoken
+            password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
         }
     );
 
-    var activebots = {
+    var activebots = { // Caching Variablen definieren
         commands: {},
         users: {},
         config: {}
     };
     util.log("Init Complete");
 
-    function isglobaladmin(username) {
+    function isglobaladmin(username) { // Sinnloseste Funktion ever. Returnt true wenn username in global admin liste ist
         util.log("IS global admin: " + username);
         if (sysconf.globaladmins.indexOf(username) !== -1) {
             return true;
@@ -106,74 +111,83 @@ setTimeout(function() {
         }
     }
 
-    function ismodapi(username, channel) {
-        if (activebots["users"][channel] !== undefined) {
-            if (activebots["users"][channel]["mods"].indexOf(username) !== -1) {
+    function ismodapi(username, channel) { // Array Index mods wird geschrieben wenn API Request gemacht wurde im Mods heraus zu finden
+        if (activebots["users"][channel] !== undefined) { // Wird Fallback für WhatsApp Backend
+            if (activebots["users"][channel]["mods"].indexOf(username) !== -1) { // Eigentliche Überprüfung
                 return true;
             } else {
                 return false;
             }
         } else {
-            return false;
+            return false; // Fallback false return
         }
     }
 
-    function ischannelowner(username, channel) {
-        if (username == channel.substr(1, channel.length)) {
+    function ischannelowner(username, channel) { // Kann irgendwann entfernt werden, braucht eh keiner
+        if (username == channel.substr(1, channel.length)) { //substr weil wegen dem # vor Channel
             return true;
         } else {
             return false;
         }
     }
 
-    function getuserlevel(username, channel, nextcode) {
-        if (activebots["users"][channel] !== undefined) {
+    function getuserlevel(username, channel, nextcode) { // Inkrementale Funktion! username und channel sollten selbsterklärend sein.
+        // Nextcode ist eine Callbackfunktion an die das Userlevel übergeben wird
+        // Oft nicht Synchron, da MySQL abfragen gemacht werden müssen, wenn Nutzername nicht im Cache ist
+        if (activebots["users"][channel] !== undefined) { // Fallback für WhatsApp
             if (isglobaladmin(username)) {
-                nextcode(sysconf.globaladminuserlevel);
+                nextcode(sysconf.globaladminuserlevel); // Wenn Global Admin Weiter mit hardcoded adminlevel
             } else {
-                if (username !== channel.substr(1, channel.length)) {
-                    if (ismodapi(username, channel)) {
+                if (username !== channel.substr(1, channel.length)) { // Username nicht gleich Substring vom Channelname? Wenn ja ist User strimmer
+                    if (ismodapi(username, channel)) { // Wenn Mod nach der API Funktion weitergabe mit dem Modlevel aus der Config
                         nextcode(activebots["users"][channel].modlevel);
                     } else {
-                        if (activebots["users"][channel]["cache"][username] == undefined) {
+                        if (activebots["users"][channel]["cache"][username] == undefined) { // Wenn nichts im Username Cache SQL Starten!
                             util.log("SQL GETTING");
-                            sqlconnection.query("SELECT userlevel FROM users WHERE (channel=\"" + channel + "\" OR channel=\"global\") AND username=\"" + username + "\";", function (err, results) {
-                                if (!err) {
-                                    if (results[0] == undefined) {
-                                        if (ismodapi(username, channel)) {
+                            sqlconnection.query("SELECT userlevel FROM users WHERE (channel=\"" + channel + "\" OR channel=\"global\") AND username=\"" + username + "\";", function (err, results) { //SQL STARTU! SwiftRage
+                                if (!err) { // Errorabfrage
+                                    if (results[0] == undefined) { // Kein Userlevel explizit vorgelegt, fallback auf Mod oder nicht mod
+                                        if (ismodapi(username, channel)) { // Wenn Mod rückgabe von Modlevel auf Cache, sonst Regularlevel
                                             var usrlevel = activebots["users"][channel].modlevel;
                                         } else {
                                             var usrlevel = activebots["users"][channel].regularlevel;
                                         }
 
                                     } else {
-                                        var usrlevel = results[0]["userlevel"];
+                                        var usrlevel = results[0]["userlevel"]; // Was gefunden? Rückgabe, überschreibt Modstatus und Regularstatus, aber keinen Status von Streamer!
                                     }
-                                    activebots["users"][channel]["cache"][username] = usrlevel;
-                                    nextcode(usrlevel);
+                                    activebots["users"][channel]["cache"][username] = usrlevel; // Gefundenes Userlevel in Cache schreiben
+                                    nextcode(usrlevel); // Weitergabe an Callback
                                 } else {
+                                    // TODO: Add SQL Error Handling
+
                                 }
                             });
                         } else {
+                            // Username in Cache gefunden! Einfache Rückgabe mit cache Wert
                             util.log("CACHE GETTING");
                             nextcode(activebots["users"][channel]["cache"][username]);
                         }
                     }
                 } else {
+                    // Nutzer ist Streamer! Rückabe von 5!
                     nextcode(5);
                 }
 
             }
         } else {
+            // Fallback Nutzersystem für WhatsApp Backend, Rückabe von Userlevel 999
             nextcode(999);
         }
     }
 
-    function refreshbotconfig(channel) {
-        refreshbotcommands(channel);
-        refreshbotusers(channel);
+    function refreshbotconfig(channel) { //Erstellt lokalen Cache von Konfiguration im RAM neu
+        refreshbotcommands(channel); // Anstoßen von Command Refresh
+        refreshbotusers(channel); // Refresh von Festen Nutzerleveln
+        // SQL Config auslesen. Kein SELECT * verwendet da es bei Peaks einen kleinen Performancevorteil bietet
         sqlconnection.query("SELECT linkfilter, blacklistfilter, linktolength, blacklisttolength, linktotext, blacklisttotext, maxtoul, silentto, silentlinkto, silentblacklistto, id FROM botconfig WHERE channel=" + mysql.escape(channel) + ";", function (err, results) {
             if (err == null) {
+                // Results aus SQL übertragen in Lokalen Variablen Cache. Yaay 300000 gleiche Zeilen (._.
                 activebots["config"][channel] = {};
                 activebots["config"][channel].linkfilter = (results[0].linkfilter == "0") ? false : true;
                 activebots["config"][channel].blacklistfilter = (results[0].blacklistfilter == "0") ? false : true;
@@ -189,6 +203,7 @@ setTimeout(function() {
                 activebots["config"][channel].id = results[0].id;
             }
         });
+        // Linkwhitelist in den Cache schreiben für Linkfilter
         sqlconnection.query("SELECT link FROM linkwhitelist WHERE channel=" + mysql.escape(channel) + " OR channel=" + mysql.escape("global") + ";", function(err, results) {
             if (err == null) {
                 activebots["config"][channel].linkwhitelist = results;
@@ -196,6 +211,7 @@ setTimeout(function() {
                 activebots["config"][channel].linkwhitelist = [];
             }
         });
+        // Viel schmutzige Wörter in den RAM Schreiben damit man nicht immer in die Kiste greifen muss
         sqlconnection.query("SELECT word FROM wordblacklist WHERE channel=" + mysql.escape(channel) + ";", function(err, results) {
             if (err == null) {
                 activebots["config"][channel].blacklistwords = results;
