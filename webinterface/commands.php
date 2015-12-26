@@ -106,7 +106,7 @@ $_SESSION["onetimetoken"] = $token;
                 $("#editcommandcommand").ajaxForm({url: 'https://kirschnbot.tk/function/editcommand_include.php', type: "post", success: function(dataformpost) {
                     $("#editcommmodal").html(dataformpost);
                     $("#tablecontainer").load("commandtable.php");
-                    }
+                }
                 });
             });
         }
@@ -429,14 +429,7 @@ desired effect
     </div><!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
-        <!-- To the right -->
-        <div class="pull-right hidden-xs">
-            V2.0.0.7
-        </div>
-        <!-- Default to the left -->
-        <strong>Copyright &copy; 2015 <a href="https://kirschn.de">Kirschn</a></strong>
-    </footer>
+    <?php include 'include/footer.php'; ?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">

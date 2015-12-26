@@ -18,7 +18,7 @@ if (!isset($_GET["channel"])) {
 include 'sqlinit.php';
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
 $sql = "SELECT commandname, text, userlevel, id FROM commands WHERE channel='#".strtolower($username)."';";
-$commandsunparsed = mysql_query($sql);
+$commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
         $canmanage = true;
