@@ -222,6 +222,7 @@ setTimeout(function() {
     }
 
     function refreshbotusers(channel) {
+        // Liest Festgelegete Nutzer und Level in den Cache ein
         var sql = "SELECT useuserapi , modlevel , regularlevel FROM botconfig WHERE channel='" + channel + "';";
         sqlconnection.query(sql, function (err, results) {
             activebots["users"][channel] = {
