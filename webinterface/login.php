@@ -30,7 +30,6 @@ if (isset($_SESSION["kbot_logon"])) {
             mysqli_close($sqlconnection);
             die();
         }
-        die();
     } else {
 
     }
