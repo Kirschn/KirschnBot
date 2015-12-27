@@ -3,9 +3,9 @@ if (isset($_POST["onetimetoken"]) && !isset($_POST["action"])) {
     session_start();
     if ($_POST["onetimetoken"] == $_SESSION["onetimetoken"]) {
         if (!empty($_POST["commandid"]) && !empty($_POST["commandname"]) && !empty($_POST["userlevel"]) && !empty($_POST["commandtext"])) {
-                include '../sqlinit.php';
-                $res = mysqli_query($mysqli, "UPDATE commands SET commandname=\"".mysqli_real_escape_string($mysqli, $_POST["commandname"])."\", text=\"".mysqli_real_escape_string($mysqli, $_POST["commandtext"])."\", userlevel=\"".mysqli_real_escape_string($mysqli, $_POST["userlevel"])."\" WHERE id=\"".mysqli_real_escape_string($mysqli, $_POST["commandid"])."\";");
-                mysqli_close($mysqli);
+                include 'sqlinit.php';
+                $res = mysqli_query($sqlconnection, "UPDATE commands SET commandname=\"".mysqli_real_escape_string($sqlconnection, $_POST["commandname"])."\", text=\"".mysqli_real_escape_string($sqlconnection, $_POST["commandtext"])."\", userlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["userlevel"])."\" WHERE id=\"".mysqli_real_escape_string($sqlconnection, $_POST["commandid"])."\";");
+                mysqli_close($sqlconnection);
                 echo "Ok.";
         }
     }
