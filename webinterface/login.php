@@ -64,13 +64,13 @@ if (isset($_SESSION["kbot_logon"])) {
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <B>KirschnBot</B>
+        Kirschn<B>Bot</B>
     </div>
     <!-- /.login-logo -->
-    <div class="login-box-body">
+    <div class="login-box-body text-center">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <a href="<?php echo $twitchtv->authenticate() ?>">Authenticate Me</a>
+        <a href="<?php echo $twitchtv->authenticate() ?>"><img src="img/loginwithtwitch.png" /></a>
 
         <!-- /.social-auth-links -->
 
