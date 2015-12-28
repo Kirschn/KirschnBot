@@ -298,7 +298,7 @@ desired effect
                                     <?php if ($canmanage) {?>
                                         <td>
                                             <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["userlevel"]); ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-ban"></i></i> Delete </a>
+                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>
                                         </td>
                                     <?php } ?>
                                 </tr>
