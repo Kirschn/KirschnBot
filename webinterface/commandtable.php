@@ -41,7 +41,7 @@ header("Content-Type: text/html; charset=utf-8");
         <th>Command</th>
         <th>Return</th>
         <th>Userlevel</th>
-        <?php if ($canmanage) {?><th>Actions</th><?php }; ?>
+        <?php if ($canmanage) {?><th width="130px">Actions</th><?php }; ?>
     </tr>
     </thead>
     <tbody>
