@@ -321,7 +321,7 @@
 					<div class="box to-animate">
 						<div class="icon colored-6"><span><i class="icon-wrench"></i></span></div>
 						<h3>Customizable Name</h3>
-						<p>Don't like to have the name "KirschnBot" in your channel? Create a Twitch Account with your botname, generate an Token and insert it on the "Options" tab in the webinterface.</p>
+						<p>Don't like to have the name "KirschnBot" in your channel? Create a Twitch Account with your botname, generate a Token and insert it on the "Options" page in the webinterface.</p>
 					</div>
 				</div>
 			</div>
