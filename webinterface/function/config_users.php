@@ -54,7 +54,7 @@ if ($canmanage) {
                     <div class="col-sm-offset-2 col-sm-10">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> Read your moderators from the Twitch Chat
+                                <input type="checkbox" <?php echo ($botconfig["useuserapi"] == "0" ? "" : "checked") ?>> Read your moderators from the Twitch Chat
                             </label>
                         </div>
                     </div>
