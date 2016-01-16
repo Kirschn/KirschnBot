@@ -32,18 +32,18 @@ if (isset($_SESSION['kbot_managementbot'])) {
 } else {
     $canmanage = false;
 }
-$botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi, modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
+
 if ($canmanage) {
     if (isset($_POST["modlevel"]) && isset($_POST["regularlevel"])) {
         $useuserapi = (isset($_POST["useuserapi"]) ? 1 : 0);
-        mysqli_query($sqlconnection, "UPDATE botconfig SET modlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["modlevel"]). ", regularlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["regularlevel"]). ", useuserapi=\"" . $useuserapi . "\" WHERE channel='#" . $username . "';");
-        echo "UPDATE botconfig SET modlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["modlevel"]). "\", regularlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["regularlevel"]). "\", useuserapi=\"" . $useuserapi . "\" WHERE channel='#" . $username . "';";
+        mysqli_query($sqlconnection, "UPDATE botconfig SET modlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["modlevel"]). "\", regularlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["regularlevel"]). "\", useuserapi=\"" . $useuserapi . "\" WHERE channel='#" . $username . "';");
         $execsql = true;
     }
+$botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi, modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
     ?>
     <script>
         var config = {
-            useuserapi: <?php echo ($botconfig["useuserapi"] == "0" ? false : true) ?>,
+            useuserapi: <?php echo ($botconfig["useuserapi"] == "0" ? "false" : "true") ?>,
             modlevel: <?php echo $botconfig["modlevel"]; ?>,
             regularlevel: <?php echo $botconfig["regularlevel"]; ?>
         }
@@ -54,7 +54,7 @@ if ($canmanage) {
                     <div class="col-sm-offset-2 col-sm-10">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" <?php echo ($botconfig["useuserapi"] == "0" ? "" : "checked") ?>> Read your moderators from the Twitch Chat
+                                <input type="checkbox" <?php echo ($botconfig["useuserapi"] == "0" ? "" : "checked") ?> name="useuserapi"> Read your moderators from the Twitch Chat
                             </label>
                         </div>
                     </div>
@@ -100,6 +100,7 @@ if ($canmanage) {
         $("#okdiag").modal();
 </script>
         <?php } ?>
+        <script src="https://kirschnbot.tk/jquery.form.js"></script>
         <script>
         $(document).ready(function() {
         $("#userconfigedit").ajaxForm({url: 'function/config_users.php', type: "post", success: function(data) {
