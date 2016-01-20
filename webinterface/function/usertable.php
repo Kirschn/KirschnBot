@@ -62,7 +62,7 @@ if ($canmanage) {
             </td>
             <?php if ($canmanage) {?>
                 <td>
-                    <a onclick="deleteuserset('<?php echo $r["id"]; ?>', '<?php echo $r["commandname"]; ?>')"><i class="fa fa-ban"></i> Delete </a>
+                    <a onclick="deleteuserset('<?php echo $r["id"]; ?>', '<?php echo $r["username"]; ?>')"><i class="fa fa-ban"></i> Delete </a>
                 </td>
             <?php } ?>
         </tr>

@@ -75,6 +75,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           function reload() {
               $("#userconfig").load("function/config_users.php");
           }
+          function reloaduserlevellist() {
+              $("#userleveltable").load("function/usertable.php");
+          }
       </script>
   </head>
   <!--
@@ -219,6 +222,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         Loading...
                     </div>
                     <!-- /.box-body -->
+                </div>
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Custom Userlevel</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" id="userleveltable">
+                        Loading...
+                    </div>
                 </div>
                 <?php
             } else {
