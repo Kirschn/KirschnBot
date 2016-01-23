@@ -247,6 +247,58 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         Loading...
                     </div>
                 </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add User</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" id="addcommand" method="post" action="function/addcommand.php">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="commandname">Username</label>
+                            <input type="text" class="form-control" id="commandname" name="commandname" placeholder="!mycommand">
+                        </div>
+                        <div class="form-group">
+                            <label for="userlevel">Userlevel: </label>
+                            <select name="userleveldropdown" id="userleveldropdown">
+                                <option selected>Everyone</option>
+                                <option>Moderator</option>
+                                <option>Streamer</option>
+                                <option>Custom</option>
+                            </select>
+                            <?php
+                            $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
+                            ?>
+                            <input type="hidden" id="userlevel" name="userlevel" value="<?php echo $presets["regularlevel"]; ?>" class="form-control"">
+                            <script>
+                                $("#userleveldropdown").change(function() {
+                                    var value = document.getElementById("userleveldropdown").value;
+                                    if (value == "Everyone") {
+                                        document.getElementById("userlevel").value = <?php
+                                                $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
+                                                echo $presets["regularlevel"];
+                                            ?>;
+                                        document.getElementById("userlevel").type = "hidden";
+                                    } else if (value == "Moderator") {
+                                        document.getElementById("userlevel").value = "<?php echo $presets["modlevel"]; ?>";
+                                        document.getElementById("userlevel").type = "hidden";
+                                    } else if (value == "Streamer") {
+                                        document.getElementById("userlevel").value = 5;
+                                        document.getElementById("userlevel").type = "hidden";
+                                    } else if (value == "Custom") {
+                                        document.getElementById("userlevel").type = "text";
+                                        document.getElementById("userlevel").placeholer = "Custom Userlevel";
+                                    }
+                                })
+                            </script>
+                        </div>
+                        <input type="hidden" value="<?php echo $token; ?>" name="token" />
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
                 <?php
             } else {
                 ?>
