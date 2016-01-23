@@ -252,11 +252,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <h3 class="box-title">Add User</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" id="addcommand" method="post" action="function/addcommand.php">
+                <form role="form" id="addcommand" method="post" action="function/adduser.php">
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="commandname">Username</label>
-                            <input type="text" class="form-control" id="commandname" name="commandname" placeholder="!mycommand">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="thekirschn">
                         </div>
                         <div class="form-group">
                             <label for="userlevel">Userlevel: </label>
