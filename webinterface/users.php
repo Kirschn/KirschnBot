@@ -74,9 +74,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <script>
           function reload() {
               $("#userconfig").load("function/config_users.php");
-          }
-          function reloaduserlevellist() {
               $("#userleveltable").load("function/usertable.php");
+          }
+          function deleteuserset(id, username) {
+              if(window.confirm("Delete " + username + " from database?")) {
+                  $.post("function/usertable.php", {
+                      userid: id,
+                      username: username,
+                      removeuser: 1
+                  }).done(function() {
+                      reload();
+                  })
+              }
           }
       </script>
   </head>
@@ -268,7 +277,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
+    <div class="modal fade" id="deleteusermodal" tabindex="-1" role="dialog" aria-labelledby="deleteusermodal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteusermodal">Delete Userlevel assignment</h4>
+                </div>
+                <div class="modal-body" id="deleteusermodalcontent">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- REQUIRED JS SCRIPTS -->
 
     <!-- jQuery 2.1.4 -->
