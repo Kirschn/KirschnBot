@@ -41,7 +41,8 @@ if ($canmanage) {
     if (isset($_POST["username"]) && isset($_POST["userlevel"]) && isset($_POST["token"])) {
         if ($_POST["token"] == $_SESSION["onetimetoken"]) {
             mysqli_query($sqlconnection, "INSERT INTO `users`(`channel`, `userlevel`, `username`) VALUES ('#" . mysqli_real_escape_string($sqlconnection, $_SESSION["kbot_managementbot"]) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["userlevel"]) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "');");
-
+            $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
+            mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");
             echo "Operation complete.";
             die();
         }
