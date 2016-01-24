@@ -388,6 +388,23 @@ setTimeout(function() {
 
 
     }
+    function builddatafromoldquotebot(channel) {
+        var commands = fs.readdirSync("/root/kbot2/xoviquote/commands");
+        commands.forEach(function(current) {
+            if (fs.existsSync("/root/kbot2/xoviquote/commands/" + current + "/text")) {
+                var sql = 'INSERT INTO quotes (name, text, channel) VALUES (' + sqlconnection.escape(current) + ', ' + sqlconnection.escape(fs.readFileSync("/root/kbot2/xoviquote/commands/" + current + "/text", "utf8")).replace("Ã¤", "ä").replace("Ã¼", "ü").replace("Ã¶", "ö") + ', "#xovigin");';
+                sqlconnection.query(sql, function(err) {
+                    if (err !== null) {
+                        console.log(err)
+                    } else {
+                        console.log("Zitat " + current + "@" + channel + " eingetragen");
+                    }
+                })
+            }
+        });
+
+
+    }
     function createstrawpoll(pollname, answers, callback) {
         var stream = strawpoll({
             title: pollname,
@@ -794,6 +811,32 @@ setTimeout(function() {
                 sqlconnection.query(sql, function(err, results) {
                     if (err == null) {
                         funcret(channel, nick + " -> Item added");
+                    }
+                });
+            }
+            if (splitmessagelowercase[0] == "!zitat" || splitmessagelowercase[0] == "!quote") {
+                if (splitmessagelowercase[1] !== undefined) {
+                    // Zitatsname ist Wort 1!
+                    var sql = "SELECT text FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1])+ " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                } else {
+                    var sql = "SELECT text FROM quotes WHERE (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                }
+                sqlconnection.query(sql, function (err, results) {
+                    if (results[0] !== undefined) {
+                        funcret(channel, results[0]["text"])
+                    } else {
+                        funcret(channel, "Quote does not exist");
+                    }
+                });
+            }
+            if (splitmessagelowercase[0] == "!addquote" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
+                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagelowercase[1]) +  ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) +  ");";
+                console.log(sql);
+                sqlconnection.query(sql, function(err, results) {
+                    if (err == null) {
+                        funcret(channel, nick + " -> Quote added");
+                    } else {
+                        console.log(err);
                     }
                 });
             }
