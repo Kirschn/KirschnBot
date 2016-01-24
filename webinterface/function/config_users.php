@@ -68,7 +68,7 @@ $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi,
                     <label for="userlevel" class="col-sm-2 control-label">Standard userlevel for your viewers:</label>
 
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="userlevel" placeholder="999" name="regularlevel" value="<?php echo $botconfig["regularlevel"]; ?>">
+                        <input type="text" class="form-control" id="stduserlevel" placeholder="999" name="regularlevel" value="<?php echo $botconfig["regularlevel"]; ?>">
                     </div>
                 </div>
             <div class="box-footer">

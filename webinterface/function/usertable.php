@@ -40,7 +40,8 @@ if ($canmanage) {
     $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi, modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
     if (isset($_POST["username"]) && isset($_POST["userlevel"]) && isset($_POST["token"])) {
         if ($_POST["token"] == $_SESSION["onetimetoken"]) {
-            mysqli_query($sqlconnection, "INSERT INTO `users`(`channel`, `userlevel`, `username`) VALUES ('" . mysqli_real_escape_string($sqlconnection, $username) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["userlevel"]) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "', );");
+            mysqli_query($sqlconnection, "INSERT INTO `users`(`channel`, `userlevel`, `username`) VALUES ('#" . mysqli_real_escape_string($sqlconnection, $_SESSION["kbot_managementbot"]) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["userlevel"]) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "');");
+
             echo "Operation complete.";
             die();
         }
