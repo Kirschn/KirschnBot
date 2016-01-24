@@ -813,7 +813,7 @@ setTimeout(function() {
                 });
             }
             if (splitmessagelowercase[0] == "!addquote" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
-                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagelowercase[1]) +  ",  '" + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) +  "');";
+                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagelowercase[1]) +  ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) +  ");";
                 console.log(sql);
                 sqlconnection.query(sql, function(err, results) {
                     if (err == null) {
