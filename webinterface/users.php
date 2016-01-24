@@ -87,6 +87,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   })
               }
           }
+          $(document).ready(function () {
+              $("#adduserform").ajaxForm({url: 'function/usertable.php', type: "post", success: function(data) {
+                  $("#addusermodalcontent").html(data);
+                  $("#addusermodel").modal();
+                  $("#adduserform").resetForm();
+                  reload();
+              }});
+          });
       </script>
   </head>
   <!--
@@ -252,7 +260,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <h3 class="box-title">Add User</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" id="addcommand" method="post" action="function/usertable.php">
+                <form role="form" id="adduserform" method="post" action="function/usertable.php">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="username">Username</label>
@@ -329,14 +337,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-    <div class="modal fade" id="deleteusermodal" tabindex="-1" role="dialog" aria-labelledby="deleteusermodal">
+    <div class="modal fade" id="addusermodel" tabindex="-1" role="dialog" aria-labelledby="addusermodal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="deleteusermodal">Delete Userlevel assignment</h4>
+                    <h4 class="modal-title" id="adduserusermodaltitle">Add Userlevel assignment</h4>
                 </div>
-                <div class="modal-body" id="deleteusermodalcontent">
+                <div class="modal-body" id="addusermodalcontent">
 
                 </div>
                 <div class="modal-footer">
