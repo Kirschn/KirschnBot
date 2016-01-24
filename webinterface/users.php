@@ -252,7 +252,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <h3 class="box-title">Add User</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" id="addcommand" method="post" action="function/adduser.php">
+                <form role="form" id="addcommand" method="post" action="function/usertable.php">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="username">Username</label>
