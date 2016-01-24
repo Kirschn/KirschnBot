@@ -267,7 +267,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="form-group">
                             <label for="userlevel">Userlevel: </label>
                             <select name="userleveldropdown" id="userleveldropdown">
-                                <option selected>Everyone</option>
+                                <option selected>Chatter</option>
                                 <option>Moderator</option>
                                 <option>Streamer</option>
                                 <option>Custom</option>
@@ -279,7 +279,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <script>
                                 $("#userleveldropdown").change(function() {
                                     var value = document.getElementById("userleveldropdown").value;
-                                    if (value == "Everyone") {
+                                    if (value == "Chatter") {
                                         document.getElementById("userlevel").value = <?php
                                                 $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
                                                 echo $presets["regularlevel"];
