@@ -35,6 +35,9 @@ if ($canmanage) {
     if (isset($_POST["removeuser"]) && isset($_POST["userid"])) {
         // REMOVE USER FROM DATABASE
         mysqli_query($sqlconnection, "DELETE FROM users WHERE id=\"".mysqli_real_escape_string($sqlconnection, $_POST["userid"])."\" AND channel='#" . $username . "';");
+        $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
+        mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");
+        die();
     }
     $usersunparsed = mysqli_query($sqlconnection, "SELECT username, userlevel, id FROM users WHERE channel='#" . $username . "';");
     $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi, modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
