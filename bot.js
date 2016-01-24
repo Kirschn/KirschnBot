@@ -388,6 +388,23 @@ setTimeout(function() {
 
 
     }
+    function builddatafromoldquotebot(channel) {
+        var commands = fs.readdirSync("/root/kbot2/xoviquote/commands");
+        commands.forEach(function(current) {
+            if (fs.existsSync("/root/kbot2/xoviquote/commands/" + current + "/text")) {
+                var sql = 'INSERT INTO quotes (name, text) VALUES (' + sqlconnection.escape(current) + ', ' + sqlconnection.escape(fs.readFileSync("/root/kbot2/xoviquote/commands/" + current + "/text")) + ', "#xovigin");';
+                sqlconnection.query(sql, function(err) {
+                    if (err !== null) {
+                        console.log(err)
+                    } else {
+                        console.log("Zitat " + current + "@" + channel + " eingetragen");
+                    }
+                })
+            }
+        });
+
+
+    }
     function createstrawpoll(pollname, answers, callback) {
         var stream = strawpoll({
             title: pollname,
