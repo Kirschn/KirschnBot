@@ -797,6 +797,30 @@ setTimeout(function() {
                     }
                 });
             }
+            if (splitmessagelowercase[0] == "!zitat" || splitmessagelowercase[0] == "!quote") {
+                if (splitmessagelowercase[1] !== undefined) {
+                    // Zitatsname ist Wort 1!
+                    var sql = "SELECT text FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1])+ " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                } else {
+                    var sql = "SELECT text FROM quotes WHERE (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                }
+                sqlconnection.query(sql, function (err, results) {
+                    if (results[0] !== undefined) {
+                        funcret(channel, results[0]["text"])
+                    } else {
+                        funcret(channel, "Quote does not exist");
+                    }
+                });
+            }
+            if (splitmessagelowercase[0] == "!addquote" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
+                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagelowercase[1]) +  ",  '" + mysql.escape(splitmessagenormal.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) +  "');";
+
+                sqlconnection.query(sql, function(err, results) {
+                    if (err == null) {
+                        funcret(channel, nick + " -> Quote added");
+                    }
+                });
+            }
             if (splitmessagelowercase[0] == "!strawpoll") {
                 getuserlevel(nick, channel, function (level) {
                     if (level <= thischanmodlevel(channel)) {
