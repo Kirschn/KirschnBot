@@ -87,14 +87,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   })
               }
           }
-          $(document).ready(function () {
               $("#adduserform").ajaxForm({url: 'function/usertable.php', type: "post", success: function(data) {
                   $("#addusermodalcontent").html(data);
                   $("#addusermodel").modal();
                   $("#adduserform").resetForm();
                   reload();
               }});
-          });
       </script>
   </head>
   <!--
