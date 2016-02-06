@@ -1014,9 +1014,11 @@ setTimeout(function() {
             }
             if (splitmessagelowercase[0] == "!permit") {
                 getuserlevel(nick, channel, function (level) {
-                    if (splitmessagelowercase[1] !== undefined) {
-                        activebots["config"][channel].permit = splitmessagelowercase[1];
-                        funcret(channel, nick + " -> " + splitmessagelowercase[1] + " was given permission to post a link.");
+                    if (level <= thischanmodlevel(channel)) {
+                        if (splitmessagelowercase[1] !== undefined) {
+                            activebots["config"][channel].permit = splitmessagelowercase[1];
+                            funcret(channel, nick + " -> " + splitmessagelowercase[1] + " was given permission to post a link.");
+                        }
                     }
                 });
             }
