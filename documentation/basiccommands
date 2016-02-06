@@ -1,0 +1,21 @@
+Basic commands - KirschnBot Modguide
+
+Add commands:
+!addcom !yourcommand Your Command Text
+
+This will create the command !yourcommand with the return text "Your Command Text". No Userlevel is supplied, so the userlevel for normal regular users will be used, everyone will be able to use it.
+To set an custom userlevel you need to supply a userlevel parameter:
+!addcom -ul=mod !yourcommand Your Command Text
+Only Moderators will be able to use this command. You can use descriptors for your groups, but also the numeric userlevel:
+!addcom -ul=100 !yourcommand Your Command Text
+
+Edit commands:
+You can also easily edit your Command Return or Userlevel with the !editcom command:
+!editcom text !yourcommand This is your new command text
+...or:
+!editcom userlevel !yourcommand moderator
+Like in the !addcom -ul syntax you can use descriptors or numeric levels.
+
+Delete Command:
+!removecom !yourcommand
+

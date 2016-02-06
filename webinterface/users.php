@@ -87,6 +87,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   })
               }
           }
+              $("#adduserform").ajaxForm({url: 'function/usertable.php', type: "post", success: function(data) {
+                  $("#addusermodalcontent").html(data);
+                  $("#addusermodel").modal();
+                  $("#adduserform").resetForm();
+                  reload();
+              }});
       </script>
   </head>
   <!--
@@ -124,56 +130,78 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </a>
 
         <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-          </a>
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-              <li class="dropdown messages-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                </a>
-              <!-- User Account Menu -->
-              <li class="dropdown user user-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <!-- The user image in the navbar-->
-                  <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?>" class="user-image" alt="User Image">
-                  <!-- hidden-xs hides the <?php echo $_SESSION["kbot_userdisplayname"]; ?> on small devices so only the image appears. -->
-                  <span class="hidden-xs"><?php echo $_SESSION["kbot_userdisplayname"]; ?></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- The user image in the menu -->
-                  <li class="user-header">
-                    <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
-                    <p>
-                      <?php echo $_SESSION["kbot_userdisplayname"]; ?>
-                      <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
-                    </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Switch Bot</a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="function/logout.php?token=<?php echo $token; ?>" class="btn btn-default btn-flat">Sign out</a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <!-- Control Sidebar Toggle Button -->
-              <li>
-                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <<nav class="navbar navbar-static-top" role="navigation">
+              <!-- Sidebar toggle button-->
+              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                  <span class="sr-only">Toggle navigation</span>
+              </a>
+              <!-- Navbar Right Menu -->
+              <div class="navbar-custom-menu">
+                  <ul class="nav navbar-nav">
+                      <!-- Messages: style can be found in dropdown.less-->
+                      <li class="dropdown messages-menu">
+                          <!-- Menu toggle button -->
+
+                          <!-- User Account Menu -->
+                      <li class="dropdown user user-menu">
+                          <!-- Menu Toggle Button -->
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                              <!-- The user image in the navbar-->
+                              <img src="<?php if ($login) { echo $_SESSION["kbot_profileimglink"]; } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
+                              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                              <span class="hidden-xs"><?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else {?>Anonymous<?php }; ?></span>
+                          </a>
+                          <?php if ($login) {
+                              ?>
+                              <ul class="dropdown-menu">
+                                  <!-- The user image in the menu -->
+                                  <li class="user-header">
+                                      <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
+                                      <p>
+                                          <?php echo $_SESSION["kbot_userdisplayname"]; ?>
+                                          <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
+                                      </p>
+                                  </li>
+                                  <!-- Menu Body -->
+                                  <!-- Menu Footer-->
+                                  <li class="user-footer">
+                                      <div class="pull-left">
+                                          <a href="#" class="btn btn-default btn-flat">Switch Bot</a>
+                                      </div>
+                                      <div class="pull-right">
+                                          <a href="function/logout.php?token=<?php echo $token; ?>" class="btn btn-default btn-flat">Sign out</a>
+                                      </div>
+                                  </li>
+                              </ul>
+                              <?php
+                          } else {
+                              ?>
+                              <ul class="dropdown-menu">
+                                  <!-- The user image in the menu -->
+                                  <li class="user-header">
+                                      <img src="img/anonymous.png" class="img-circle" alt="User Image">
+                                      <p>
+                                          Anonymous
+                                      </p>
+                                  </li>
+                                  <!-- Menu Body -->
+                                  <!-- Menu Footer-->
+                                  <li class="user-footer">
+
+                                  </li>
+                              </ul>
+                              <?php
+                          }
+                          ?>
+
+                      </li>
+                      <!-- Control Sidebar Toggle Button -->
+                      <li>
+                          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                      </li>
+                  </ul>
+              </div>
+          </nav>
       </header>
       <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
@@ -252,7 +280,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <h3 class="box-title">Add User</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" id="addcommand" method="post" action="function/adduser.php">
+                <form role="form" id="adduserform" method="post" action="function/usertable.php">
                     <div class="box-body">
                         <div class="form-group">
                             <label for="username">Username</label>
@@ -261,7 +289,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="form-group">
                             <label for="userlevel">Userlevel: </label>
                             <select name="userleveldropdown" id="userleveldropdown">
-                                <option selected>Everyone</option>
+                                <option selected>Chatter</option>
                                 <option>Moderator</option>
                                 <option>Streamer</option>
                                 <option>Custom</option>
@@ -273,7 +301,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <script>
                                 $("#userleveldropdown").change(function() {
                                     var value = document.getElementById("userleveldropdown").value;
-                                    if (value == "Everyone") {
+                                    if (value == "Chatter") {
                                         document.getElementById("userlevel").value = <?php
                                                 $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
                                                 echo $presets["regularlevel"];
@@ -329,14 +357,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-    <div class="modal fade" id="deleteusermodal" tabindex="-1" role="dialog" aria-labelledby="deleteusermodal">
+    <div class="modal fade" id="addusermodel" tabindex="-1" role="dialog" aria-labelledby="addusermodal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="deleteusermodal">Delete Userlevel assignment</h4>
+                    <h4 class="modal-title" id="adduserusermodaltitle">Add Userlevel assignment</h4>
                 </div>
-                <div class="modal-body" id="deleteusermodalcontent">
+                <div class="modal-body" id="addusermodalcontent">
 
                 </div>
                 <div class="modal-footer">

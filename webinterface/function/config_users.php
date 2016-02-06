@@ -35,6 +35,8 @@ if ($canmanage) {
     if (isset($_POST["modlevel"]) && isset($_POST["regularlevel"])) {
         $useuserapi = (isset($_POST["useuserapi"]) ? 1 : 0);
         mysqli_query($sqlconnection, "UPDATE botconfig SET modlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["modlevel"]). "\", regularlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["regularlevel"]). "\", useuserapi=\"" . $useuserapi . "\" WHERE channel='#" . $username . "';");
+        $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
+        mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");
         $execsql = true;
     }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi, modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
@@ -68,7 +70,7 @@ $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi,
                     <label for="userlevel" class="col-sm-2 control-label">Standard userlevel for your viewers:</label>
 
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="userlevel" placeholder="999" name="regularlevel" value="<?php echo $botconfig["regularlevel"]; ?>">
+                        <input type="text" class="form-control" id="stduserlevel" placeholder="999" name="regularlevel" value="<?php echo $botconfig["regularlevel"]; ?>">
                     </div>
                 </div>
             <div class="box-footer">

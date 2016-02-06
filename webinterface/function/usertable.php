@@ -35,9 +35,21 @@ if ($canmanage) {
     if (isset($_POST["removeuser"]) && isset($_POST["userid"])) {
         // REMOVE USER FROM DATABASE
         mysqli_query($sqlconnection, "DELETE FROM users WHERE id=\"".mysqli_real_escape_string($sqlconnection, $_POST["userid"])."\" AND channel='#" . $username . "';");
+        $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
+        mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");
+        die();
     }
     $usersunparsed = mysqli_query($sqlconnection, "SELECT username, userlevel, id FROM users WHERE channel='#" . $username . "';");
     $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT useuserapi, modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
+    if (isset($_POST["username"]) && isset($_POST["userlevel"]) && isset($_POST["token"])) {
+        if ($_POST["token"] == $_SESSION["onetimetoken"]) {
+            mysqli_query($sqlconnection, "INSERT INTO `users`(`channel`, `userlevel`, `username`) VALUES ('#" . mysqli_real_escape_string($sqlconnection, $_SESSION["kbot_managementbot"]) . "', '" . mysqli_real_escape_string($sqlconnection, $_POST["userlevel"]) . "', '" . mysqli_real_escape_string($sqlconnection, strtolower($_POST["username"])) . "');");
+            $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
+            mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");
+            echo "Operation complete.";
+            die();
+        }
+    }
 } else {
     header("Location: https://kirschnbot.tk");
     die();
