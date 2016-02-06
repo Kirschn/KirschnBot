@@ -840,6 +840,17 @@ setTimeout(function() {
                     }
                 });
             }
+            if (splitmessagelowercase[0] == "!deletequote" && splitmessagelowercase[1] !== undefined) {
+                var sql = "DELETE FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1] + ";");
+                console.log(sql);
+                sqlconnection.query(sql, function(err, results) {
+                    if (err == null) {
+                        funcret(channel, nick + " -> Quote removed");
+                    } else {
+                        console.log(err);
+                    }
+                });
+            }
             if (splitmessagelowercase[0] == "!strawpoll") {
                 getuserlevel(nick, channel, function (level) {
                     if (level <= thischanmodlevel(channel)) {
