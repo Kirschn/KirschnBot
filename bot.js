@@ -55,7 +55,7 @@ setTimeout(function() {
             database: 'kirschnbot'
         }),
         sysconf = {
-            modchan: ['#kirschnbot', '#kirschnkiller'], // Aus diesen Kanälen kann !join genutzt werden
+            modchan: ['#kirschnbot', '#kirschnkiller', '#thekirschn', '#shusky2812'], // Aus diesen Kanälen kann !join genutzt werden
             globaladmins: ['kirschnkiller', 'shusky2812', "kirschnbot", 'thekirschn'], // Hardcoded Level 0
             globaladminuserlevel: 0
         };
@@ -76,7 +76,7 @@ setTimeout(function() {
             realName: botusername, // Wird nicht wirklich gebraucht
             port: 6667,
             localAddress: null,
-            debug: true, // Nur für Testinstanz an, genz nützlich um Pings, etc. zu sehen
+            debug: true, // Nur für Testinstanz an, genz nützlich um Pings, gesendete Nachrichten etc. zu sehen
             showErrors: true,
             autoRejoin: true,
             autoConnect: true,
