@@ -19,3 +19,19 @@ Like in the !addcom -ul syntax you can use descriptors or numeric levels.
 Delete Command:
 !removecom !yourcommand
 
+Available Variables:
+$query - Returns everything the user wrote after the !command
+$user - Returns the username of the user, who executed the command
+$[http(https://google.com)] - returns the google.com source code
+$rnglist(listname) - returns a random item from the defined list
+$rngnumber(min,max) - returns a random number between min and max
+$[index] - returns specific word in the trigger message (for example:
+    Commandtext: $user gives some help to $[1]
+    Trigger message: !mycom everyone
+    Bot return: (username) gives some help to everyone
+NOTE: the "else" variable is triggered, if the query word isn't available!
+$[index]elserngnumber(min,max) - should be self explainatory
+$[index]elsernglist(min,max)
+$queryelseuser
+$queryelsernglist(listname)
+And so on... You should have understood the principle :)
