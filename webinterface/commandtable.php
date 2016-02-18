@@ -16,6 +16,7 @@ if (!isset($_GET["channel"])) {
     $username = htmlspecialchars($_GET["channel"]);
 }
 include 'sqlinit.php';
+$sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
 $sql = "SELECT commandname, text, userlevel, id FROM commands WHERE channel='#".strtolower($username)."';";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
@@ -33,7 +34,6 @@ if (isset($_SESSION['kbot_managementbot'])) {
     $canmanage = false;
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
-header("Content-Type: text/html; charset=utf-8");
 ?>
 <table class="table no-margin">
     <thead>

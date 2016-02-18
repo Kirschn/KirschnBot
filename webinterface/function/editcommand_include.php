@@ -4,6 +4,7 @@ if (isset($_POST["onetimetoken"]) && !isset($_POST["action"])) {
     if ($_POST["onetimetoken"] == $_SESSION["onetimetoken"]) {
         if (!empty($_POST["commandid"]) && !empty($_POST["commandname"]) && !empty($_POST["userlevel"]) && !empty($_POST["commandtext"])) {
                 include 'sqlinit.php';
+                $sqlconnection->set_charset("utf8");
                 $res = mysqli_query($sqlconnection, "UPDATE commands SET commandname=\"".mysqli_real_escape_string($sqlconnection, $_POST["commandname"])."\", text=\"".mysqli_real_escape_string($sqlconnection, $_POST["commandtext"])."\", userlevel=\"".mysqli_real_escape_string($sqlconnection, $_POST["userlevel"])."\" WHERE id=\"".mysqli_real_escape_string($sqlconnection, $_POST["commandid"])."\";");
                 mysqli_close($sqlconnection);
                 echo "Ok.";

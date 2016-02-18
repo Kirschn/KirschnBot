@@ -3,6 +3,7 @@ session_start();
 if (isset($_GET["token"])) {
     if ($_GET["token"] == $_SESSION["onetimetoken"]) {
         include "../sqlinit.php";
+        $sqlconnection->set_charset("utf8");
         if (isset($_GET["commandid"]) && isset($_GET["commandname"])) {
 
             if ($_GET["commandid"] !== "") {
