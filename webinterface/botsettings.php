@@ -261,64 +261,36 @@ desired effect
 
         <!-- Main content -->
         <section class="content">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Chat Account</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
+            <form role="form" id="editbottoken" method="post" action="function/botsettings.php">
                 <div class="box-body">
+                    <div class="form-group">
+                        <label for="username">Username</label>
 
+                        <input type="text" class="form-control" id="username" name="username" placeholder="kirschnbot">
+                        <label for="token">OAuth Token</label>
+                        <input type="text" class="form-control" id="token" name="token" placeholder="kirschnbot">
+                    </div>
+                    </div><!-- /.box-body -->
+
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-            </div>
+            </form>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="commandcreate" tabindex="-1" role="dialog" aria-labelledby="commandcreate">
+                    <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="commandaddname">Add Command</h4>
+                                    <h4 class="modal-title" id="successname">Operation Success</h4>
                                 </div>
-                                <div class="modal-body" id="addcommodal">
+                                <div class="modal-body" id="successcontent">
 
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="commanddelete" tabindex="-1" role="dialog" aria-labelledby="commanddelete">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="commanddeletename">Delete Command</h4>
-                            </div>
-                            <div class="modal-body" id="deletecommodal">
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="commandedit" tabindex="-1" role="dialog" aria-labelledby="commandedit">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="commandeditname">Commandedit</h4>
-                            </div>
-                            <div class="modal-body" id="editcommmodal">
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
