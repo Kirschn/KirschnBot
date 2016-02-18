@@ -231,7 +231,7 @@ desired effect
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="<?php if ($login) { echo $_SESSION["kbot_profileimglink"]; } else {?>img/anonymous.png<?php }; ?>" class="img-circle" alt="User Image">
+                    <img src="<?php if ($login) {  if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php }  } else {?>img/anonymous.png<?php }; ?>" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p><?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else {?>Anonymous<?php }; ?></p>
