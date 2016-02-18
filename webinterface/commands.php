@@ -167,7 +167,7 @@ desired effect
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="<?php if ($login) { echo $_SESSION["kbot_profileimglink"]; } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
+                            <img src="<?php if ($login) { if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php } } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs"><?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else {?>Anonymous<?php }; ?></span>
                         </a>
@@ -178,7 +178,7 @@ desired effect
                                 <li class="user-header">
                                     <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
                                     <p>
-                                        <?php echo $_SESSION["kbot_userdisplayname"]; ?>
+                                        <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php } ?>
                                         <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
                                     </p>
                                 </li>

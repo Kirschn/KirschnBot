@@ -166,7 +166,7 @@ desired effect
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="<?php if ($login) { echo $_SESSION["kbot_profileimglink"]; } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
+                            <img src="<?php if ($login) { if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php } } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs"><?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else {?>Anonymous<?php }; ?></span>
                         </a>
@@ -177,7 +177,7 @@ desired effect
                                 <li class="user-header">
                                     <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
                                     <p>
-                                        <?php echo $_SESSION["kbot_userdisplayname"]; ?>
+                                        <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php } ?>
                                         <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
                                     </p>
                                 </li>
@@ -250,12 +250,12 @@ desired effect
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Commands
-                <small><?php if ($canmanage) { echo 'Some help for your Moderators'; } else { echo 'View only!'; } ?></small>
+                Settings
+                <small><?php if ($canmanage) { echo 'Settings'; } else { echo 'Just some general stuff'; } ?></small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> KirschnBot</a></li>
-                <li class="active">Commands: <?php echo $username; ?></li>
+                <li class="active">Settings: <?php echo $username; ?></li>
             </ol>
         </section>
 
@@ -263,116 +263,16 @@ desired effect
         <section class="content">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">User Commands</h3>
+                    <h3 class="box-title">Chat Account</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <div class="table-responsive" id="tablecontainer">
-                        <table class="table no-margin">
-                            <thead>
-                            <tr>
-                                <th>Command</th>
-                                <th>Return</th>
-                                <th>Userlevel</th>
-                                <?php if ($canmanage) {?><th width="130px">Actions</th><?php }; ?>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
 
-
-                            while ($r = mysqli_fetch_assoc($commandsunparsed)) {
-                                ?>
-                                <tr>
-                                    <td>
-                                        <?php echo $r["commandname"]; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $r["text"]; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $r["userlevel"]; ?>
-                                    </td>
-                                    <?php if ($canmanage) {?>
-                                        <td>
-                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["userlevel"]); ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>
-                                        </td>
-                                    <?php } ?>
-                                </tr>
-                                <?php
-                            }
-                            if (!$login) {
-                                mysqli_close($sqlconnection);
-                            }
-                            ?>
-
-                            </tbody>
-                        </table>
-                    </div><!-- /.table-responsive -->
-                </div><!-- /.box-body -->
+                </div>
             </div>
-            <?php if ($canmanage) {
-                ?>
 
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Add Command</h3>
-                    </div><!-- /.box-header -->
-                    <!-- form start -->
-                    <form role="form" id="addcommand" method="post" action="function/addcommand.php">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="commandname">Command</label>
-                                <input type="text" class="form-control" id="commandname" name="commandname" placeholder="!mycommand">
-                            </div>
-                            <div class="form-group">
-                                <label for="userlevel">Userlevel: </label>
-                                <select name="userleveldropdown" id="userleveldropdown">
-                                    <option selected>Everyone</option>
-                                    <option>Moderator</option>
-                                    <option>Streamer</option>
-                                    <option>Custom</option>
-                                </select>
-                                <?php
-                                $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
-                                ?>
-                                <input type="hidden" id="userlevel" name="userlevel" value="<?php echo $presets["regularlevel"]; ?>" class="form-control"">
-                                <script>
-                                    $("#userleveldropdown").change(function() {
-                                        var value = document.getElementById("userleveldropdown").value;
-                                        if (value == "Everyone") {
-                                            document.getElementById("userlevel").value = <?php
-                                                $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
-                                                echo $presets["regularlevel"];
-                                            ?>;
-                                            document.getElementById("userlevel").type = "hidden";
-                                        } else if (value == "Moderator") {
-                                            document.getElementById("userlevel").value = "<?php echo $presets["modlevel"]; ?>";
-                                            document.getElementById("userlevel").type = "hidden";
-                                        } else if (value == "Streamer") {
-                                            document.getElementById("userlevel").value = 5;
-                                            document.getElementById("userlevel").type = "hidden";
-                                        } else if (value == "Custom") {
-                                            document.getElementById("userlevel").type = "text";
-                                            document.getElementById("userlevel").placeholer = "Custom Userlevel";
-                                        }
-                                    })
-                                </script>
-                            </div>
-                            <input type="hidden" value="<?php echo $token; ?>" name="token" />
-                            <div class="form-group">
-                                <label>Command Text</label>
-                                <textarea class="form-control" rows="3" name="commandtext"></textarea>
-                            </div>
-                        </div><!-- /.box-body -->
-
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
                     <!-- Modal -->
                     <div class="modal fade" id="commandcreate" tabindex="-1" role="dialog" aria-labelledby="commandcreate">
                         <div class="modal-dialog" role="document">
@@ -423,8 +323,7 @@ desired effect
                         </div>
                     </div>
                 </div>
-                <?php
-            } ?>
+
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
