@@ -16,7 +16,7 @@ if (!isset($_GET["channel"])) {
     $username = htmlspecialchars($_GET["channel"]);
 }
 include "sqlinit.php";
-mysqli_set_charset($sqlconnection, "utf8_general_ci");
+$sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
 $sql = "SELECT commandname, text, userlevel, id FROM commands WHERE channel='#".strtolower($username)."';";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);

@@ -3,6 +3,7 @@ session_start();
 if (isset($_POST["token"])) {
     if ($_POST["token"] == $_SESSION["onetimetoken"]) {
         include "../sqlinit.php";
+        $sqlconnection->set_charset("utf8");
         if (isset($_POST["commandname"]) && isset($_POST["commandtext"]) && isset($_POST["userlevel"])) {
 
             if ($_POST["commandname"] !== "" && $_POST["commandtext"] !== "" && $_POST["commandname"] !== "") {
