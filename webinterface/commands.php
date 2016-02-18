@@ -34,7 +34,7 @@ if (isset($_SESSION['kbot_managementbot'])) {
     $canmanage = false;
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
-header("Content-Type: text/html; charset=utf-8");
+
 $token = rand(0, 1024);
 $_SESSION["kbot_logouttoken"] = $token;
 $_SESSION["onetimetoken"] = $token;
