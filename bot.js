@@ -837,24 +837,32 @@ setTimeout(function () {
                 });
             }
             if (splitmessagelowercase[0] == "!addquote" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
-                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
-                console.log(sql);
-                sqlconnection.query(sql, function (err, results) {
-                    if (err == null) {
-                        funcret(channel, nick + " -> Quote added");
-                    } else {
-                        console.log(err);
+                getuserlevel(nick, channel, function (level) {
+                    if (level <= thischanmodlevel(channel)) {
+                        var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
+                        console.log(sql);
+                        sqlconnection.query(sql, function (err, results) {
+                            if (err == null) {
+                                funcret(channel, nick + " -> Quote added");
+                            } else {
+                                console.log(err);
+                            }
+                        });
                     }
                 });
             }
-            if (splitmessagelowercase[0] == "!deletequote" && splitmessagelowercase[1] !== undefined) {
-                var sql = "DELETE FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1]) + ";";
-                console.log(sql);
-                sqlconnection.query(sql, function (err, results) {
-                    if (err == null) {
-                        funcret(channel, nick + " -> Quote removed");
-                    } else {
-                        console.log(err);
+            if ((splitmessagelowercase[0] == "!deletequote" || splitmessagelowercase[0] == "!removequote" || splitmessagelowercase[0] == "!delquote") && splitmessagelowercase[1] !== undefined) {
+                getuserlevel(nick, channel, function (level) {
+                    if (level <= thischanmodlevel(channel)) {
+                        var sql = "DELETE FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1]) + ";";
+                        console.log(sql);
+                        sqlconnection.query(sql, function (err, results) {
+                            if (err == null) {
+                                funcret(channel, nick + " -> Quote removed");
+                            } else {
+                                console.log(err);
+                            }
+                        });
                     }
                 });
             }
