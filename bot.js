@@ -4,17 +4,17 @@ var irc = require("irc"), // Wozu sollte auf offener Hand liegen
     mysql = require('mysql'), // MySQL wird als Datenbankbackend genutzt
     util = require("util"), // Logging & Debugging
     request = require("request"); // API Abfragen und http Parameter
-    fs = require("fs"), // Config File lesen
+fs = require("fs"), // Config File lesen
     gotcredfromstdin = false, // Variable wird genutzt im zu Identifizieren ob es der Master Bot oder Fork mit anderen Crds ist
     configfile = String(fs.readFileSync("config.dong", "utf-8")).split(",,"), // IRC und MySQL Passwörter aus config.dong auslesen, mit ,, getrennt
     botusername = "kirschnbot", // Lokalen Nutzernamen festlegen, im Falle, dass er der Master ist
     ismaster = true, // Identifizierung Fork?
-        subprocesses = [], // Hierrein werden Forkobjekte gelegt
-        activebotprocessnames = [], // Ebenfalls
-        spawn = require('child_process').spawn, // Fork Prozesse geniereren
-        mail = require("sendmail")(), // Komische Mails senden wenn alles explodiert
-        linkregex = /\:\/\//ig;; // Linkerkennung
-        timer = []; // Timer IDs aus SetInterval ablegen
+    subprocesses = [], // Hierrein werden Forkobjekte gelegt
+    activebotprocessnames = [], // Ebenfalls
+    spawn = require('child_process').spawn, // Fork Prozesse geniereren
+    mail = require("sendmail")(), // Komische Mails senden wenn alles explodiert
+    linkregex = /\:\/\//ig; // Linkerkennung
+timer = []; // Timer IDs aus SetInterval ablegen
 var concat = require('concat-stream'); // Wird für Strawpoll gebraucht
 var JSONStream = require('JSONStream'); // Ebenfalls für Strawpoll
 var strawpoll = require('strawpoll'); // Backend für !strawpoll
@@ -22,14 +22,14 @@ util.log("KirschnBot V2.0.0.0");
 util.log("Starting Connection to SQL Server");
 // STDIN stuff. Wird genutzt um IRC Creds für Subprozesse zu übergeben, Master forkt sich und schiebt die Creds via stdin an das Child weiter
 process.stdin.setEncoding('utf8'); // Encoding für stdin setzen
-process.stdin.on('readable', function() {
+process.stdin.on('readable', function () {
     var chunk = process.stdin.read();
     if (chunk !== null) {
         console.log("Got Data from STDIN");
         if (chunk.split("||") !== chunk) {
             data = chunk.split("||"); // || ist seperator um username von passwort bzw. oauth zu trennen
             console.log("Got Data from STDIN");
-            if (data[0]=="youare") {
+            if (data[0] == "youare") {
                 // Master Variablen invertieren
                 ismaster = false;
                 gotcredfromstdin = true;
@@ -42,7 +42,7 @@ process.stdin.on('readable', function() {
 // Init für konstante Variablen fertig
 // 2 Sekunden warten bevor Bootstrap weitergeht. Man weiß ja nie was Bash da mit dem Stdin macht.
 console.log("sysready");
-setTimeout(function() {
+setTimeout(function () {
     if (!gotcredfromstdin) {
         botoauthtoken = configfile[0]; // Wenn keine Daten aus stdin Passwort aus Datei nutzen
     }
@@ -204,7 +204,7 @@ setTimeout(function() {
             }
         });
         // Linkwhitelist in den Cache schreiben für Linkfilter
-        sqlconnection.query("SELECT link FROM linkwhitelist WHERE channel=" + mysql.escape(channel) + " OR channel=" + mysql.escape("global") + ";", function(err, results) {
+        sqlconnection.query("SELECT link FROM linkwhitelist WHERE channel=" + mysql.escape(channel) + " OR channel=" + mysql.escape("global") + ";", function (err, results) {
             if (err == null) {
                 activebots["config"][channel].linkwhitelist = results;
             } else {
@@ -212,7 +212,7 @@ setTimeout(function() {
             }
         });
         // Viel schmutzige Wörter in den RAM Schreiben damit man nicht immer in die Kiste greifen muss
-        sqlconnection.query("SELECT word FROM wordblacklist WHERE channel=" + mysql.escape(channel) + ";", function(err, results) {
+        sqlconnection.query("SELECT word FROM wordblacklist WHERE channel=" + mysql.escape(channel) + ";", function (err, results) {
             if (err == null) {
                 activebots["config"][channel].blacklistwords = results;
             } else {
@@ -264,78 +264,78 @@ setTimeout(function() {
 
 
     function join(channel) {
-            util.log("Start: Joining Channel: " + channel);
-            sqlconnection.query("SELECT id, ircusername, ircoauthtoken FROM botconfig WHERE channel='" + channel + "';", function (err, results) {
-                var ircconfig = results;
-                if (activebots["config"][channel] == undefined) {
-                    util.log("Start join, channel not active");
-                    if (results[0] == undefined) {
-                        util.log("Channel not existant");
-                        var sql = "INSERT INTO  `kirschnbot`.`botconfig` (`id` , `channel` , `isactive`) VALUES ( NULL ,  '" + channel + "' , 'true' );";
-                        sqlconnection.query(sql, function (err, results) {
-                            if (err == null) {
-                                //join complete
-                                refreshbotconfig(channel);
-                                setTimeout(function () {
-                                    client.join(channel);
-                                }, 900);
-                                util.log("Bot Database Build: " + results);
-                            } else {
-                                util.log("Error while building Bot Database: " + err);
-                            }
-                        });
-                    } else {
-                        var sql = 'UPDATE botconfig SET isactive=\'true\' WHERE channel=\'' + channel + '\';',
-                            botid = results[0]['id'];
-                        sqlconnection.query(sql, function (err, results) {
-                            util.log("Global Channel ID: " + botid);
-
-                            console.log(ircconfig);
-                            console.log("IRC username: |" + ircconfig[0].ircusername + "| Botusername: |" + botusername + "|");
-                            if (String(ircconfig[0].ircusername) == String(botusername)) {
-                                util.log("Joining as current client");
-                                activebots["config"][channel] = {
-                                    id: botid
-                                };
-                                refreshbotconfig(channel);
-                                setTimeout(function () {
-                                    client.join(channel);
-                                }, 900);
-                            } else {
-                                util.log("IRC Username for Channel not the same, writing Task to other instance and/or building one");
-                                var sql = 'INSERT INTO bottodo (type, channel, chatbot, initby) VALUES ("join", ' + mysql.escape(channel) + ', ' + mysql.escape(ircconfig[0].ircusername) + ', ' + mysql.escape("instancehandler") + ');';
-                                sqlconnection.query(sql, function (err, results) {
-                                    if (err !== null) {
-                                        console.log("SQL ERROR: " + err);
-                                    }
-                                });
-                                if (activebotprocessnames.indexOf(ircconfig[0].ircusername) == -1) {
-                                    util.log("Building new Bot Instance");
-                                    activebotprocessnames.push(ircconfig[0].ircusername);
-                                    subprocesses[ircconfig[0].ircusername] = spawn("bash");
-                                    setTimeout(function () {
-                                        console.log("Writing IRC Credentials");
-                                        subprocesses[ircconfig[0].ircusername].stdin.write("youare||" + ircconfig[0].ircusername + "||" + ircconfig[0].ircoauthtoken + "||\n");
-                                    }, 500);
-                                    subprocesses[ircconfig[0].ircusername].stdout.on('data', function (data) {
-                                        console.log("STDOUT FORK " + ircconfig[0].ircusername + ": " + data)
-                                    });
-                                    subprocesses[ircconfig[0].ircusername].stderr.on('data', function (data) {
-                                    });
-                                    subprocesses[ircconfig[0].ircusername].on('exit', function (data) {
-                                    });
-                                    subprocesses[ircconfig[0].ircusername].stdin.write("node bot.js\n");
-
-
-                                }
-                            }
-                        });
-
-                    }
+        util.log("Start: Joining Channel: " + channel);
+        sqlconnection.query("SELECT id, ircusername, ircoauthtoken FROM botconfig WHERE channel='" + channel + "';", function (err, results) {
+            var ircconfig = results;
+            if (activebots["config"][channel] == undefined) {
+                util.log("Start join, channel not active");
+                if (results[0] == undefined) {
+                    util.log("Channel not existant");
+                    var sql = "INSERT INTO  `kirschnbot`.`botconfig` (`id` , `channel` , `isactive`) VALUES ( NULL ,  '" + channel + "' , 'true' );";
+                    sqlconnection.query(sql, function (err, results) {
+                        if (err == null) {
+                            //join complete
+                            refreshbotconfig(channel);
+                            setTimeout(function () {
+                                client.join(channel);
+                            }, 900);
+                            util.log("Bot Database Build: " + results);
+                        } else {
+                            util.log("Error while building Bot Database: " + err);
+                        }
+                    });
                 } else {
-                    util.log("Join stopped, channel already active");
+                    var sql = 'UPDATE botconfig SET isactive=\'true\' WHERE channel=\'' + channel + '\';',
+                        botid = results[0]['id'];
+                    sqlconnection.query(sql, function (err, results) {
+                        util.log("Global Channel ID: " + botid);
+
+                        console.log(ircconfig);
+                        console.log("IRC username: |" + ircconfig[0].ircusername + "| Botusername: |" + botusername + "|");
+                        if (String(ircconfig[0].ircusername) == String(botusername)) {
+                            util.log("Joining as current client");
+                            activebots["config"][channel] = {
+                                id: botid
+                            };
+                            refreshbotconfig(channel);
+                            setTimeout(function () {
+                                client.join(channel);
+                            }, 900);
+                        } else {
+                            util.log("IRC Username for Channel not the same, writing Task to other instance and/or building one");
+                            var sql = 'INSERT INTO bottodo (type, channel, chatbot, initby) VALUES ("join", ' + mysql.escape(channel) + ', ' + mysql.escape(ircconfig[0].ircusername) + ', ' + mysql.escape("instancehandler") + ');';
+                            sqlconnection.query(sql, function (err, results) {
+                                if (err !== null) {
+                                    console.log("SQL ERROR: " + err);
+                                }
+                            });
+                            if (activebotprocessnames.indexOf(ircconfig[0].ircusername) == -1) {
+                                util.log("Building new Bot Instance");
+                                activebotprocessnames.push(ircconfig[0].ircusername);
+                                subprocesses[ircconfig[0].ircusername] = spawn("bash");
+                                setTimeout(function () {
+                                    console.log("Writing IRC Credentials");
+                                    subprocesses[ircconfig[0].ircusername].stdin.write("youare||" + ircconfig[0].ircusername + "||" + ircconfig[0].ircoauthtoken + "||\n");
+                                }, 500);
+                                subprocesses[ircconfig[0].ircusername].stdout.on('data', function (data) {
+                                    console.log("STDOUT FORK " + ircconfig[0].ircusername + ": " + data)
+                                });
+                                subprocesses[ircconfig[0].ircusername].stderr.on('data', function (data) {
+                                });
+                                subprocesses[ircconfig[0].ircusername].on('exit', function (data) {
+                                });
+                                subprocesses[ircconfig[0].ircusername].stdin.write("node bot.js\n");
+
+
+                            }
+                        }
+                    });
+
                 }
-            })
+            } else {
+                util.log("Join stopped, channel already active");
+            }
+        })
 
     }
 
@@ -360,7 +360,7 @@ setTimeout(function() {
 
     function addcommand(commandname, text, userlevel, channel, creator, callback) {
         var date = new Date();
-      var sql = 'INSERT INTO commands (commandname, text, userlevel, channel, creator, createtime) VALUES (' + sqlconnection.escape(commandname) + ', ' + sqlconnection.escape(text) + ' , ' + sqlconnection.escape(userlevel) + ', ' + sqlconnection.escape(text) + sqlconnection.escape(creator) + ', ' + date.toJSON() + ');';
+        var sql = 'INSERT INTO commands (commandname, text, userlevel, channel, creator, createtime) VALUES (' + sqlconnection.escape(commandname) + ', ' + sqlconnection.escape(text) + ' , ' + sqlconnection.escape(userlevel) + ', ' + sqlconnection.escape(text) + sqlconnection.escape(creator) + ', ' + date.toJSON() + ');';
         sqlconnection.query(sql, function (err, results) {
             if (err == null) {
                 util.log("Added Command: " + sqlconnection.escape(commandname));
@@ -370,13 +370,14 @@ setTimeout(function() {
             }
         });
     }
+
     function builddatafrombotold(channel) {
         var commands = fs.readdirSync("/home/nodejs/nodescripts/produktivumgebung/bots/" + channel + "/commands");
-        commands.forEach(function(current) {
+        commands.forEach(function (current) {
             if (fs.existsSync("/home/nodejs/nodescripts/produktivumgebung/bots/" + channel + "/commands/" + current + "/text") && fs.existsSync("/home/nodejs/nodescripts/produktivumgebung/bots/" + channel + "/commands/" + current + "/userlevel")) {
                 var date = new Date();
                 var sql = 'INSERT INTO commands (commandname, text, userlevel, channel, creator, createtime) VALUES (' + sqlconnection.escape(current) + ', ' + sqlconnection.escape(fs.readFileSync("/home/nodejs/nodescripts/produktivumgebung/bots/" + channel + "/commands/" + current + "/text")) + ' , ' + sqlconnection.escape(fs.readFileSync("/home/nodejs/nodescripts/produktivumgebung/bots/" + channel + "/commands/" + current + "/userlevel", "utf-8").replace("6", "999").replace("4", "100").replace("2", "5").replace("5", "500")) + ', ' + sqlconnection.escape("#" + channel) + ", " + sqlconnection.escape("?") + ', ' + sqlconnection.escape(date.toJSON()) + ');';
-                sqlconnection.query(sql, function(err) {
+                sqlconnection.query(sql, function (err) {
                     if (err !== null) {
                         console.log(err)
                     } else {
@@ -388,12 +389,13 @@ setTimeout(function() {
 
 
     }
+
     function builddatafromoldquotebot(channel) {
         var commands = fs.readdirSync("/root/kbot2/xoviquote/commands");
-        commands.forEach(function(current) {
+        commands.forEach(function (current) {
             if (fs.existsSync("/root/kbot2/xoviquote/commands/" + current + "/text")) {
                 var sql = 'INSERT INTO quotes (name, text, channel) VALUES (' + sqlconnection.escape(current) + ', ' + sqlconnection.escape(fs.readFileSync("/root/kbot2/xoviquote/commands/" + current + "/text", "utf8")).replace("Ã¤", "ä").replace("Ã¼", "ü").replace("Ã¶", "ö") + ', "#xovigin");';
-                sqlconnection.query(sql, function(err) {
+                sqlconnection.query(sql, function (err) {
                     if (err !== null) {
                         console.log(err)
                     } else {
@@ -405,6 +407,7 @@ setTimeout(function() {
 
 
     }
+
     function createstrawpoll(pollname, answers, callback) {
         var stream = strawpoll({
             title: pollname,
@@ -413,15 +416,16 @@ setTimeout(function() {
             permissive: true
         })
             .pipe(JSONStream.parse('id'))
-            .pipe(concat(function(id) {
+            .pipe(concat(function (id) {
                 // `id` is a Buffer here
                 // `id.toString()` is your poll's id
                 callback(id.toString());
             }));
     }
+
     if (ismaster && !gotcredfromstdin && botusername == "kirschnbot") {
         setTimeout(function () {
-          var sql = "SELECT channel FROM botconfig WHERE isactive=\"true\";";
+            var sql = "SELECT channel FROM botconfig WHERE isactive=\"true\";";
             sqlconnection.query(sql, function (err, results) {
                 if (!err) {
                     results.forEach(function (current) {
@@ -443,43 +447,48 @@ setTimeout(function() {
             }
         });
     }
+
     // Startet Timer im RAM
-    function starttimer (channel, text, interval, name) {
+    function starttimer(channel, text, interval, name) {
         if (timer[channel] == undefined) {
             timer[channel] = [];
         }
-        timer[channel][name] = setInterval(function() {
+        timer[channel][name] = setInterval(function () {
             client.say(channel, text);
         }, interval * 1000);
     }
+
     // Stoppt Timer im RAM
-    function stoptimer (channel, name) {
+    function stoptimer(channel, name) {
         clearInterval(timer[channel][name]);
     }
+
     // Erstellt neuen Timer in der Datenbank
-    function createtimer (channel, text, interval, name, active) {
-        var sql = "INSERT INTO timer (text, name, timerinterval, channel, active) VALUES (" + mysql.escape(text) + ", " + mysql.escape(name) + ", " + mysql.escape(interval) + ", " + mysql.escape(channel) + ", " + mysql.parse(active) +");"
+    function createtimer(channel, text, interval, name, active) {
+        var sql = "INSERT INTO timer (text, name, timerinterval, channel, active) VALUES (" + mysql.escape(text) + ", " + mysql.escape(name) + ", " + mysql.escape(interval) + ", " + mysql.escape(channel) + ", " + mysql.parse(active) + ");"
         sqlconnection.query(sql);
         if (active) {
             starttimer(channel, text, interval, name);
         }
     }
-    function loadandstarttimer (channel, name) {
-        var sql = "SELECT text, timerinterval FROM timer WHERE channel="+ mysql.escape(channel) + " AND name=" + mysql.escape(name) + ";";
+
+    function loadandstarttimer(channel, name) {
+        var sql = "SELECT text, timerinterval FROM timer WHERE channel=" + mysql.escape(channel) + " AND name=" + mysql.escape(name) + ";";
         sqlconnection.query(sql, function (err, results) {
             if (results[0] !== undefined) {
                 starttimer(channel, results[0].text, results[0].timerinterval, name);
-                client.say(channel, "Timer "+ name + " started successfully (Interval: " + results[0].timerinterval + " minutes");
+                client.say(channel, "Timer " + name + " started successfully (Interval: " + results[0].timerinterval + " minutes");
             } else {
                 // TImer existiert nicht
             }
         })
     }
+
     function handlecommand(handlemessage, channel, callback, username, triggercommand) {
-        util.log("Looping " + ((handlemessage.match(/\$/g) || []).length+1) + " Times");
+        util.log("Looping " + ((handlemessage.match(/\$/g) || []).length + 1) + " Times");
         var handlesplit = handlemessage.split(" ");
         var splittrigger = triggercommand.split(" ");
-        for (i=0; i < ((handlemessage.match(/\$/g) || []).length+1); i++) {
+        for (i = 0; i < ((handlemessage.match(/\$/g) || []).length + 1); i++) {
             splittrigger = triggercommand.split(" ");
             if (handlemessage.indexOf("$qelseuser") !== -1) {
                 var query = triggercommand.replace(splittrigger[0], "");
@@ -493,149 +502,144 @@ setTimeout(function() {
                 }
             }
         }
-            handlesplit.forEach(function (current) {
-                if (current.indexOf("]elseuser") > current.indexOf("$[")) {
-                    var triggercommandwordindex = parseInt(current.replace("$[", "").replace("]elseuser", ""));
-                    if (splittrigger[triggercommandwordindex] !== undefined) {
-                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elseuser", splittrigger[triggercommandwordindex]);
-                    } else {
-                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elseuser", username);
+        handlesplit.forEach(function (current) {
+            if (current.indexOf("]elseuser") > current.indexOf("$[")) {
+                var triggercommandwordindex = parseInt(current.replace("$[", "").replace("]elseuser", ""));
+                if (splittrigger[triggercommandwordindex] !== undefined) {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elseuser", splittrigger[triggercommandwordindex]);
+                } else {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elseuser", username);
+                }
+            }
+
+            if (current.indexOf("$[") < current.indexOf("]elserngnumber(") && current.indexOf("]elserngnumber(") < current.indexOf(",") && current.indexOf(",") < current.indexOf(")")) {
+                util.log("Found RNG Number Parsing in word " + current);
+                var triggercommandwordindex = parseInt(current.replace("$[", "").split("]else")[0]);
+                var rngstring = current.replace("$[" + triggercommandwordindex + "]elserngnumber(", "").replace(")", "");
+                var splitrngstring = rngstring.split(",");
+                var min = parseInt(splitrngstring[0]);
+                var max = parseInt(splitrngstring[1]);
+                if (splittrigger[triggercommandwordindex] !== undefined) {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngnumber(" + min + "," + max + ")", splittrigger[triggercommandwordindex]);
+                } else {
+                    if (parseInt(splitrngstring[0]) < parseInt(splitrngstring[1])) {
+                        var random = Math.round(Math.random() * (max - min)) + min;
+                        util.log("RNG String: " + rngstring + " | min: " + min + " | max: " + max + " | RNG: " + random);
+                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngnumber(" + min + "," + max + ")", random);
                     }
                 }
-
-                if (current.indexOf("$[") < current.indexOf("]elserngnumber(") && current.indexOf("]elserngnumber(") < current.indexOf(",") && current.indexOf(",") < current.indexOf(")")) {
-                    util.log("Found RNG Number Parsing in word " + current);
-                    var triggercommandwordindex = parseInt(current.replace("$[", "").split("]else")[0]);
-                    var rngstring = current.replace("$[" + triggercommandwordindex + "]elserngnumber(", "").replace(")", "");
-                    var splitrngstring = rngstring.split(",");
-                    var min = parseInt(splitrngstring[0]);
-                    var max = parseInt(splitrngstring[1]);
-                    if (splittrigger[triggercommandwordindex] !== undefined) {
-                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngnumber(" + min + "," + max + ")", splittrigger[triggercommandwordindex]);
-                    } else {
-                        if (parseInt(splitrngstring[0]) < parseInt(splitrngstring[1])) {
-                            var random = Math.round(Math.random() * (max - min)) + min;
-                            util.log("RNG String: " + rngstring + " | min: " + min + " | max: " + max + " | RNG: "+random);
-                            handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngnumber(" + min + "," + max + ")", random);
-                        }
-                    }
-                }
-                if (current.indexOf("$[") < current.indexOf("]elserngitem(") && current.indexOf("]elserngitem(") < current.indexOf(")")) {
-                    util.log("Found RNG List Parsing in word " + current);
-                    var triggercommandwordindex = parseInt(current.replace("$[", "").split("]else")[0]);
-                    var rngstring = current.replace("$[" + triggercommandwordindex + "]elserngitem(", "").replace(")", "");
-                    if (splittrigger[triggercommandwordindex] !== undefined) {
-                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngitem(" + rngstring + ")", splittrigger[triggercommandwordindex]);
-                    } else {
-                            handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngitem(" + rngstring + ")", "$[rnglist(" + rngstring + ")]");
-
-                    }
-                }
-                if (current.indexOf("$[") < current.indexOf("]elsetext(") && current.indexOf("]elsetext(") < current.indexOf(")")) {
-                    util.log("Found Text Parsing in word " + current);
-                    var triggercommandwordindex = parseInt(current.replace("$[", "").split("]else")[0]);
-                    var rngstring = current.replace("$[" + triggercommandwordindex + "]elserngitem(", "").replace(")", "");
-                    if (splittrigger[triggercommandwordindex] !== undefined) {
-                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elsetext(" + rngstring + ")", splittrigger[triggercommandwordindex]);
-                    } else {
-                        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elsetext(" + rngstring + ")", "rngstring");
-
-                    }
-                }
-                if (current.indexOf("$rngnumber(") < current.indexOf(",") && current.indexOf(",") < current.indexOf(")")) {
-                    util.log("Found RNG Number Parsing in word " + current);
-                    var rngstring = current.replace("$rngnumber(", "").replace(")", "");
-                    var splitrngstring = rngstring.split(",");
-                    var min = parseInt(splitrngstring[0]);
-                    var max = parseInt(splitrngstring[1]);
-                        if (parseInt(splitrngstring[0]) < parseInt(splitrngstring[1])) {
-                            var random = Math.round(Math.random() * (max - min)) + min;
-                            util.log("RNG String: " + rngstring + " | min: " + min + " | max: " + max + " | RNG: "+random);
-                            handlemessage = handlemessage.replace("$rngnumber(" + min + "," + max + ")", random);
-                        }
+            }
+            if (current.indexOf("$[") < current.indexOf("]elserngitem(") && current.indexOf("]elserngitem(") < current.indexOf(")")) {
+                util.log("Found RNG List Parsing in word " + current);
+                var triggercommandwordindex = parseInt(current.replace("$[", "").split("]else")[0]);
+                var rngstring = current.replace("$[" + triggercommandwordindex + "]elserngitem(", "").replace(")", "");
+                if (splittrigger[triggercommandwordindex] !== undefined) {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngitem(" + rngstring + ")", splittrigger[triggercommandwordindex]);
+                } else {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elserngitem(" + rngstring + ")", "$[rnglist(" + rngstring + ")]");
 
                 }
+            }
+            if (current.indexOf("$[") < current.indexOf("]elsetext(") && current.indexOf("]elsetext(") < current.indexOf(")")) {
+                util.log("Found Text Parsing in word " + current);
+                var triggercommandwordindex = parseInt(current.replace("$[", "").split("]else")[0]);
+                var rngstring = current.replace("$[" + triggercommandwordindex + "]elserngitem(", "").replace(")", "");
+                if (splittrigger[triggercommandwordindex] !== undefined) {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elsetext(" + rngstring + ")", splittrigger[triggercommandwordindex]);
+                } else {
+                    handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]elsetext(" + rngstring + ")", "rngstring");
 
-                //TODO: Definiertes Item else RNG Item
-                // Unten Syntax für Defines RNG Itemnamen angeben, Hier das Else Statement mit dem entsprechenden Syntax  ersetzen
+                }
+            }
+            if (current.indexOf("$rngnumber(") < current.indexOf(",") && current.indexOf(",") < current.indexOf(")")) {
+                util.log("Found RNG Number Parsing in word " + current);
+                var rngstring = current.replace("$rngnumber(", "").replace(")", "");
+                var splitrngstring = rngstring.split(",");
+                var min = parseInt(splitrngstring[0]);
+                var max = parseInt(splitrngstring[1]);
+                if (parseInt(splitrngstring[0]) < parseInt(splitrngstring[1])) {
+                    var random = Math.round(Math.random() * (max - min)) + min;
+                    util.log("RNG String: " + rngstring + " | min: " + min + " | max: " + max + " | RNG: " + random);
+                    handlemessage = handlemessage.replace("$rngnumber(" + min + "," + max + ")", random);
+                }
+
+            }
+
+            //TODO: Definiertes Item else RNG Item
+            // Unten Syntax für Defines RNG Itemnamen angeben, Hier das Else Statement mit dem entsprechenden Syntax  ersetzen
 
 
-                //if (current.indexOf("]") > current.indexOf("$[")) {
-                //    var triggercommandwordindex = parseInt(current.replace("$[", "").replace("]", ""));
-                //   if (splittrigger[triggercommandwordindex] !== undefined) {
-                //        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]", splittrigger[triggercommandwordindex]);
-                //1   } else {
-                //      handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]", "");
-                //  }
-                //}
-            });
+            //if (current.indexOf("]") > current.indexOf("$[")) {
+            //    var triggercommandwordindex = parseInt(current.replace("$[", "").replace("]", ""));
+            //   if (splittrigger[triggercommandwordindex] !== undefined) {
+            //        handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]", splittrigger[triggercommandwordindex]);
+            //1   } else {
+            //      handlemessage = handlemessage.replace("$[" + triggercommandwordindex + "]", "");
+            //  }
+            //}
+        });
 
-            util.log("Preextraparse Ok, current Handlemessage: " + handlemessage + " (triggercommand: " + triggercommand + ") Loop " + i);
+        util.log("Preextraparse Ok, current Handlemessage: " + handlemessage + " (triggercommand: " + triggercommand + ") Loop " + i);
 
 
         if (handlemessage.replace("$[", "") !== handlemessage) {
             util.log("Parsing extra command parameters");
             var othercommand = handlemessage.split("$[");
             var current = othercommand[1];
-                if (current.indexOf("]" !== -1)) {
-                    current = current.split("]");
-                    if (current[0] !== undefined || current[0] !== "" || current[0] !== " ") {
+            if (current.indexOf("]" !== -1)) {
+                current = current.split("]");
+                if (current[0] !== undefined || current[0] !== "" || current[0] !== " ") {
 
-                        if (current[0].indexOf("counter(") !== -1) {
-                            // var countername = String(current[0].split(")")).replace("counter(", "").replace(",", "");
-                            // addcounter(countername.replace("counter(", ""));
-                            // console.log("[BOT " + CHANNEL + "]: " +fs.readFileSync("counter/" + countername + ".txt"));
-                            // fs.readFile("counter/" + countername.toLowerCase() + ".txt", function (err, data) {
-                            //    handlemessage = handlemessage.replace("$[counter(" + countername + ")]", data);
-                            //    client.say(channel, handlemessage);
-                            // });
-
-
-                        } else if (current[0].indexOf("rnglist(") !== -1) {
-                            var listname = String(current[0].split(")")).replace("rnglist(", "").replace(",", "");
-                            var sql = "SELECT item FROM useritems WHERE list=" + mysql.escape(listname) + " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
-                            sqlconnection.query(sql, function (err, results) {
-                                if (results[0] !== undefined) {
-                                    callback(handlemessage.replace("$[rnglist(" + listname + ")]", results[0]["item"]));
-                                } else {
-                                    callback(handlemessage.replace("$[rnglist(" + listname + ")]", "[empty or invalid list]"));
-                                }
-                            });
+                    if (current[0].indexOf("counter(") !== -1) {
+                        // var countername = String(current[0].split(")")).replace("counter(", "").replace(",", "");
+                        // addcounter(countername.replace("counter(", ""));
+                        // console.log("[BOT " + CHANNEL + "]: " +fs.readFileSync("counter/" + countername + ".txt"));
+                        // fs.readFile("counter/" + countername.toLowerCase() + ".txt", function (err, data) {
+                        //    handlemessage = handlemessage.replace("$[counter(" + countername + ")]", data);
+                        //    client.say(channel, handlemessage);
+                        // });
 
 
-
-
-                        } else if (current[0].indexOf("http(") !== -1) {
-                            var url = String(current[0].split(")")[0]).replace("http(", "").replace(",", "");
-                            if (url.length < 500) {
-                                request(url, function (error, response, body) {
-                                    if (response == undefined) {
-                                     callback(handlemessage.replace(url, "Invalid Syntax"));
-                                    } else {
-                                        if (!error && response.statusCode == 200) {
-                                            console.log("HTTP Request ok")
-                                        } else {
-                                            body = "HTTP: " + response.statusCode;
-                                        }
-                                        handlemessage = handlemessage.replace("$[http(" + url + ")]", String(body).substr(0, 400).replace(/\n|\r/g, ""));
-                                        callback(handlemessage);
-                                    }
-                                })
-
+                    } else if (current[0].indexOf("rnglist(") !== -1) {
+                        var listname = String(current[0].split(")")).replace("rnglist(", "").replace(",", "");
+                        var sql = "SELECT item FROM useritems WHERE list=" + mysql.escape(listname) + " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                        sqlconnection.query(sql, function (err, results) {
+                            if (results[0] !== undefined) {
+                                callback(handlemessage.replace("$[rnglist(" + listname + ")]", results[0]["item"]));
+                            } else {
+                                callback(handlemessage.replace("$[rnglist(" + listname + ")]", "[empty or invalid list]"));
                             }
+                        });
 
 
+                    } else if (current[0].indexOf("http(") !== -1) {
+                        var url = String(current[0].split(")")[0]).replace("http(", "").replace(",", "");
+                        if (url.length < 500) {
+                            request(url, function (error, response, body) {
+                                if (response == undefined) {
+                                    callback(handlemessage.replace(url, "Invalid Syntax"));
+                                } else {
+                                    if (!error && response.statusCode == 200) {
+                                        console.log("HTTP Request ok")
+                                    } else {
+                                        body = "HTTP: " + response.statusCode;
+                                    }
+                                    handlemessage = handlemessage.replace("$[http(" + url + ")]", String(body).substr(0, 400).replace(/\n|\r/g, ""));
+                                    callback(handlemessage);
+                                }
+                            })
 
-
-                        } else {
-                            callback(handlemessage);
                         }
 
-                    }
-                } else {
-                    //Syntaxfehler
-                }
 
+                    } else {
+                        callback(handlemessage);
+                    }
+
+                }
+            } else {
+                //Syntaxfehler
+            }
 
 
         } else {
@@ -644,6 +648,7 @@ setTimeout(function() {
         }
 
     }
+
     client.on('motd', function (motd) {
         util.log("MOTD: " + motd);
     });
@@ -664,8 +669,8 @@ setTimeout(function() {
                     subject: 'KIRSCHNBOT HIGH LEVEL ISSUE: Account Management failure',
                     content: 'Error logging in: ' + botusername + '@irc.twitch.tv:6667'
                 },
-                function(err,response){
-                    if(err){
+                function (err, response) {
+                    if (err) {
                         console.log(err);
                     }
                     console.dir(response);
@@ -683,8 +688,9 @@ setTimeout(function() {
         } else {
             return 999;
         }
-        
+
     }
+
     function parsecom(nick, channel, text, funcret, tos) {
         util.log("MESSAGE " + channel + " => " + nick + " => " + text);
         if (activebots["config"][channel] !== undefined && tos) {
@@ -791,12 +797,12 @@ setTimeout(function() {
             if (splitmessagelowercase[0] == "!additem" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
                 if (splitmessagelowercase[2].indexOf("-name=") !== -1) {
                     var itemname = splitmessagenormal.split("=")[1];
-                    var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagenormal[3]) +  ",  " + mysql.escape(splitmessagelowercase[1]) +  ",  " + mysql.escape(itemname) + ");";
+                    var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[3]) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(itemname) + ");";
                 } else {
                     var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[2]) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  '');";
                 }
                 console.log(sql);
-                sqlconnection.query(sql, function(err, results) {
+                sqlconnection.query(sql, function (err, results) {
                     if (err == null) {
                         funcret(channel, nick + " -> Item added");
                     }
@@ -805,11 +811,11 @@ setTimeout(function() {
             if (splitmessagelowercase[0] == "!removeitem" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
                 if (splitmessagelowercase[2].indexOf("-name=") !== -1) {
                     var itemname = splitmessagenormal.split("=")[1];
-                    var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagenormal[3]) +  ",  '" + mysql.escape(splitmessagelowercase[1]) +  "',  'datfrankerz');";
+                    var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[3]) + ",  '" + mysql.escape(splitmessagelowercase[1]) + "',  'datfrankerz');";
                 } else {
                     var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[2]) + ",  '" + mysql.escape(splitmessagelowercase[1]) + "',  'datfrankerz');";
                 }
-                sqlconnection.query(sql, function(err, results) {
+                sqlconnection.query(sql, function (err, results) {
                     if (err == null) {
                         funcret(channel, nick + " -> Item added");
                     }
@@ -818,7 +824,7 @@ setTimeout(function() {
             if (splitmessagelowercase[0] == "!zitat" || splitmessagelowercase[0] == "!quote") {
                 if (splitmessagelowercase[1] !== undefined) {
                     // Zitatsname ist Wort 1!
-                    var sql = "SELECT text FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1])+ " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                    var sql = "SELECT text FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1]) + " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
                 } else {
                     var sql = "SELECT text FROM quotes WHERE (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
                 }
@@ -831,9 +837,9 @@ setTimeout(function() {
                 });
             }
             if (splitmessagelowercase[0] == "!addquote" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
-                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) +  ",  " + mysql.escape(splitmessagelowercase[1]) +  ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) +  ");";
+                var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
                 console.log(sql);
-                sqlconnection.query(sql, function(err, results) {
+                sqlconnection.query(sql, function (err, results) {
                     if (err == null) {
                         funcret(channel, nick + " -> Quote added");
                     } else {
@@ -844,7 +850,7 @@ setTimeout(function() {
             if (splitmessagelowercase[0] == "!deletequote" && splitmessagelowercase[1] !== undefined) {
                 var sql = "DELETE FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1]) + ";";
                 console.log(sql);
-                sqlconnection.query(sql, function(err, results) {
+                sqlconnection.query(sql, function (err, results) {
                     if (err == null) {
                         funcret(channel, nick + " -> Quote removed");
                     } else {
@@ -858,8 +864,8 @@ setTimeout(function() {
                         if (splitmessagenormal[3] !== undefined) {
                             var answers = text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", "").split(" ");
                             console.log(answers);
-                            createstrawpoll(splitmessagenormal[1], answers, function(id) {
-                                funcret(channel, nick + " -> Poll \"" + splitmessagenormal[1] + "\" created: http://strawpoll.me/"+id);
+                            createstrawpoll(splitmessagenormal[1], answers, function (id) {
+                                funcret(channel, nick + " -> Poll \"" + splitmessagenormal[1] + "\" created: http://strawpoll.me/" + id);
                             })
                         }
                     }
@@ -875,11 +881,11 @@ setTimeout(function() {
                                 activebots["commands"][channel] = {};
                             }
                             if (activebots["commands"][channel][splitmessagelowercase[1]] == undefined) {
-					if (activebots["users"][channel] == undefined) {
-                                        var level = 999;
-                                        } else {
-                                        var level = activebots["users"][channel].regularlevel;
-                                        }
+                                if (activebots["users"][channel] == undefined) {
+                                    var level = 999;
+                                } else {
+                                    var level = activebots["users"][channel].regularlevel;
+                                }
                                 var startattwo = true;
 
                                 if (isNaN(splitmessagelowercase[1])) {
@@ -894,11 +900,11 @@ setTimeout(function() {
                                         level = 5;
                                     } else {
                                         startattwo = false;
-					if (activebots["users"][channel] == undefined) {
-					level = 999;
-					} else {
-                                        level = activebots["users"][channel].regularlevel;
-					}
+                                        if (activebots["users"][channel] == undefined) {
+                                            level = 999;
+                                        } else {
+                                            level = activebots["users"][channel].regularlevel;
+                                        }
                                     }
                                 } else {
                                     util.log("Writing Raw Userlevel to Database");
@@ -969,7 +975,7 @@ setTimeout(function() {
                             } else {
                                 splitmessagelowercase[2] = "!" + splitmessagelowercase[2];
                             }
-                            var sql = "UPDATE commands SET userlevel=\"" + level + "\" WHERE channel=\"" + channel + "\" AND commandname=" + mysql.escape(splitmessagelowercase[2]) +";";
+                            var sql = "UPDATE commands SET userlevel=\"" + level + "\" WHERE channel=\"" + channel + "\" AND commandname=" + mysql.escape(splitmessagelowercase[2]) + ";";
                             sqlconnection.query(sql, function (err, results) {
                                 if (err == null) {
                                     refreshbotconfig(channel);
@@ -1070,6 +1076,7 @@ setTimeout(function() {
             console.timeEnd('commandexec');
         }
     }
+
     client.on('message', function (username, channel, text) {
         parsecom(username, channel, text, function (retchannel, text) {
             client.say(retchannel, text)
@@ -1080,7 +1087,7 @@ setTimeout(function() {
 // TODOCRAWLER
 
     function getinteractions() {
-      var sql = "SELECT * FROM bottodo WHERE chatbot=" + mysql.escape(botusername) + ";";
+        var sql = "SELECT * FROM bottodo WHERE chatbot=" + mysql.escape(botusername) + ";";
         sqlconnection.query(sql, function (err, results) {
             if (results[0] !== undefined) {
                 console.log("Found Actions in Control Table: " + results);
@@ -1094,7 +1101,7 @@ setTimeout(function() {
                         leave(current.channel);
                     } else if (current.type == "addcommand") {
                         if (activebots["commands"][current.channel][current.name] == undefined) {
-                          var sql = 'INSERT INTO `commands`(`commandname`, `text`, `userlevel`, `channel`, `creator`, `createtime`) VALUES ("' + mysql.escape(current.name).substr(1, current.name.length) + '",' + mysql.escape(current.text) + ',"' + current.userlevel + '","' + current.channel + '","' + current.initby + '","' + new Date().toJSON() + '");';
+                            var sql = 'INSERT INTO `commands`(`commandname`, `text`, `userlevel`, `channel`, `creator`, `createtime`) VALUES ("' + mysql.escape(current.name).substr(1, current.name.length) + '",' + mysql.escape(current.text) + ',"' + current.userlevel + '","' + current.channel + '","' + current.initby + '","' + new Date().toJSON() + '");';
                             util.log("SQL: " + sql);
                             sqlconnection.query(sql, function (err, results) {
                                 if (err !== null) {
@@ -1105,31 +1112,33 @@ setTimeout(function() {
 
                         }
                     } else if (current.type == "deletecommand") {
-                      var sql = 'DELETE FROM `commands` WHERE `commandname`=' + mysql.escape(current.name) + ";";
+                        var sql = 'DELETE FROM `commands` WHERE `commandname`=' + mysql.escape(current.name) + ";";
                         sqlconnection.query(sql);
                     } else if (current.type == "editcommandusrlevel") {
-                      var sql = "UPDATE commands SET userlevel=\"" + current.userlevel + "\" WHERE channel=\"" + current.channel + "\" AND commandname=\"" + current.name + "\";";
+                        var sql = "UPDATE commands SET userlevel=\"" + current.userlevel + "\" WHERE channel=\"" + current.channel + "\" AND commandname=\"" + current.name + "\";";
                         sqlconnection.query(sql);
                     } else if (current.type == "editcommandtext") {
-                      var sql = "UPDATE commands SET text=\"" + current.text + "\" WHERE channel=\"" + current.channel + "\" AND commandname=\"" + current.name + "\";";
+                        var sql = "UPDATE commands SET text=\"" + current.text + "\" WHERE channel=\"" + current.channel + "\" AND commandname=\"" + current.name + "\";";
                         sqlconnection.query(sql);
-                    } else if (current.type=="buildbot") {
+                    } else if (current.type == "buildbot") {
                         var sql = "";
                         sqlconnection.query(sql);
                     } else if (current.type == "WABOTPROCESS") {
                         util.log("WATSAPP BOT: PARSING MSG");
                         parsecom(current.name, "#xovigin", current.text, function (chandone, rettext) {
-                            sqlconnection.query("INSERT INTO bottodo (type, channel, text) VALUES ('WABOTSEND', " + mysql.escape(current.channel) +  ", " + mysql.escape(rettext).replace(".me", "Ginnie") + ");");
+                            sqlconnection.query("INSERT INTO bottodo (type, channel, text) VALUES ('WABOTSEND', " + mysql.escape(current.channel) + ", " + mysql.escape(rettext).replace(".me", "Ginnie") + ");");
                         }, false);
                     }
-                  var sql = "INSERT botactionsdone (type, channel, chatbot, initby, name, userlevel, text) SELECT type, channel, chatbot, initby, name, userlevel, text FROM bottodo WHERE id=" + mysql.escape(current.id) + ";";
+                    var sql = "INSERT botactionsdone (type, channel, chatbot, initby, name, userlevel, text) SELECT type, channel, chatbot, initby, name, userlevel, text FROM bottodo WHERE id=" + mysql.escape(current.id) + ";";
                     sqlconnection.query(sql, function (err, results) {
                         if (err !== null) {
                             console.log("SQL ERROR: " + err);
                         } else {
-                          var sql = "DELETE FROM `bottodo` WHERE `id`=" + mysql.escape(current.id) + ";";
+                            var sql = "DELETE FROM `bottodo` WHERE `id`=" + mysql.escape(current.id) + ";";
                             sqlconnection.query(sql, function (err, results) {
-                                if (err !== null) {console.log("SQL ERR: "+ err)}
+                                if (err !== null) {
+                                    console.log("SQL ERR: " + err)
+                                }
                             });
                         }
 
