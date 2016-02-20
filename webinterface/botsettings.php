@@ -44,7 +44,7 @@ $_SESSION["kbot_logouttoken"] = $token;
 $_SESSION["onetimetoken"] = $token;
 ?>
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <!-- jQuery 2.1.4 -->
@@ -237,6 +237,10 @@ desired effect
         </section>
 
         <!-- Main content -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Add Command</h3>
+            </div>
         <section class="content">
             <form role="form" id="editbotform" method="post" action="function/botsettings.php">
                 <div class="box-body">
@@ -254,6 +258,8 @@ desired effect
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
+        </div>
+
 
                     <!-- Modal -->
                     <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
