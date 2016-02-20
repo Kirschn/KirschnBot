@@ -17,8 +17,6 @@ if (!isset($_GET["channel"])) {
 }
 include "sqlinit.php";
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
-$sql = "SELECT commandname, text, userlevel, id FROM commands WHERE channel='#".strtolower($username)."';";
-$commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
         $canmanage = true;
@@ -33,7 +31,14 @@ if (isset($_SESSION['kbot_managementbot'])) {
     $canmanage = false;
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
-header("Content-Type: text/html; charset=utf-8");
+if (isset($_POST["token"]) && isset($_POST["username"]) && isset($_POST["onetimetoken"])) {
+    if ($_POST["onetimetoken"] == $_SESSION["onetimetoken"]) {
+        mysqli_query($sqlconnection, "UPDATE botconfig SET ircusername='" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "', ircoauthtoken='" . mysqli_real_escape_string($sqlconnection, $_POST["token"]) . "' WHERE channel='#" . $username . "';");
+        echo "Operation successfull";
+        mysqli_close($sqlconnection);
+        die();
+    }
+}
 $token = rand(0, 1024);
 $_SESSION["kbot_logouttoken"] = $token;
 $_SESSION["onetimetoken"] = $token;
@@ -75,41 +80,13 @@ $_SESSION["onetimetoken"] = $token;
     <![endif]-->
     <script>
         $(document).ready(function () {
-            $("#addcommand").ajaxForm({url: 'function/addcommand.php', type: "post", success: function(data) {
-                $("#addcommodal").html(data);
-                $("#commandcreate").modal();
-                $("#addcommand").resetForm();
-                $("#tablecontainer").load("commandtable.php");
+            $("#editbotform").ajaxForm({url: 'botsettings.php', type: "post", success: function(data) {
+                $("#successcontent").html(data);
+                $("#success").modal();
+                $("#editbotform").resetForm();
             }});
         });
-        function deletecommand(id, name) {
-            if(window.confirm("Do you really want to delete " + name + "?")) {
-                $.get("function/deletecommand.php?commandname="+name+"&commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
-                    $("#deletecommodal").html(data);
-                    $("#commanddelete").modal();
-                    $("#tablecontainer").load("commandtable.php");
-                });
 
-            }
-        }
-        function editcommanddialog(cid, ctext, cuserlevel, ccommandname) {
-            $.post("https://kirschnbot.tk/function/editcommand_include.php", {
-                id: cid,
-                commandtext: ctext,
-                userlevel: cuserlevel,
-                commandname: ccommandname,
-                onetimetoken: "<?php echo $_SESSION["onetimetoken"]; ?>",
-                action: "editform"
-            }).done(function (data) {
-                $("#editcommmodal").html(data);
-                $("#commandedit").modal();
-                $("#editcommandcommand").ajaxForm({url: 'https://kirschnbot.tk/function/editcommand_include.php', type: "post", success: function(dataformpost) {
-                    $("#editcommmodal").html(dataformpost);
-                    $("#tablecontainer").load("commandtable.php");
-                }
-                });
-            });
-        }
 
 
     </script>
@@ -261,7 +238,7 @@ desired effect
 
         <!-- Main content -->
         <section class="content">
-            <form role="form" id="editbottoken" method="post" action="function/botsettings.php">
+            <form role="form" id="editbotform" method="post" action="function/botsettings.php">
                 <div class="box-body">
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -269,6 +246,7 @@ desired effect
                         <input type="text" class="form-control" id="username" name="username" placeholder="kirschnbot">
                         <label for="token">OAuth Token</label>
                         <input type="text" class="form-control" id="token" name="token" placeholder="kirschnbot">
+                        <input type="hidden" name="onetimetoken" value="<?php echo $token; ?>">
                     </div>
                     </div><!-- /.box-body -->
 
