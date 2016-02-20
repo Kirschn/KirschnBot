@@ -38,7 +38,7 @@ if (isset($_POST["token"]) && isset($_POST["username"]) && isset($_POST["onetime
         } else {
             mysqli_query($sqlconnection, "UPDATE botconfig SET ircusername='" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "', ircoauthtoken='" . mysqli_real_escape_string($sqlconnection, $_POST["token"]) . "' WHERE channel='#" . $username . "';");
         }
-        echo "Operation successfull";
+        echo "Operation successful. Please let the bot rejoin your channel";
         mysqli_close($sqlconnection);
         die();
     }
