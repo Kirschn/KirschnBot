@@ -12,6 +12,7 @@ if (isset($_SESSION["kbot_logon"])) {
         $access_token = $twitchtv->get_access_token($ttv_code);
         $username = $twitchtv->authenticated_user($access_token);
         $useroptions = $twitchtv->load_channel($username);
+        $_SESSION["kbot_realusername"] = $username;
         $_SESSION["kbot_logon"] = true;
         $_SESSION["kbot_profileimglink"] = str_replace("http://", "https://", $useroptions["logo"]);
         $_SESSION["kbot_userdisplayname"] = $useroptions["display_name"];

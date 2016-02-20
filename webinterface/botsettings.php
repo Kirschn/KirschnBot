@@ -242,7 +242,8 @@ desired effect
 
         <!-- Main content -->
 
-        <section class="content"><div class="box box-primary">
+        <section class="content">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Custom Chataccount</h3>
                 </div>
@@ -287,6 +288,7 @@ desired effect
                         </div>
                     </div>
                 </div>
+                <?php include "include/switchbot.php"; ?>
 
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
