@@ -244,7 +244,7 @@ desired effect
 
         <section class="content"><div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add Command</h3>
+                    <h3 class="box-title">Custom Chataccount</h3>
                 </div>
             <form role="form" id="editbotform" method="post" action="function/botsettings.php">
                 <div class="box-body">
