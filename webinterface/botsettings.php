@@ -31,7 +31,7 @@ if (isset($_SESSION['kbot_managementbot'])) {
     $canmanage = false;
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
-if (isset($_POST["token"]) && isset($_POST["username"]) && isset($_POST["onetimetoken"])) {
+if (isset($_POST["token"]) && isset($_POST["username"]) && isset($_POST["onetimetoken"]) && $canmanage) {
     if ($_POST["onetimetoken"] == $_SESSION["onetimetoken"]) {
         if ($_POST["submit"] == "reset") {
             mysqli_query($sqlconnection, "UPDATE botconfig SET ircusername=DEFAULT,ircoauthtoken=DEFAULT  WHERE channel='#" . $username . "';");
