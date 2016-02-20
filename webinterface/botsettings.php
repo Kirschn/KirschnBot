@@ -33,7 +33,11 @@ if (isset($_SESSION['kbot_managementbot'])) {
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
 if (isset($_POST["token"]) && isset($_POST["username"]) && isset($_POST["onetimetoken"])) {
     if ($_POST["onetimetoken"] == $_SESSION["onetimetoken"]) {
-        mysqli_query($sqlconnection, "UPDATE botconfig SET ircusername='" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "', ircoauthtoken='" . mysqli_real_escape_string($sqlconnection, $_POST["token"]) . "' WHERE channel='#" . $username . "';");
+        if ($_POST["submit"] == "reset") {
+            mysqli_query($sqlconnection, "UPDATE botconfig SET ircusername=DEFAULT,ircoauthtoken=DEFAULT  WHERE channel='#" . $username . "';");
+        } else {
+            mysqli_query($sqlconnection, "UPDATE botconfig SET ircusername='" . mysqli_real_escape_string($sqlconnection, $_POST["username"]) . "', ircoauthtoken='" . mysqli_real_escape_string($sqlconnection, $_POST["token"]) . "' WHERE channel='#" . $username . "';");
+        }
         echo "Operation successfull";
         mysqli_close($sqlconnection);
         die();
@@ -256,7 +260,8 @@ desired effect
                     </div><!-- /.box-body -->
 
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="submit">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="reset">Reset to "KirschnBot"</button>
                 </div>
             </form>
         </div>
