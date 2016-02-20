@@ -248,15 +248,17 @@ desired effect
                 </div>
             <form role="form" id="editbotform" method="post" action="function/botsettings.php">
                 <div class="box-body">
-                    Generate an OAuth Token here: <a href="https://twitchapps.com/tmi/">https://twitchapps.com/tmi/</a><br>
+
+
                     <div class="form-group">
                         <label for="username">Username</label>
 
                         <input type="text" class="form-control" id="username" name="username" placeholder="kirschnbot">
                         <label for="token">OAuth Token</label>
-                        <input type="password" class="form-control" id="token" name="token" placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
+                        <input type="password" class="form-control" id="token" name="token" placeholder="oauth:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
                         <input type="hidden" name="onetimetoken" value="<?php echo $token; ?>">
                     </div>
+                    Generate an OAuth Token here: <a href="https://twitchapps.com/tmi/">https://twitchapps.com/tmi/</a><br>
                     </div><!-- /.box-body -->
 
                 <div class="box-footer">
