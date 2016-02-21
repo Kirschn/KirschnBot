@@ -1,14 +1,21 @@
 <?php
-$manageingpermissions = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."'"));
+
 if (isset($_POST["channel"]) && isset($_POST["token"])){
     session_start();
+    include "../sqlinit.php";
+    $manageingpermissions = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."'"));
     $manageingpermissions[] = $_SESSION["kbot_realusername"];
     if (in_array($_POST["channel"], $manageingpermissions) && $_POST["token"] == $_SESSION["onetimetoken"])  {
         $_SESSION["kbot_managementbot"] = $_POST["channel"];
         echo "ok";
-        die();
+
+    } else {
+        echo "Request invalid";
+
     }
+    die();
 }
+$manageingpermissions = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."'"));
 ?>
 
 <div class="modal fade" id="switchbot" tabindex="-1" role="dialog" aria-labelledby="success">
@@ -26,14 +33,14 @@ if (isset($_POST["channel"]) && isset($_POST["token"])){
                                     foreach ($manageingpermissions as $currentchan) {
                                         if ($currentchan == $_SESSION["kbot_managementbot"]) {
                                             ?>
-                                                <option selected>
+                                                <option value="<?php echo $currentchan; ?>" selected>
                                                     <?php echo $currentchan; ?>
                                                 </option>
                                             <?php
                                         } else {
                                             ?>
-                                                <option>
-                                                    <?php echo $currentchan; ?>
+                                                <option value="<?php echo $currentchan; ?>">
+                                                    <?php  echo $currentchan; ?>
                                                 </option>
                                             <?php
                                         }
@@ -43,17 +50,17 @@ if (isset($_POST["channel"]) && isset($_POST["token"])){
 
                                     </select>
                                     <script>
-                                        $("#channelselector").on('change', '#channelselector', function() {
+                                        $(document).on('change', '#channelselector', function() {
+                                            console.log("SELECT");
                                             $.post("include/switchbot.php", {
-                                                onetimetoken: "<?php echo $_SESSION["onetimetoken"]; ?>",
-                                                channel: $("#channelselector").value;
+                                                token: "<?php echo $_SESSION["onetimetoken"]; ?>",
+                                                channel: $("#channelselector").value
                                             }).done(function (data) {
                                                 if (data=="ok") {
                                                     location.reload();
                                                 }
                                                 });
                                             });
-                                        });
                                     </script>
                                 </div>
                                 <div class="modal-footer">
