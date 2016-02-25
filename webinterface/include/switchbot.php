@@ -5,6 +5,13 @@ if (isset($_POST["channel"]) && isset($_POST["token"])){
     include "../sqlinit.php";
     $manageingpermissions = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."'"));
     $manageingpermissions[] = $_SESSION["kbot_realusername"];
+    if (in_array(".global", $manageingpermissions)) {
+        $manageingpermissions_unfixed = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM botconfig"));
+        $manageingpermissions = [];
+        foreach ($manageingpermissions_unfixed as $item) {
+            $manageingpermissions[] = str_replace("#", "", $item);
+        }
+    }
     if (in_array($_POST["channel"], $manageingpermissions) && $_POST["token"] == $_SESSION["onetimetoken"])  {
         $_SESSION["kbot_managementbot"] = $_POST["channel"];
         echo "ok";
@@ -16,6 +23,13 @@ if (isset($_POST["channel"]) && isset($_POST["token"])){
     die();
 }
 $manageingpermissions = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."'"));
+if (in_array(".global", $manageingpermissions)) {
+    $manageingpermissions_unfixed = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT channel FROM botconfig"));
+    $manageingpermissions = [];
+    foreach ($manageingpermissions_unfixed as $item) {
+        $manageingpermissions[] = str_replace("#", "", $item);
+    }
+}
 ?>
 
 <div class="modal fade" id="switchbot" tabindex="-1" role="dialog" aria-labelledby="success">
