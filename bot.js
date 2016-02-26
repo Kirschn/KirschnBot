@@ -302,7 +302,7 @@ setTimeout(function () {
                             refreshbotconfig(channel);
                             setTimeout(function () {
                                 request("http://tmi.twitch.tv/servers?channel=" + channel.substr(1, channel.length), function(err, response, body) {
-                                    if (!error && response.statusCode == 200) {
+                                    if (!err && response.statusCode == 200) {
                                         if (JSON.parse(body)["cluster"] == "aws") {
                                             util.log(channel + ": AWS Cluster");
                                             clientaws.join(channel);
@@ -335,7 +335,7 @@ setTimeout(function () {
                             refreshbotconfig(channel);
                             setTimeout(function () {
                                 request("http://tmi.twitch.tv/servers?channel=" + channel.substr(1, channel.length), function(err, response, body) {
-                                    if (!error && response.statusCode == 200) {
+                                    if (!err && response.statusCode == 200) {
                                         if (JSON.parse(body)["cluster"] == "aws") {
                                             util.log(channel + ": AWS Cluster");
                                             clientaws.join(channel);
