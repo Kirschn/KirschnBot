@@ -268,6 +268,100 @@ desired effect
                 </div>
             </form>
         </div>
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">User Commands</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive" id="tablecontainer">
+                        <table class="table no-margin">
+                            <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>Return</th>
+                                <th>Userlevel</th>
+                                <?php if ($canmanage) {?><th width="130px">Actions</th><?php }; ?>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+
+
+                            while ($r = mysqli_fetch_assoc($commandsunparsed)) {
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $r["commandname"]; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $r["text"]; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $r["userlevel"]; ?>
+                                    </td>
+                                    <?php if ($canmanage) {?>
+                                        <td>
+
+                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["userlevel"]); ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
+                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
+                                            <button type="button" class="btn btn-primary" onclick="$.get('function/switchwhispercom.php?token=<?php echo $_SESSION['onetimetoken']; ?>&comid=<?php echo $r["id"]; ?>&setto=<?php echo ($r["whispercommand"] == "0" ? "true" : "false") ?>').done($('#tablecontainer').load('commandtable.php'))"><?php echo ($r["whispercommand"] == "0" ? "Normal Answer" : "Whisper") ?> </button>
+                                        </td>
+                                    <?php } ?>
+                                </tr>
+                                <?php
+                            }
+                            if (!$login) {
+                                mysqli_close($sqlconnection);
+                            }
+                            ?>
+
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                </div><!-- /.box-body -->
+            </div>
+            <?php if ($canmanage) {
+            ?>
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Command</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" id="addcommand" method="post" action="function/addcommand.php">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="commandname">Command</label>
+                            <input type="text" class="form-control" id="commandname" name="commandname" placeholder="!mycommand">
+                        </div>
+                        <div class="form-group">
+                            <label for="userlevel">Userlevel: </label>
+                            <select name="userleveldropdown" id="userleveldropdown">
+                                <option selected>Everyone</option>
+                                <option>Moderator</option>
+                                <option>Streamer</option>
+                                <option>Custom</option>
+                            </select>
+                            <?php
+                            $presets = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#". $_SESSION["kbot_managementbot"] . "'"));
+                            ?>
+                            <input type="hidden" id="userlevel" name="userlevel" value="<?php echo $presets["regularlevel"]; ?>" class="form-control"">
+
+                        </div>
+                        <input type="hidden" value="<?php echo $token; ?>" name="token" />
+                        <div class="form-group">
+                            <label>Command Text</label>
+                            <textarea class="form-control" rows="3" name="commandtext"></textarea>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
 
 
                     <!-- Modal -->
@@ -317,3 +411,4 @@ desired effect
 
 </body>
 </html>
+<?php }?>
