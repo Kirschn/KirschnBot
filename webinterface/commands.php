@@ -186,7 +186,7 @@ desired effect
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Switch Bot</a>
+                                        <a href="#" onclick="$('#switchbot').modal();" class="btn btn-default btn-flat">Switch Bot</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="function/logout.php?token=<?php echo $token; ?>" class="btn btn-default btn-flat">Sign out</a>
@@ -427,7 +427,8 @@ desired effect
                     </div>
                 </div>
                 <?php
-            } ?>
+            }   include 'include/switchbot.php';
+            ?>
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
