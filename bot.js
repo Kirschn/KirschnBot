@@ -94,6 +94,30 @@ setTimeout(function () {
             password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
         }
     );
+    var clientaws = new irc.Client('irc.chat.twitch.tv', botusername,
+        {
+            userName: botusername, // IRC Name
+            realName: botusername, // Wird nicht wirklich gebraucht
+            port: 80,
+            localAddress: null,
+            debug: true, // Nur für Testinstanz an, genz nützlich um Pings, gesendete Nachrichten etc. zu sehen
+            showErrors: true,
+            autoRejoin: true,
+            autoConnect: true,
+            channels: [],
+            secure: false,
+            selfSigned: false,
+            certExpired: false,
+            floodProtection: false,
+            floodProtectionDelay: 1000,
+            sasl: false,
+            stripColors: false,
+            channelPrefixes: "&#",
+            messageSplit: 999, // 999 ist maximale Twitch Nachrichtenlänge
+            encoding: '',
+            password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
+        }
+    );
 
     var activebots = { // Caching Variablen definieren
         commands: {},
@@ -277,7 +301,18 @@ setTimeout(function () {
                             //join complete
                             refreshbotconfig(channel);
                             setTimeout(function () {
-                                client.join(channel);
+                                request("http://tmi.twitch.tv/servers?channel=" + channel.substr(1, channel.length), function(err, response, body) {
+                                    if (!error && response.statusCode == 200) {
+                                        if (JSON.parse(body)["cluster"] == "aws") {
+                                            util.log(channel + ": AWS Cluster");
+                                            clientaws.join(channel);
+                                        } else {
+                                            util.log(channel + ": Main Cluster");
+                                            client.join(channel);
+                                        }
+                                    }
+                                });
+
                             }, 900);
                             util.log("Bot Database Build: " + results);
                         } else {
@@ -299,7 +334,17 @@ setTimeout(function () {
                             };
                             refreshbotconfig(channel);
                             setTimeout(function () {
-                                client.join(channel);
+                                request("http://tmi.twitch.tv/servers?channel=" + channel.substr(1, channel.length), function(err, response, body) {
+                                    if (!error && response.statusCode == 200) {
+                                        if (JSON.parse(body)["cluster"] == "aws") {
+                                            util.log(channel + ": AWS Cluster");
+                                            clientaws.join(channel);
+                                        } else {
+                                            util.log(channel + ": Main Cluster");
+                                            client.join(channel);
+                                        }
+                                    }
+                                });
                             }, 900);
                         } else {
                             util.log("IRC Username for Channel not the same, writing Task to other instance and/or building one");
@@ -347,7 +392,8 @@ setTimeout(function () {
                 var sql = 'UPDATE botconfig SET isactive=NULL WHERE channel=\'' + channel + '\';';
                 sqlconnection.query(sql, function (err, results) {
                     if (err == null) {
-                        client.part(channel, "Leaving " + channel);
+                        client.part(channel);
+                        clientaws.part(channel);
                         activebots["config"][channel] = undefined;
                     } else {
                         console.log(err);
@@ -681,6 +727,39 @@ setTimeout(function () {
     });
     client.on('error', function (message) {
         console.log("ERROR: " + message.nick + " -> " + message.command + "(" + message.args + ")");
+    });
+    clientaws.on('motd', function (motd) {
+        util.log("AWS MOTD: " + motd);
+    });
+
+
+    clientaws.on('join', function (channel, nick, message) {
+        util.log("AWS JOIN: " + channel + " : " + nick + " : " + message);
+    });
+
+    clientaws.addListener('pm', function (from, message) {
+        util.log(from + ' => AWS Bot: ' + message);
+    });
+    clientaws.on('raw', function (message) {
+        if (message.args[1] == "Error logging in" && message.command == "NOTICE") {
+            mail({
+                    from: 'kirschnbotservice@kirschn.de',
+                    to: 'support@kirschn.de',
+                    subject: 'KIRSCHNBOT HIGH LEVEL ISSUE: Account Management failure',
+                    content: 'Error logging in: ' + botusername + '@irc.twitch.tv:6667'
+                },
+                function (err, response) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.dir(response);
+                    process.exit();
+                });
+
+        }
+    });
+    clientaws.on('error', function (message) {
+        console.log("AWS ERROR: " + message.nick + " -> " + message.command + "(" + message.args + ")");
     });
     function thischanmodlevel(channel) {
         if (activebots["users"][channel] !== undefined) {
@@ -1088,6 +1167,11 @@ setTimeout(function () {
     client.on('message', function (username, channel, text) {
         parsecom(username, channel, text, function (retchannel, text) {
             client.say(retchannel, text)
+        }, true)
+    });
+    clientaws.on('message', function (username, channel, text) {
+        parsecom(username, channel, text, function (retchannel, text) {
+            clientaws.say(retchannel, text)
         }, true)
     });
 
