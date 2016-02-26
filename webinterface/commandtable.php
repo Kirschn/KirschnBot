@@ -18,7 +18,7 @@ if (!isset($_GET["channel"])) {
 include 'sqlinit.php';
 $sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
-$sql = "SELECT commandname, text, userlevel, id FROM commands WHERE channel='#".strtolower($username)."';";
+$sql = "SELECT commandname, text, userlevel, id, whispercommand FROM commands WHERE channel='#".strtolower($username)."';";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
@@ -62,8 +62,10 @@ $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, r
             </td>
             <?php if ($canmanage) {?>
                 <td>
+
                     <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["userlevel"]); ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                    <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo $r["commandname"]; ?>')"><i class="fa fa-ban"></i></i> Delete </a>
+                    <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo $r["commandname"]; ?>')"><i class="fa fa-ban"></i></i> Delete </a>&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" onclick="$.get('function/switchwhispercom.php?token=<?php echo $_SESSION['onetimetoken']; ?>&comid=<?php echo $r["id"]; ?>&setto=<?php echo ($r["whispercommand"] == "0" ? "true" : "false") ?>').done($('#tablecontainer').load('commandtable.php'))"><?php echo ($r["whispercommand"] == "0" ? "Normal Answer" : "Whisper") ?> </button>
                 </td>
             <?php } ?>
         </tr>

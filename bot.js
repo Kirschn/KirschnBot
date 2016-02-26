@@ -94,6 +94,32 @@ setTimeout(function () {
             password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
         }
     );
+    var groupchatclient = new irc.Client('199.9.253.119', botusername,
+        {
+            userName: botusername, // IRC Name
+            realName: botusername, // Wird nicht wirklich gebraucht
+            port: 6667,
+            localAddress: null,
+            debug: true, // Nur für Testinstanz an, genz nützlich um Pings, gesendete Nachrichten etc. zu sehen
+            showErrors: true,
+            autoRejoin: true,
+            autoConnect: true,
+            channels: [],
+            secure: false,
+            selfSigned: false,
+            certExpired: false,
+            floodProtection: false,
+            floodProtectionDelay: 1000,
+            sasl: false,
+            stripColors: false,
+            channelPrefixes: "&#",
+            messageSplit: 999, // 999 ist maximale Twitch Nachrichtenlänge
+            encoding: '',
+            password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
+        }
+    );
+
+
     var clientaws = new irc.Client('irc.chat.twitch.tv', botusername,
         {
             userName: botusername, // IRC Name
@@ -125,7 +151,9 @@ setTimeout(function () {
         config: {}
     };
     util.log("Init Complete");
-
+    function whisper(username, message) {
+        groupchatclient.send("PRIVMSG", "#jtv", "/w " + username + " " + message);
+    }
     function isglobaladmin(username) { // Sinnloseste Funktion ever. Returnt true wenn username in global admin liste ist
         util.log("IS global admin: " + username);
         if (sysconf.globaladmins.indexOf(username) !== -1) {
@@ -833,15 +861,22 @@ setTimeout(function () {
         if (text[0] == "!") {
             var splitmessagelowercase = text.toLowerCase().split(" ");
             var splitmessagenormal = text.split(" ");
-            sqlconnection.query('SELECT userlevel, text FROM commands WHERE channel="' + channel + '" AND commandname="' + splitmessagelowercase[0].replace(/'/g, "") + '" ;', function (err, results) {
+            sqlconnection.query('SELECT userlevel, text, whispercommand FROM commands WHERE channel="' + channel + '" AND commandname="' + splitmessagelowercase[0].replace(/'/g, "") + '" ;', function (err, results) {
                 if (results[0] !== undefined) {
                     getuserlevel(nick, channel, function (usrlevel) {
                         if (results[0].userlevel >= usrlevel) {
                             // PARAMETER HANDLEN
                             handlecommand(results[0].text, channel, function (callback) {
-                                funcret(channel, String(callback).replace("$username", nick)
-                                    .replace("$query", text.replace(splitmessagenormal[0] + " ", ""))
-                                    .replace("$user", nick));
+                                if (results[0].whispercommand) {
+                                    whisper(nick, String(callback).replace("$username", nick)
+                                        .replace("$query", text.replace(splitmessagenormal[0] + " ", ""))
+                                        .replace("$user", nick));
+                                } else {
+                                    funcret(channel, String(callback).replace("$username", nick)
+                                        .replace("$query", text.replace(splitmessagenormal[0] + " ", ""))
+                                        .replace("$user", nick));
+                                }
+
                                 console.timeEnd("usercommandexec");
                             }, nick, text);
 
