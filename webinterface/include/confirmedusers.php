@@ -15,7 +15,7 @@ if (!isset($_GET["channel"])) {
 } else {
     $username = htmlspecialchars($_GET["channel"]);
 }
-include "sqlinit.php";
+include "../sqlinit.php";
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
@@ -31,7 +31,7 @@ if (isset($_SESSION['kbot_managementbot'])) {
     die();
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
-$result = mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE name='".$username."';");
+$result = mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel='".$username."';");
 
 ?>
 <div class="table-responsive" id="tablecontainer">
@@ -54,7 +54,7 @@ $result = mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE name='"
                                         <?php echo $r["name"]; ?>
                                     </td>
                                     <td>
-
+                                        <button type="button" class="btn btn-primary" onclick="$.get('function/removeconfirmedusers.php?token=<?php echo $_SESSION['onetimetoken']; ?>&name=<?php echo $r["name"]; ?>').done(setTimeout(function(){$('#confirmedusertable').load('include/confirmedusers.php')}, 100))">Remove</button>
                                     </td>
                                 </tr>
                                 <?php
