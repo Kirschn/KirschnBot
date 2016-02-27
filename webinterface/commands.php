@@ -446,7 +446,7 @@ desired effect
                 if ($login) {
                     include "include/activity.php";
                 } else { ?>
-                    Please <a href="login">Sign in</a>
+                    Please <a href="login.php">Sign in</a>
                 <?php }; ?>
             </ul><!-- /.control-sidebar-menu -->
         </div>

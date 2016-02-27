@@ -39,6 +39,7 @@ process.stdin.on('readable', function () {
         }
     }
 });
+var friendlymode = false;
 // Init für konstante Variablen fertig
 // 2 Sekunden warten bevor Bootstrap weitergeht. Man weiß ja nie was Bash da mit dem Stdin macht.
 console.log("sysready");
@@ -800,7 +801,7 @@ setTimeout(function () {
 
     function parsecom(nick, channel, text, funcret, tos) {
         util.log("MESSAGE " + channel + " => " + nick + " => " + text);
-        if (activebots["config"][channel] !== undefined && tos) {
+        if (activebots["config"][channel] !== undefined && tos && !friendlymode) {
             if (activebots["config"][channel].linkfilter) {
                 if (linkregex.test(text)) {
                     util.log("Found Link in Message from " + nick);
@@ -898,6 +899,15 @@ setTimeout(function () {
             }
             if (splitmessagelowercase[0] == "!dumpvar" && isglobaladmin(nick)) {
                 funcret(channel, eval(String(text).replace("!dumpvar ", "")));
+            }
+            if (splitmessagelowercase[0] == "!friendly" && isglobaladmin(nick)) {
+                friendlymode = !friendlymode;
+                if (friendlymode) {
+                    funcret(channel, "Enabled global Friendly Mode for instance " + botusername);
+                } else {
+                    funcret(channel, "Disabled global Friendly Mode for instance " + botusername);
+                }
+
             }
             //MODCOMMANDS
             if (splitmessagelowercase[0] == "!leave" || splitmessagelowercase[0] == "!kbotleave") {
