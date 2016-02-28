@@ -21,6 +21,7 @@ if (isset($_SESSION["kbot_logon"])) {
         include "sqlinit.php";
         $botexissresults = mysqli_query($sqlconnection, "SELECT id FROM botconfig WHERE channel='#".$username."'");
         if (isset(mysqli_fetch_array($botexissresults)[0])) {
+            mysqli_query($sqlconnection, "UPDATE  `kirschnbot`.`botconfig` SET  `editoroauth` =  '$access_token' WHERE  `botconfig`.`channel` = '#$username'");
             header("Location: index.php");
             mysqli_close($sqlconnection);
             die();

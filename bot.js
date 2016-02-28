@@ -39,6 +39,7 @@ process.stdin.on('readable', function () {
         }
     }
 });
+var lockedcommands = []; // Array für Variablen für weil wegen Bashschutz
 var friendlymode = false;
 // Init für konstante Variablen fertig
 // 2 Sekunden warten bevor Bootstrap weitergeht. Man weiß ja nie was Bash da mit dem Stdin macht.
@@ -314,7 +315,7 @@ setTimeout(function () {
             }
         })
     }
-
+var awschannel = [];
 
     function join(channel) {
         util.log("Start: Joining Channel: " + channel);
@@ -334,6 +335,7 @@ setTimeout(function () {
                                     if (!err && response.statusCode == 200) {
                                         if (JSON.parse(body)["cluster"] == "aws") {
                                             util.log(channel + ": AWS Cluster");
+                                            awschannel.push(channel);
                                             clientaws.join(channel);
                                         } else {
                                             util.log(channel + ": Main Cluster");
@@ -421,8 +423,11 @@ setTimeout(function () {
                 var sql = 'UPDATE botconfig SET isactive=NULL WHERE channel=\'' + channel + '\';';
                 sqlconnection.query(sql, function (err, results) {
                     if (err == null) {
-                        client.part(channel);
-                        clientaws.part(channel);
+                        if (awschannel.indexOf(channel) !== -1) {
+                            clientaws.part(channel);
+                        } else {
+                            client.part(channel);
+                        }
                         activebots["config"][channel] = undefined;
                     } else {
                         console.log(err);
@@ -863,7 +868,7 @@ setTimeout(function () {
             var splitmessagelowercase = text.toLowerCase().split(" ");
             var splitmessagenormal = text.split(" ");
             sqlconnection.query('SELECT userlevel, text, whispercommand FROM commands WHERE channel="' + channel + '" AND commandname="' + splitmessagelowercase[0].replace(/'/g, "") + '" ;', function (err, results) {
-                if (results[0] !== undefined) {
+                if (results[0] !== undefined && (lockedcommands[channel  + splitmessagelowercase[0]] == false || lockedcommands[channel  + splitmessagelowercase[0]] == undefined)) {
                     getuserlevel(nick, channel, function (usrlevel) {
                         if (results[0].userlevel >= usrlevel) {
                             // PARAMETER HANDLEN
@@ -877,6 +882,10 @@ setTimeout(function () {
                                         .replace("$query", text.replace(splitmessagenormal[0] + " ", ""))
                                         .replace("$user", nick));
                                 }
+                                lockedcommands[channel  + splitmessagelowercase[0]] = true;
+                                setTimeout(function () {
+                                    lockedcommands[channel  + splitmessagelowercase[0]] = false;
+                                }, 5000);
 
                                 console.timeEnd("usercommandexec");
                             }, nick, text);

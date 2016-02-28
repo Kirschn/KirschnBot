@@ -13,6 +13,7 @@ if (isset($_POST["onetimetoken"]) && !isset($_POST["action"])) {
     die();
 } else if (isset($_POST["id"]) && isset($_POST["commandtext"]) && isset($_POST["userlevel"]) && isset($_POST["commandname"])) {
     session_start();
+    header('Content-Type: text/html; charset=utf-8');
     ?>
     <form role="form" id="editcommandcommand" method="post" action="function/addcommand.php">
             <div class="form-group">
