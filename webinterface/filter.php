@@ -239,43 +239,18 @@ desired effect
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Settings
-                <small><?php if ($canmanage) { echo 'Settings'; } else { echo 'Just some general stuff'; } ?></small>
+                Chat Filtering
+                <small></small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> KirschnBot</a></li>
-                <li class="active">Settings: <?php echo $username; ?></li>
+                <li class="active">Chat Filter: <?php echo $username; ?></li>
             </ol>
         </section>
 
         <!-- Main content -->
 
         <section class="content">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Custom Chataccount</h3>
-                </div>
-            <form role="form" id="editbotform" method="post" action="function/botsettings.php">
-                <div class="box-body">
-
-
-                    <div class="form-group">
-                        <label for="username">Username</label>
-
-                        <input type="text" class="form-control" id="username" name="username" placeholder="kirschnbot">
-                        <label for="token">OAuth Token</label>
-                        <input type="password" class="form-control" id="token" name="token" placeholder="oauth:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
-                        <input type="hidden" name="onetimetoken" value="<?php echo $token; ?>">
-                    </div>
-                    Generate an OAuth Token here: <a href="https://twitchapps.com/tmi/">https://twitchapps.com/tmi/</a><br>
-                    </div><!-- /.box-body -->
-
-                <div class="box-footer">
-                    <button type="submit" name="submit" class="btn btn-primary" value="submit">Submit</button>
-                    <button type="submit" name="submit" class="btn btn-primary" value="reset">Reset to "KirschnBot"</button>
-                </div>
-            </form>
-        </div>
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Confirmed Users</h3>
@@ -290,45 +265,7 @@ desired effect
             <?php if ($canmanage) {
             ?>
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Add Confirmed User</h3>
-                </div><!-- /.box-header -->
-                <!-- form start -->
-                <form role="form" id="addconfirmeduser" method="get" action="function/addconfirmedusers.php">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="name">Username</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="thekirschn">
-                        </div>
-                        <input type="hidden" value="<?php echo $token; ?>" name="token" />
-                    </div><!-- /.box-body -->
-
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </form>
-
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="successname">Operation Success</h4>
-                                </div>
-                                <div class="modal-body" id="successcontent">
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php include "include/switchbot.php"; ?>
+        <?php include "include/switchbot.php"; ?>
 
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->

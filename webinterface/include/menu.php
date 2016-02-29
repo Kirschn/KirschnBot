@@ -2,7 +2,7 @@
 <li class="header">FEATURE</li>
 <li class="<?php echo ($_SERVER['PHP_SELF'] == "/commands.php" ? "" : "in")?>active"><a href="commands.php"><i class="fa fa-exclamation"></i> <span>Commands</span></a></li>
 <li class="<?php echo ($_SERVER['PHP_SELF'] == "/users.php" ? "" : "in")?>active"><a href="users.php"><i class="fa fa-users"></i> <span>Users</span></a></li>
-<!--<li class="<?php echo ($_SERVER['PHP_SELF'] == "/spamprotection.php" ? "" : "in")?>active"><a href="users.php"><i class="fa fa-ban"></i> <span>Anti-Spam</span></a></li> -->
+<li class="<?php echo ($_SERVER['PHP_SELF'] == "/filter.php" ? "" : "in")?>active"><a href="filter.php"><i class="fa fa-ban"></i> <span>Anti-Spam</span></a></li>
     <li class="<?php echo ($_SERVER['PHP_SELF'] == "/botsettings.php" ? "" : "in")?>active"><a href="botsettings.php"><i class="fa fa-wrench"></i> <span>Settings</span></a></li>
 </ul><!-- /.sidebar-menu -->
 <?php include 'function/togglebot.php'; ?>
