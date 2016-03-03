@@ -1,4 +1,5 @@
-// Code (c) 2015 Malte "Kirschn" Wolff
+// Code (c) 2016 Malte "Kirschn" Wolff
+// -----------------------------------
 // Erstmal alle Libs inkludieren
 var irc = require("irc"), // Wozu sollte auf offener Hand liegen
     mysql = require('mysql'), // MySQL wird als Datenbankbackend genutzt
@@ -876,7 +877,7 @@ setTimeout(function () {
             util.log("MESSAGE " + channel + " => " + nick + " => " + text);
             if (activebots["config"][channel] !== undefined && tos && !friendlymode) {
                 if (activebots["config"][channel].linkfilter) {
-                    if (linkregex.test(text)) {
+                    if (linkregex.test(text.toLowerCase())) {
                         util.log("Found Link in Message from " + nick);
                         getuserlevel(nick, channel, function (ul) {
                             util.log("Initalizing Timeout for Message from " + nick + "(UL: " + ul + ")");
@@ -953,7 +954,7 @@ setTimeout(function () {
                                     lockedcommands[channel + splitmessagelowercase[0]] = true;
                                     setTimeout(function () {
                                         lockedcommands[channel + splitmessagelowercase[0]] = false;
-                                    }, 5000);
+                                    }, 10000);
 
                                     console.timeEnd("usercommandexec");
                                 }, nick, text);

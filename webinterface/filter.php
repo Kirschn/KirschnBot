@@ -84,19 +84,9 @@ $_SESSION["onetimetoken"] = $token;
     <![endif]-->
     <script>
         $(document).ready(function () {
-            $("#editbotform").ajaxForm({url: 'botsettings.php', type: "post", success: function(data) {
-                $("#successcontent").html(data);
-                $("#success").modal();
-                $("#editbotform").resetForm();
-            }});
-
-            $("#confirmedusertable").load("include/confirmedusers.php");
-            $("#addconfirmeduser").ajaxForm({url: 'function/addconfirmedusers.php', type: "get", success: function(data) {
-                $("#successcontent").html(data);
-                $("#success").modal();
-                $("#addconfirmeduser").resetForm();
-                $("#confirmedusertable").load("include/confirmedusers.php");
-            }});
+            $("#filtersettings").load("include/filter/filtersettings.php");
+            $("#linkfiltersettings").load("include/filter/linkfilter.php");
+            $("#blacklistfilter").load("include/filter/blacklistfilter.php");
         });
 
 
@@ -251,6 +241,17 @@ desired effect
         <!-- Main content -->
 
         <section class="content">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Filter</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div><!-- /.box-header -->
+        <div class="box-body" id="filtersettings">
+            Loading...
+        </div>
+    </div>
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Linkfilter</h3>
