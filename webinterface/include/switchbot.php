@@ -28,8 +28,6 @@ if (isset($_POST["channel"]) && isset($_POST["token"])){
 
     }
     die();
-} else {
-    header("Location: https://kirschnbot.tk");
 }
 $manageingpermissions = [];
 $result = mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."';");

@@ -34,23 +34,19 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linkfilter,
 
 ?>
 <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
         <div class="checkbox">
             <label>
                 <input type="checkbox" <?php echo($botconfig["linkfilter"] == "0" ? "" : "checked") ?>
                        name="linkfilter"> Auto-Timeout URLs in your chat
             </label>
         </div>
-    </div>
 </div>
 
 <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
         <div class="checkbox">
             <label>
                 <input type="checkbox" <?php echo($botconfig["blacklistfilter"] == "0" ? "" : "checked") ?>
-                       name="blacklistfilter"> Auto-Timeout URLs in your chat
+                       name="blacklistfilter"> Auto-Timeout blacklisted phrases in your chat
             </label>
         </div>
-    </div>
 </div>
