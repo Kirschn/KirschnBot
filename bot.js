@@ -999,9 +999,9 @@ setTimeout(function () {
                 if (splitmessagelowercase[0] == "!additem" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
                     if (splitmessagelowercase[2].indexOf("-name=") !== -1) {
                         var itemname = splitmessagenormal.split("=")[1];
-                        var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[3]) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(itemname) + ");";
+                        var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(text.replace("!additem " + splitmessagenormal[1] + " " + splitmessagenormal[2] + " ", "") + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(itemname) + ");";
                     } else {
-                        var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagenormal[2]) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  '');";
+                        var sql = "INSERT INTO  `kirschnbot`.`useritems` (`id` , `channel` , `item` , `list` , `itemname` ) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(text.replace("!additem " + splitmessagenormal[1] + " ", "") + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  '');";
                     }
                     console.log(sql);
                     sqlconnection.query(sql, function (err, results) {
