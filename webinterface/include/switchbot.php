@@ -42,6 +42,7 @@ if (in_array(".global", $manageingpermissions)) {
         $manageingpermissions[] = str_replace("#", "", $entry["channel"]);
     }
 }
+if (isset($_SESSION["kbot_realusername"])) {
 ?>
 
 <div class="modal fade" id="switchbot" tabindex="-1" role="dialog" aria-labelledby="success">
@@ -99,3 +100,6 @@ if (in_array(".global", $manageingpermissions)) {
                             </div>
                         </div>
                     </div>
+<?php
+}
+?>
