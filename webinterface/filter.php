@@ -251,6 +251,9 @@ desired effect
         <div class="box-body" id="filtersettings">
             Loading...
         </div>
+        <div id="box-footer">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
     </div>
             <div class="box box-info">
                 <div class="box-header with-border">

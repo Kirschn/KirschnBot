@@ -3,7 +3,7 @@ session_start();
 if (isset($_SESSION["kbot_logon"])) {
     $login = true;
 } else {
-    $login = false;
+    die();
 }
 if (!isset($_GET["channel"])) {
     if ($login) {
@@ -24,7 +24,7 @@ if (isset($_SESSION['kbot_managementbot'])) {
         if (isset(mysqli_fetch_array($sqlconnection, mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel='#" . $username . "';"))[0])) {
             $canmanage = true;
         } else {
-            $canmanage = false;
+            die();
         }
     }
 } else {
@@ -36,7 +36,7 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linkfilter,
 <div class="form-group">
         <div class="checkbox">
             <label>
-                <input type="checkbox" <?php echo($botconfig["linkfilter"] == "0" ? "" : "checked") ?>
+                <input type="checkbox" <?php echo($botconfig["linkfilter"] == "0" ? "" : "checked") ?> id="linkfilter"
                        name="linkfilter"> Auto-Timeout URLs in your chat
             </label>
         </div>
@@ -45,8 +45,18 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linkfilter,
 <div class="form-group">
         <div class="checkbox">
             <label>
-                <input type="checkbox" <?php echo($botconfig["blacklistfilter"] == "0" ? "" : "checked") ?>
+                <input type="checkbox" <?php echo($botconfig["blacklistfilter"] == "0" ? "" : "checked") ?> id="blacklistfilter"
                        name="blacklistfilter"> Auto-Timeout blacklisted phrases in your chat
             </label>
         </div>
 </div>
+<script>
+    function submitfiltersettings() {
+        $.post("include/filter/filtersettings.php", {
+            linkfilter: $("#linkfilter").value(),
+            blacklistfilter: $("#blacklistfilter").value()
+        }).done(function() {
+
+        });
+    }
+</script>
