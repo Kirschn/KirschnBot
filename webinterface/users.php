@@ -119,90 +119,90 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="wrapper">
 
       <!-- Main Header -->
-      <header class="main-header">
+        <header class="main-header">
 
-        <!-- Logo -->
-        <a href="index.php" class="logo">
-          <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>Bot</b></span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">Kirschn<b>Bot</b></span>
-        </a>
+            <!-- Logo -->
+            <a href="index.php" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>Bot</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg">Kirschn<b>Bot</b></span>
+            </a>
 
-        <!-- Header Navbar -->
-        <<nav class="navbar navbar-static-top" role="navigation">
-              <!-- Sidebar toggle button-->
-              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                  <span class="sr-only">Toggle navigation</span>
-              </a>
-              <!-- Navbar Right Menu -->
-              <div class="navbar-custom-menu">
-                  <ul class="nav navbar-nav">
-                      <!-- Messages: style can be found in dropdown.less-->
-                      <li class="dropdown messages-menu">
-                          <!-- Menu toggle button -->
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <li class="dropdown messages-menu">
+                            <!-- Menu toggle button -->
 
-                          <!-- User Account Menu -->
-                      <li class="dropdown user user-menu">
-                          <!-- Menu Toggle Button -->
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                              <!-- The user image in the navbar-->
-                              <img src="<?php if ($login) { echo $_SESSION["kbot_profileimglink"]; } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
-                              <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                              <span class="hidden-xs"><?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else {?>Anonymous<?php }; ?></span>
-                          </a>
-                          <?php if ($login) {
-                              ?>
-                              <ul class="dropdown-menu">
-                                  <!-- The user image in the menu -->
-                                  <li class="user-header">
-                                      <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
-                                      <p>
-                                          <?php echo $_SESSION["kbot_userdisplayname"]; ?>
-                                          <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
-                                      </p>
-                                  </li>
-                                  <!-- Menu Body -->
-                                  <!-- Menu Footer-->
-                                  <li class="user-footer">
-                                      <div class="pull-left">
-                                          <a href="#" class="btn btn-default btn-flat">Switch Bot</a>
-                                      </div>
-                                      <div class="pull-right">
-                                          <a href="function/logout.php?token=<?php echo $token; ?>" class="btn btn-default btn-flat">Sign out</a>
-                                      </div>
-                                  </li>
-                              </ul>
-                              <?php
-                          } else {
-                              ?>
-                              <ul class="dropdown-menu">
-                                  <!-- The user image in the menu -->
-                                  <li class="user-header">
-                                      <img src="img/anonymous.png" class="img-circle" alt="User Image">
-                                      <p>
-                                          Anonymous
-                                      </p>
-                                  </li>
-                                  <!-- Menu Body -->
-                                  <!-- Menu Footer-->
-                                  <li class="user-footer">
+                            <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                <img src="<?php if ($login) { if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php } } else {?>img/anonymous.png<?php }; ?>" class="user-image" alt="User Image">
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs"><?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else {?>Anonymous<?php }; ?></span>
+                            </a>
+                            <?php if ($login) {
+                                ?>
+                                <ul class="dropdown-menu">
+                                    <!-- The user image in the menu -->
+                                    <li class="user-header">
+                                        <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
+                                        <p>
+                                            <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_realusername"]; } else { ?>Anonymous<?php } ?>
+                                            <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Body -->
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="#" onclick="$('#switchbot').modal();" class="btn btn-default btn-flat">Switch Bot</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="function/logout.php?token=<?php echo $token; ?>" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <?php
+                            } else {
+                                ?>
+                                <ul class="dropdown-menu">
+                                    <!-- The user image in the menu -->
+                                    <li class="user-header">
+                                        <img src="img/anonymous.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            Anonymous
+                                        </p>
+                                    </li>
+                                    <!-- Menu Body -->
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
 
-                                  </li>
-                              </ul>
-                              <?php
-                          }
-                          ?>
+                                    </li>
+                                </ul>
+                                <?php
+                            }
+                            ?>
 
-                      </li>
-                      <!-- Control Sidebar Toggle Button -->
-                      <li>
-                          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                      </li>
-                  </ul>
-              </div>
-          </nav>
-      </header>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
       <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
 

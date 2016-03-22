@@ -30,6 +30,10 @@ if (isset($_SESSION['kbot_managementbot'])) {
 } else {
     die();
 }
+if (isset($_POST["token"]) && isset($_POST["linkfilter"]) && isset($_POST["blacklistfilter"])) {
+    echo "Alles gesetzt";
+    die();
+}
 $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linkfilter, blacklistfilter FROM botconfig WHERE channel='#" . $username . "';"));
 
 ?>

@@ -178,7 +178,7 @@ desired effect
                                 <li class="user-header">
                                     <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
                                     <p>
-                                        <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_profileimglink"]; } else { ?>img/anonymous.png<?php } ?>
+                                        <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_realusername"]; } else { ?>Anonymous<?php } ?>
                                         <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
                                     </p>
                                 </li>

@@ -579,7 +579,7 @@ setTimeout(function () {
             }, 2000);
         }
         function getrandomlistfromitem(listname, channel) {
-            var sql = "SELECT item FROM useritems WHERE list=" + mysql.escape(listname) + ", channel=" + mysql.escape(channel) + " ORDER BY RAND() LIMIT 1;"
+            var sql = "SELECT item FROM useritems WHERE list=" + mysql.escape(listname) + ", channel=" + mysql.escape(channel) + " ORDER BY RAND() LIMIT 1;";
             sqlconnection.query(sql, function (results) {
                 if (results[0] !== undefined) {
 
