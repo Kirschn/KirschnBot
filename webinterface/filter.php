@@ -109,6 +109,23 @@ $_SESSION["onetimetoken"] = $token;
                 }
             });
         }
+        function submitlinkfiltersettings() {
+            console.log("Sending Data");
+            $.post("include/filter/linkfilter.php", {
+                linktolength:document.getElementById("linktolength").value,
+                silentlinkto: document.getElementById("silentlinkto").checked,
+                linktotext: document.getElementById("linktotext").value,
+                token: <?php echo $token; ?>
+            }).done(function(data) {
+                if (data == "200") {
+                    // Abfrage erfolgreich
+                    $("#modalcontent").html("Operation success");
+                    $("#modaltitle").html("Success");
+                    $("#modalding").modal();
+
+                }
+            });
+        }
     </script>
 </head>
 <!--
@@ -274,28 +291,22 @@ desired effect
         </div>
 
 </div>
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Linkfilter</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
-                <div class="box-body" id="linkfiltersettings">
-                    Loading...
-                </div>
-            </div>
-    <div class="box box-info">
+    <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Blacklist filterung</h3>
-            <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-            </div>
+            <h3 class="box-title">Link Filter</h3>
         </div><!-- /.box-header -->
-        <div class="box-body" id="blacklistfilter">
+        <!-- form start -->
+
+        <div class="box-body" id="linkfiltersettings">
             Loading...
+        </div><!-- /.box-body -->
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary" onclick="submitlinkfiltersettings()">Submit</button>
         </div>
+
     </div>
+
             <?php if ($canmanage) {
             ?>
     <div class="modal fade" id="modalding" tabindex="-1" role="dialog" aria-labelledby="modalding">
