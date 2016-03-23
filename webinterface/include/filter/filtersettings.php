@@ -31,8 +31,17 @@ if (isset($_SESSION['kbot_managementbot'])) {
     die();
 }
 if (isset($_POST["token"]) && isset($_POST["linkfilter"]) && isset($_POST["blacklistfilter"])) {
-    echo "Alles gesetzt";
-    die();
+    if ($_POST["token"] == $_SESSION["onetimetoken"]) {
+            $linkfilter = ($_POST["linkfilter"] == "true") ? 1 : 0;
+            $blacklistfilter = ($_POST["blacklistfilter"] == "true") ? 1 : 0;
+            mysqli_query($sqlconnection, "UPDATE botconfig SET linkfilter='".$linkfilter."', blacklistfilter='".$blacklistfilter."' WHERE channel LIKE '#" . $username . "';");
+            $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
+            mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");
+
+        echo "200";
+        die();
+    }
+
 }
 $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linkfilter, blacklistfilter FROM botconfig WHERE channel='#" . $username . "';"));
 
@@ -54,13 +63,3 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linkfilter,
             </label>
         </div>
 </div>
-<script>
-    function submitfiltersettings() {
-        $.post("include/filter/filtersettings.php", {
-            linkfilter: $("#linkfilter").value(),
-            blacklistfilter: $("#blacklistfilter").value()
-        }).done(function() {
-
-        });
-    }
-</script>

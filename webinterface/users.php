@@ -70,7 +70,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             apply the skin class to the body tag so the changes take effect.
       -->
       <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
-    <![endif]-->
       <script>
           function reload() {
               $("#userconfig").load("function/config_users.php");
@@ -158,7 +157,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <li class="user-header">
                                         <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
                                         <p>
-                                            <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_realusername"]; } else { ?>Anonymous<?php } ?>
+                                            <?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else { ?>Anonymous<?php } ?>
                                             <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
                                         </p>
                                     </li>

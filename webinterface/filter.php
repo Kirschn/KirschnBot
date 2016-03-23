@@ -92,6 +92,24 @@ $_SESSION["onetimetoken"] = $token;
 
 
     </script>
+    <script>
+        function submitfiltersettings() {
+            console.log("Sending Data");
+            $.post("include/filter/filtersettings.php", {
+                linkfilter:document.getElementById("linkfilter").checked,
+                blacklistfilter: document.getElementById("blacklistfilter").checked,
+                token: <?php echo $token; ?>
+            }).done(function(data) {
+                if (data == "200") {
+                    // Abfrage erfolgreich
+                    $("#modalcontent").html("Operation success");
+                    $("#modaltitle").html("Success");
+                    $("#modalding").modal();
+
+                }
+            });
+        }
+    </script>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -156,7 +174,7 @@ desired effect
                                 <li class="user-header">
                                     <img src="<?php if ($_SESSION["kbot_profileimglink"] == "") { echo "img/anonymous.png"; } else { echo $_SESSION["kbot_profileimglink"]; }  ?> "class="img-circle" alt="User Image">
                                     <p>
-                                        <?php if (!empty($_SESSION["kbot_profileimglink"])) { echo $_SESSION["kbot_realusername"]; } else { ?>Anonymous<?php } ?>
+                                        <?php if ($login) { echo $_SESSION["kbot_userdisplayname"]; } else { ?>Anonymous<?php } ?>
                                         <small>Managing Bot in Channel <?php echo $_SESSION["kbot_managementbot"]; ?></small>
                                     </p>
                                 </li>
@@ -241,20 +259,21 @@ desired effect
         <!-- Main content -->
 
         <section class="content">
-    <div class="box box-info">
-        <div class="box-header with-border">
-            <h3 class="box-title">Filter</h3>
-            <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-            </div>
-        </div><!-- /.box-header -->
+    <div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Filter</h3>
+    </div><!-- /.box-header -->
+    <!-- form start -->
+
         <div class="box-body" id="filtersettings">
             Loading...
+        </div><!-- /.box-body -->
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary" onclick="submitfiltersettings()">Submit</button>
         </div>
-        <div id="box-footer">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </div>
-    </div>
+
+</div>
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Linkfilter</h3>
@@ -279,7 +298,22 @@ desired effect
     </div>
             <?php if ($canmanage) {
             ?>
+    <div class="modal fade" id="modalding" tabindex="-1" role="dialog" aria-labelledby="modalding">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modaltitle"></h4>
+                </div>
+                <div class="modal-body" id="modalcontent">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
         <?php include "include/switchbot.php"; ?>
 
         </section><!-- /.content -->
