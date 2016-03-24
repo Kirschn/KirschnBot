@@ -272,9 +272,9 @@ setTimeout(function () {
                     activebots["config"][channel].blacklisttotext = results[0].blacklisttotext;
                     activebots["config"][channel].blacklisttolength = results[0].blacklisttolength;
                     activebots["config"][channel].maxtoul = results[0].maxtoul;
-                    activebots["config"][channel].slientto = (results[0].silentto == "0") ? false : true;
+                    activebots["config"][channel].silentto = (results[0].silentto == "0") ? false : true;
                     activebots["config"][channel].silentlinkto = (results[0].silentlinkto == "0") ? false : true;
-                    activebots["config"][channel].slientblacklistto = (results[0].silentblacklistto == "0") ? false : true;
+                    activebots["config"][channel].silentblacklistto = (results[0].silentblacklistto == "0") ? false : true;
                     activebots["config"][channel].permit = "";
                     activebots["config"][channel].id = results[0].id;
                 }
@@ -883,21 +883,24 @@ setTimeout(function () {
                             util.log("Initalizing Timeout for Message from " + nick + "(UL: " + ul + ")");
                             if (activebots["config"][channel].permit !== nick) {
                                 if (ul >= activebots["config"][channel].maxtoul && !ismodapi(nick, channel)) {
-
+                                    var timeout = true;
                                     activebots["config"][channel].linkwhitelist.forEach(function (current) {
-                                        if (text.indexOf(current.link) == -1) {
-                                            funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
-                                            if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentlinkto) {
-                                                setTimeout(function () {
-                                                        funcret(channel, nick + " -> " + activebots["config"][channel].linktotext);
-                                                    }, 500
-                                                );
-                                                setTimeout(function () {
-                                                    funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
-                                                }, 1000);
-                                            }
+                                        if (text.indexOf(current.link) !== -1) {
+                                            timeout = false;
                                         }
                                     });
+                                    if (timeout) {
+                                        funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
+                                        if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentlinkto) {
+                                            setTimeout(function () {
+                                                    funcret(channel, nick + " -> " + activebots["config"][channel].linktotext);
+                                                }, 500
+                                            );
+                                            setTimeout(function () {
+                                                funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
+                                            }, 1000);
+                                        }
+                                    }
                                 }
                             } else {
                                 activebots["config"][channel].permit = "";
@@ -914,14 +917,15 @@ setTimeout(function () {
                             getuserlevel(nick, channel, function (ul) {
                                 if (ul >= activebots["config"][channel].maxtoul) {
                                     funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].blacklisttolength);
-                                    if (!activebots["config"][channel].silentto && !activebots["config"][channel].silentblacklistto) {
+                                    setTimeout(function () {
+                                        funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].blacklisttolength);
+                                    }, 1000);
+                                    if ((!activebots["config"][channel].silentto) && (!activebots["config"][channel].silentblacklistto)) {
                                         setTimeout(function () {
                                                 funcret(channel, nick + " -> " + activebots["config"][channel].blacklisttotext);
                                             }, 500
                                         );
-                                        setTimeout(function () {
-                                            funcret(channel, ".timeout " + nick + " " + activebots["config"][channel].linktolength);
-                                        }, 1000);
+
                                     }
                                 }
                             });

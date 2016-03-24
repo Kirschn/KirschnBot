@@ -88,6 +88,7 @@ $_SESSION["onetimetoken"] = $token;
             $("#linkfiltersettings").load("include/filter/linkfilter.php");
             $("#blacklistfiltersettings").load("include/filter/blacklistfilter.php");
             $('#linkwhitelist').load('include/filter/linkfiltertable.php');
+            $('#blacklist').load('include/filter/blacklistfiltertable.php');
         });
 
 
@@ -143,6 +144,22 @@ $_SESSION["onetimetoken"] = $token;
 
                 }
             });
+        }
+        function addwhitelistedlink() {
+            $.get('function/addlinkwhitelist.php?token=<?php echo $_SESSION['onetimetoken']; ?>&name=' + document.getElementById('addlinkwhitelist').value)
+                .done(function() {
+                    $('#linkwhitelist').load('include/filter/linkfiltertable.php');
+                    successmodal();
+                    document.getElementById('addlinkwhitelist').value = "";
+                });
+        }
+        function addblacklistedphrase() {
+            $.get('function/addblacklist.php?token=<?php echo $_SESSION['onetimetoken']; ?>&name=' + document.getElementById('addblacklist').value)
+                .done(function() {
+                    $('#blacklist').load('include/filter/blacklistfiltertable.php');
+                    successmodal();
+                    document.getElementById('addblacklist').value = "";
+                });
         }
         function successmodal() {
             $("#modalcontent").html("Operation success");
@@ -360,7 +377,7 @@ desired effect
             </div><!-- /.box-body -->
 
             <div class="box-footer">
-                <button type="button" class="btn btn-primary" onclick="$.get('function/addlinkwhitelist.php?token=<?php echo $_SESSION['onetimetoken']; ?>&name=' + document.getElementById('addlinkwhitelist').value).done(function() {$('#linkwhitelist').load('include/filter/linkfiltertable.php'); successmodal()})">Add</button>
+                <button type="button" class="btn btn-primary" onclick="addwhitelistedlink()">Add</button>
             </div>
 
         </div>
@@ -381,6 +398,34 @@ desired effect
         </div>
 
     </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Phrase Blacklist</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+
+        <div class="box-body" id="blacklist">
+            Loading...
+        </div><!-- /.box-body -->
+
+
+    </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Blacklisted Phrase</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+
+        <div class="box-body">
+            <label for="addblacklist">
+                Phrase:
+            </label>
+            <input type="text" class="form-control" placeholder="ur mom is a really bad person" id="addblacklist">
+        </div><!-- /.box-body -->
+
+        <div class="box-footer">
+            <button type="button" class="btn btn-primary" onclick="addblacklistedphrase()">Add</button>
+        </div>
     </section>
     </div>
 

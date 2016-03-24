@@ -16,6 +16,7 @@ if (!isset($_GET["channel"])) {
     $username = htmlspecialchars($_GET["channel"]);
 }
 include "../../sqlinit.php";
+$sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
