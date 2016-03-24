@@ -86,7 +86,8 @@ $_SESSION["onetimetoken"] = $token;
         $(document).ready(function () {
             $("#filtersettings").load("include/filter/filtersettings.php");
             $("#linkfiltersettings").load("include/filter/linkfilter.php");
-            $("#blacklistfilter").load("include/filter/blacklistfilter.php");
+            $("#blacklistfiltersettings").load("include/filter/blacklistfilter.php");
+            $('#linkwhitelist').load('include/filter/linkfiltertable.php');
         });
 
 
@@ -125,6 +126,29 @@ $_SESSION["onetimetoken"] = $token;
 
                 }
             });
+        }
+        function submitblacklistfiltersettings() {
+            console.log("Sending Data");
+            $.post("include/filter/blacklistfilter.php", {
+                blacklisttolength:document.getElementById("blacklisttolength").value,
+                silentblacklistto: document.getElementById("silentblacklistto").checked,
+                blacklisttotext: document.getElementById("blacklisttotext").value,
+                token: <?php echo $token; ?>
+            }).done(function(data) {
+                if (data == "200") {
+                    // Abfrage erfolgreich
+                    $("#modalcontent").html("Operation success");
+                    $("#modaltitle").html("Success");
+                    $("#modalding").modal();
+
+                }
+            });
+        }
+        function successmodal() {
+            $("#modalcontent").html("Operation success");
+            $("#modaltitle").html("Success");
+            $("#modalding").modal();
+
         }
     </script>
 </head>
@@ -276,6 +300,8 @@ desired effect
         <!-- Main content -->
 
         <section class="content">
+    <div class="row">
+        <div class="col-md-12">
     <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">Filter</h3>
@@ -289,8 +315,10 @@ desired effect
         <div class="box-footer">
             <button type="submit" class="btn btn-primary" onclick="submitfiltersettings()">Submit</button>
         </div>
-
+    </div>
 </div>
+</div>
+<div class="row">    <section class="col-lg-6 connectedSortable">
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Link Filter</h3>
@@ -305,6 +333,55 @@ desired effect
             <button type="submit" class="btn btn-primary" onclick="submitlinkfiltersettings()">Submit</button>
         </div>
 
+    </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Link Whitelist</h3>
+            </div><!-- /.box-header -->
+            <!-- form start -->
+
+            <div class="box-body" id="linkwhitelist">
+                Loading...
+            </div><!-- /.box-body -->
+
+
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Add Whitelisted Link</h3>
+            </div><!-- /.box-header -->
+            <!-- form start -->
+
+            <div class="box-body" id="linkwhitelist">
+                <label for="addlinkwhitelist">
+                    Add Link
+                </label>
+                <input type="text" class="form-control" placeholder="google.de" id="addlinkwhitelist">
+            </div><!-- /.box-body -->
+
+            <div class="box-footer">
+                <button type="button" class="btn btn-primary" onclick="$.get('function/addlinkwhitelist.php?token=<?php echo $_SESSION['onetimetoken']; ?>&name=' + document.getElementById('addlinkwhitelist').value).done(function() {$('#linkwhitelist').load('include/filter/linkfiltertable.php'); successmodal()})">Add</button>
+            </div>
+
+        </div>
+    </section>
+<section class="col-lg-6 connectedSortable">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Blacklist Filter</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+
+        <div class="box-body" id="blacklistfiltersettings">
+            Loading...
+        </div><!-- /.box-body -->
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary" onclick="submitblacklistfiltersettings()">Submit</button>
+        </div>
+
+    </div>
+    </section>
     </div>
 
             <?php if ($canmanage) {

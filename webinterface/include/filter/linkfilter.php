@@ -49,7 +49,7 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linktolengt
 ?>
 <div class="form-group">
     <label for="linktolength">Timeout length: </label>
-    <select name="linktolength" id="linktolength">
+    <select name="linktolength" id="linktolength" class="form-control">
         <option value="1" <?php echo ($botconfig["linktolength"] == "1") ? "selected" : ""; ?>>Purge (1 second)</option>
         <option value="60" <?php echo ($botconfig["linktolength"] == "60") ? "selected" : ""; ?>>1 Minute</option>
         <option value="300" <?php echo ($botconfig["linktolength"] == "300") ? "selected" : ""; ?>>5 Minutes</option>
@@ -58,7 +58,7 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linktolengt
     </select>
 </div>
 <div class="form-group">
-    <div class="checkbox">
+    <div class="checkbox" >
         <label>
             <input type="checkbox" <?php echo($botconfig["silentlinkto"] == "0" ? "checked" : "") ?> id="silentlinkto"
                    name="silentlinkto"> Send Timeout Notification
@@ -67,5 +67,5 @@ $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT linktolengt
 </div>
 <div class="form-group">
     <label for="linktotext">Timeout text: </label>
-    <input type="text" id="linktotext" value="<?php echo htmlspecialchars($botconfig["linktotext"]);?>" />
+    <input type="text" class="form-control" id="linktotext" value="<?php echo htmlspecialchars($botconfig["linktotext"]);?>" />
 </div>
