@@ -1045,15 +1045,26 @@ setTimeout(function () {
                 if (splitmessagelowercase[0] == "!addquote" && splitmessagelowercase[1] !== undefined && splitmessagelowercase[2] !== undefined) {
                     getuserlevel(nick, channel, function (level) {
                         if (level <= thischanmodlevel(channel)) {
-                            var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
-                            console.log(sql);
-                            sqlconnection.query(sql, function (err, results) {
+                            var sql = "SELECT text FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1]) + " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
+                            sqlconnection.query(sql, function (err, results)) {
                                 if (err == null) {
-                                    funcret(channel, nick + " -> Quote added");
+                                    if (results[0] === undefined) {
+                                        sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
+                                        console.log(sql);
+                                        sqlconnection.query(sql, function (err, results) {
+                                            if (err == null) {
+                                                funcret(channel, nick + " -> Quote added");
+                                            } else {
+                                                console.log(err);
+                                            }
+                                        });
+                                    } else {
+                                        funcret(channel, "A quote with this ID already exists");
+                                    }
                                 } else {
                                     console.log(err);
                                 }
-                            });
+                            }
                         }
                     });
                 }
