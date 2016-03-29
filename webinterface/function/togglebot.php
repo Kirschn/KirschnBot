@@ -17,11 +17,9 @@ if (isset($_SESSION['kbot_managementbot'])) {
         if (isset(mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel='#" . $username . "';"))[0])) {
             $canmanage = true;
         } else {
-            die();
         }
     }
 } else {
-    die();
 }
 $botconfig = mysqli_fetch_assoc(mysqli_query($sqlconnection, "SELECT isactive, ircusername FROM  botconfig WHERE channel='#" . $username . "';"));
 if ($botconfig["isactive"] !== NULL) {
@@ -42,7 +40,7 @@ if (isset($_GET["actiondo"])) {
         echo "inactive";
     }
     mysqli_close($sqlconnection);
-    die();
+
 }
 ?>
 <br>
