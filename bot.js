@@ -1085,7 +1085,7 @@ setTimeout(function () {
                         }
                     })
                 }
-                if (splitmessagelowercase[0] == "!addcom" || splitmessagelowercase[0] == "!addcommand") {
+                if (splitmessagelowercase[0] == "!addcom" || splitmessagelowercase[0] == "!addelt" || splitmessagelowercase[0] == "!addcommand") {
                     getuserlevel(nick, channel, function (level) {
                         if (level <= thischanmodlevel(channel)) {
 
@@ -1218,7 +1218,7 @@ setTimeout(function () {
                         }
                     });
                 }
-                if (splitmessagelowercase[0] == "!delcom" || splitmessagelowercase[0] == "!deletecommand") {
+                if (splitmessagelowercase[0] == "!delcom" || splitmessagelowercase[0] == "!removelt" || splitmessagelowercase[0] == "!deletecommand") {
                     getuserlevel(nick, channel, function (level) {
                         if (level <= thischanmodlevel(channel)) {
                             if (splitmessagelowercase[1].substr(0, 1) == "!") {
