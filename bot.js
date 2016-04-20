@@ -1046,10 +1046,10 @@ setTimeout(function () {
                     getuserlevel(nick, channel, function (level) {
                         if (level <= thischanmodlevel(channel)) {
                             var sql = "SELECT text FROM quotes WHERE name=" + mysql.escape(splitmessagelowercase[1]) + " AND (channel=" + mysql.escape(channel) + " OR channel=\"global\") ORDER BY RAND() LIMIT 1;";
-                            sqlconnection.query(sql, function (err, results)) {
+                            sqlconnection.query(sql, function (err, results) {
                                 if (err == null) {
                                     if (results[0] === undefined) {
-                                        sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
+                                        var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
                                         console.log(sql);
                                         sqlconnection.query(sql, function (err, results) {
                                             if (err == null) {
@@ -1064,7 +1064,7 @@ setTimeout(function () {
                                 } else {
                                     console.log(err);
                                 }
-                            }
+                            })
                         }
                     });
                 }
