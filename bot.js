@@ -97,31 +97,6 @@ setTimeout(function () {
             password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
         }
     );
-    var groupchatclient = new irc.Client('199.9.253.119', botusername,
-        {
-            userName: botusername, // IRC Name
-            realName: botusername, // Wird nicht wirklich gebraucht
-            port: 6667,
-            localAddress: null,
-            debug: true, // Nur für Testinstanz an, genz nützlich um Pings, gesendete Nachrichten etc. zu sehen
-            showErrors: true,
-            autoRejoin: true,
-            autoConnect: true,
-            channels: [],
-            secure: false,
-            selfSigned: false,
-            certExpired: false,
-            floodProtection: false,
-            floodProtectionDelay: 1000,
-            sasl: false,
-            stripColors: false,
-            channelPrefixes: "&#",
-            messageSplit: 999, // 999 ist maximale Twitch Nachrichtenlänge
-            encoding: '',
-            password: botoauthtoken // Wirde zuvor festgelegt aus A) Stdin B) Config File
-        }
-    );
-
 
     var clientaws = new irc.Client('irc.chat.twitch.tv', botusername,
         {
@@ -159,7 +134,7 @@ setTimeout(function () {
         };
         util.log("Init Complete");
         function whisper(username, message) {
-            groupchatclient.send("PRIVMSG", "#jtv", "/w " + username + " " + message);
+            client.send("PRIVMSG", "#jtv", "/w " + username + " " + message);
         }
 
         function isglobaladmin(username) { // Sinnloseste Funktion ever. Returnt true wenn username in global admin liste ist
