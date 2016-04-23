@@ -2,8 +2,13 @@
 
 if (isset($_POST["channel"]) && isset($_POST["token"])){
     session_start();
+    if (!isset($_SESSION["kbot_realusername"])) {
+        header("Location: http://kirschnbot.tk");
+        die();
+    }
     include "../sqlinit.php";
     $manageingpermissions = [];
+
     $result = mysqli_query($sqlconnection, "SELECT channel FROM canmanage WHERE name='".$_SESSION["kbot_realusername"]."';");
     while ($entry = mysqli_fetch_assoc($result)) {
         $manageingpermissions[] = $entry["channel"];

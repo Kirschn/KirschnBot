@@ -1024,7 +1024,7 @@ setTimeout(function () {
                             sqlconnection.query(sql, function (err, results) {
                                 if (err == null) {
                                     if (results[0] === undefined) {
-                                        var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ");";
+                                        var sql = "INSERT INTO  `kirschnbot`.`quotes` (`id` , `channel` , `name` , `text` , `username`) VALUES ( NULL , " + mysql.escape(channel) + ",  " + mysql.escape(splitmessagelowercase[1]) + ",  " + mysql.escape(text.replace(splitmessagenormal[0] + " " + splitmessagenormal[1] + " ", " ")) + ", " + mysql.escape(nick) + ");";
                                         console.log(sql);
                                         sqlconnection.query(sql, function (err, results) {
                                             if (err == null) {
