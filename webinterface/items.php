@@ -74,12 +74,14 @@ $_SESSION["onetimetoken"] = $token;
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script>
+        var reloadurl = "itemtable.php";
         $(document).ready(function () {
+            $("#tablecontainer").load(reloadurl);
             $("#addcommand").ajaxForm({url: 'function/additem.php', type: "post", success: function(data) {
                 $("#addcommodal").html(data);
                 $("#commandcreate").modal();
                 $("#addcommand").resetForm();
-                $("#tablecontainer").load("itemtable.php");
+                $("#tablecontainer").load(reloadurl);
             }});
         });
         function deletecommand(id, name) {
@@ -87,7 +89,7 @@ $_SESSION["onetimetoken"] = $token;
                 $.get("function/deleteitem.php?commandname="+name+"&commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
                     $("#deletecommodal").html(data);
                     $("#commanddelete").modal();
-                    $("#tablecontainer").load("itemtable.php");
+                    $("#tablecontainer").load(reloadurl);
                 });
 
             }
@@ -104,7 +106,7 @@ $_SESSION["onetimetoken"] = $token;
                 $("#commandedit").modal();
                 $("#editcommandcommand").ajaxForm({url: 'https://kirschnbot.tk/function/edititem_include.php', type: "post", success: function(dataformpost) {
                     $("#editcommmodal").html(dataformpost);
-                    $("#tablecontainer").load("itemtable.php");
+                    $("#tablecontainer").load(reloadurl);
                 }
                 });
             });
@@ -262,50 +264,14 @@ desired effect
         <section class="content">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Quotes</h3>
+                    <h3 class="box-title">Items</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive" id="tablecontainer">
-                        <table class="table no-margin">
-                            <thead>
-                            <tr>
-                                <th>List</th>
-                                <th>Item</th>
-                                <th width="130px">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
 
-
-                            while ($r = mysqli_fetch_assoc($commandsunparsed)) {
-                                ?>
-                                <tr>
-                                    <td>
-                                        <?php echo $r["list"]; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $r["item"]; ?>
-                                    </td>
-                                    <?php if ($canmanage) {?>
-                                        <td>
-                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["item"]); ?>', '<?php echo htmlspecialchars($r["list"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["item"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
-                                        </td>
-                                    <?php } ?>
-                                </tr>
-                                <?php
-                            }
-                            if (!$login) {
-                                mysqli_close($sqlconnection);
-                            }
-                            ?>
-
-                            </tbody>
-                        </table>
                     </div><!-- /.table-responsive -->
                 </div><!-- /.box-body -->
             </div>
@@ -319,7 +285,7 @@ desired effect
                     <form role="form" id="addcommand" method="post" action="function/addcommand.php">
                         <div class="box-body">
                             <div class="form-group">
-                                <label for="commandname">List:</label>
+                                <label for="commandname">List:</label> <small>If the list does not exist it will be created</small>
                                 <input type="text" class="form-control" id="commandtext" name="commandtext" placeholder="teas">
                             </div>
                             <input type="hidden" value="<?php echo $token; ?>" name="token" />

@@ -18,7 +18,11 @@ if (!isset($_GET["channel"])) {
 include 'sqlinit.php';
 $sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
-$sql = "SELECT id, item, list FROM useritems WHERE channel='#".strtolower($username)."' ORDER BY list ASC, item ASC;";
+if (isset($_GET["list"])) {
+    $sql = "SELECT id, item FROM useritems WHERE channel='#".strtolower($username)."' AND list='".mysqli_real_escape_string($sqlconnection, strtolower($_GET["list"]))."' ORDER BY list ASC, item ASC;";
+} else {
+    $sql = "SELECT id, item, list FROM useritems WHERE channel='#".strtolower($username)."' ORDER BY list ASC, item ASC;";
+}
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
@@ -34,10 +38,32 @@ if (isset($_SESSION['kbot_managementbot'])) {
     die();
 }
 ?>
+<label for="listselect">List: </label> <select id="listselect"><option <?php if (!isset($_GET["list"])) {?>selected<?php }?>>All</option>
+    <?php
+    // Read lists
+    $sql = "SELECT DISTINCT list FROM useritems WHERE channel='#".strtolower($username)."' ORDER BY list ASC";
+    $channelsunparsed = mysqli_query($sqlconnection, $sql);
+    while ($r = mysqli_fetch_assoc($channelsunparsed)) {
+        ?><option <?php if(isset($_GET["list"])) {if($_GET["list"] == $r["list"]) {echo "selected";}} ?>><?php echo $r["list"]; ?></option><?php
+    }
+    ?>
+</select>
+<script type="text/javascript">
+    $("#listselect").change(function() {
+        console.log(this);
+        if ($("#listselect").val() == "All") {
+            reloadurl = "itemtable.php";
+        } else {
+            reloadurl = "itemtable.php?list=" + $("#listselect").val();
+        }
+
+        $("#tablecontainer").load(reloadurl);
+    })
+</script>
 <table class="table no-margin">
     <thead>
     <tr>
-        <th>List</th>
+        <?php if (!isset($_GET["list"])) { ?><th>List</th><?php } ?>
         <th>Item</th>
         <th width="130px">Actions</th>
     </tr>
@@ -49,13 +75,14 @@ if (isset($_SESSION['kbot_managementbot'])) {
     while ($r = mysqli_fetch_assoc($commandsunparsed)) {
         ?>
         <tr>
+            <?php if (!isset($_GET["list"])) { ?>
             <td>
                 <?php echo $r["list"]; ?>
-            </td>
+            </td><?php } ?>
             <td>
                 <?php echo $r["item"]; ?>
             </td>
-            <?php if ($canmanage) {?>
+            <?php if ($canmanage) { ?>
                 <td>
                     <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["item"]); ?>', '<?php echo htmlspecialchars($r["list"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
                     <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["item"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
