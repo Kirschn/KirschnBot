@@ -7,7 +7,7 @@ if (isset($_POST["token"])) {
         if (isset($_POST["commandname"]) && isset($_POST["commandtext"]) && isset($_POST["userlevel"])) {
 
             if ($_POST["commandname"] !== "" && $_POST["commandtext"] !== "" && $_POST["commandname"] !== "") {
-                $sql = 'INSERT INTO commands (commandname, text, userlevel, channel, creator, createtime) VALUES ("' . htmlspecialchars($_POST["commandname"]) . '", "' . htmlspecialchars($_POST["commandtext"]) . '" , "' . htmlspecialchars($_POST["userlevel"]) . '", "#' . htmlspecialchars($_SESSION["kbot_managementbot"]) . '", "' . $_SESSION["kbot_userdisplayname"] . '", "' . date("c") . '");';
+                $sql = 'INSERT INTO commands (commandname, text, userlevel, channel, creator, createtime) VALUES ("' . mysqli_real_escape_string($sqlconnection, $_POST["commandname"]) . '", "' . mysqli_real_escape_string($sqlconnection, $_POST["commandtext"]) . '" , "' . mysqli_real_escape_string($sqlconnection, $_POST["userlevel"]) . '", "#' . mysqli_real_escape_string($sqlconnection, $_SESSION["kbot_managementbot"]) . '", "' . $_SESSION["kbot_userdisplayname"] . '", "' . date("c") . '");';
                 mysqli_query($sqlconnection, $sql);
                 $botname = mysqli_fetch_array(mysqli_query($sqlconnection, 'SELECT ircusername FROM botconfig WHERE channel="#' . $_SESSION["kbot_managementbot"] . '";'))[0];
                 mysqli_query($sqlconnection, "INSERT INTO bottodo (chatbot, type, initby, channel) VALUES ('$botname', 'reinit', '" . $_SESSION["kbot_userdisplayname"] . "', '#" . $_SESSION["kbot_managementbot"] . "')");

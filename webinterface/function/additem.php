@@ -7,10 +7,15 @@ if (isset($_POST["token"])) {
         if (isset($_POST["commandname"]) && isset($_POST["commandtext"])) {
 
             if ($_POST["commandname"] !== "" && $_POST["commandtext"] !== "" && $_POST["commandname"] !== "") {
-                $sql = 'INSERT INTO useritems (item, list, channel) VALUES ("' . htmlspecialchars($_POST["commandname"]) . '", "' . htmlspecialchars($_POST["commandtext"]) . '", "#' . htmlspecialchars($_SESSION["kbot_managementbot"]) . '");';
-                mysqli_query($sqlconnection, $sql);
-                echo mysqli_error($sqlconnection);
-                echo "Operation complete.";
+                $duplicatebuffer = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT id FROM useritems WHERE channel='#".strtolower($_SESSION["kbot_managementbot"])."' AND item='" . mysqli_real_escape_string($sqlconnection, $_POST["commandname"]).  "';"));
+                if ($duplicatebuffer == NULL) {
+                    $sql = 'INSERT INTO useritems (item, list, channel) VALUES ("' . mysqli_real_escape_string($sqlconnection, $_POST["commandname"]) . '", "' . mysqli_real_escape_string($sqlconnection, $_POST["commandtext"]) . '", "#' . mysqli_real_escape_string($sqlconnection, $_SESSION["kbot_managementbot"]) . '");';
+                    mysqli_query($sqlconnection, $sql);
+                    echo "Operation complete.";
+                } else {
+                    echo "This item does already exist";
+                }
+
             } else {
                 echo "Please set all Parameters";
             }

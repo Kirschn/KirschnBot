@@ -6,7 +6,7 @@ if (isset($_GET["token"])) {
         $sqlconnection->set_charset("utf8");
         if (isset($_GET["commandid"]) && isset($_GET["commandname"])) {
             if ($_GET["commandid"] !== "") {
-                $sql = 'DELETE FROM `useritems` WHERE `id`="' . htmlspecialchars($_GET["commandid"]) . '" AND item="' . htmlspecialchars($_GET["commandname"]) . '";';
+                $sql = 'DELETE FROM `useritems` WHERE `id`="' . mysqli_real_escape_string($sqlconnection, $_GET["commandid"]) . '" AND item="' . mysqli_real_escape_string($sqlconnection, $_GET["commandname"]) . '";';
                 mysqli_query($sqlconnection, $sql);
                 echo "Operation complete.";
             } else {
