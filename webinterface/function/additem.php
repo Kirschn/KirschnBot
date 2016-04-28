@@ -7,7 +7,7 @@ if (isset($_POST["token"])) {
         if (isset($_POST["commandname"]) && isset($_POST["commandtext"])) {
 
             if ($_POST["commandname"] !== "" && $_POST["commandtext"] !== "" && $_POST["commandname"] !== "") {
-                $duplicatebuffer = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT id FROM useritems WHERE channel='#".strtolower($_SESSION["kbot_managementbot"])."' AND item='" . mysqli_real_escape_string($sqlconnection, $_POST["commandname"]).  "';"));
+                $duplicatebuffer = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT id FROM useritems WHERE channel='#".strtolower($_SESSION["kbot_managementbot"])."' AND list='" . mysqli_real_escape_string($sqlconnection, $_POST["commandtext"]). "' AND item='" . mysqli_real_escape_string($sqlconnection, $_POST["commandname"]).  "';"));
                 if ($duplicatebuffer == NULL) {
                     $sql = 'INSERT INTO useritems (item, list, channel) VALUES ("' . mysqli_real_escape_string($sqlconnection, $_POST["commandname"]) . '", "' . mysqli_real_escape_string($sqlconnection, $_POST["commandtext"]) . '", "#' . mysqli_real_escape_string($sqlconnection, $_SESSION["kbot_managementbot"]) . '");';
                     mysqli_query($sqlconnection, $sql);
