@@ -1,13 +1,9 @@
 KirschnBot Dokumentation
 ====================================
 
-.. include:: ../README.rst
-
-More detailed docs:
--------------------
-
 .. toctree::
-   :maxdepth: 2
+   :caption: Inhalt
+   :name: mastertoc
 
-   API
+
 
