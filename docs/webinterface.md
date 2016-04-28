@@ -1,4 +1,4 @@
-﻿Bedienung des KirschnBot über das Webinterface.
+Bedienung des KirschnBot über das Webinterface.
 
 #Commands:
 	
@@ -31,24 +31,24 @@
 ###Weitere Parameter:
 Parameter um Commands Individuell an zu passen.
 	
-- $query
+- $query - 
   Gibt alles aus was der User hinter !Command schreibt
-- $user
+- $user - 
   Gibt den Usernamen des Users wieder der denn !Command ausführt
-- $[http(https://webseite.com)]
+- $[http(https://webseite.com)] - 
   Gibt den Source Code der gewählten Webseite wieder
-- $rngnumber(min,max)
+- $rngnumber(min,max) - 
   Gibt eine Zufällige Nummer zwischen Min und Max wieder
-- $[rnglist(listname)]
+- $[rnglist(listname)] - 
   Gibt ein Zufälliges Item aus der Angegebenen Liste wieder (Listen und Items können unter "Items" angelegt werden)
-- $[index]
+- $[index] - 
   Gibt ein Spezifisches Wort aus der Eingabe Nachricht wieder
-- $[index]elserngnumber(min,max)
+- $[index]elserngnumber(min,max) - 
   Wenn spezifisches Wort nicht gegeben ist wird eine zufällige ganze Zahl zwischen min und max ausgegeben
-- $[index]elsernglist(listname)
+- $[index]elsernglist(listname) - 
   Wenn spezifisches Wort nicht gegeben ist wird ein zufälliges Objekt aus der Liste listname ausgegeben     
-- $queryelseuser
-- $queryelsernglist(listname)
+- $queryelseuser - 
+- $queryelsernglist(listname) - 
 	
 		
 <hr>
