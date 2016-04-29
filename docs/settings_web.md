@@ -1,6 +1,6 @@
-#Settings:
+# Settings:
 
-###Custom Chataccount:
+### Custom Chataccount:
 <img src="http://i.imgur.com/Fgp0dBT.png"/>
 
 Diese Option ermöglicht es dem KirschnBot einen anderen Account zu nutzen welcher dann als Bot Fungiert.
@@ -18,7 +18,7 @@ Reset to "KirschnBot":
 
 <hr>
 
-###Confirmed Users:
+### Confirmed Users:
 <img src="http://i.imgur.com/TtZUHef.png"/>
 
 Hier erhaltet ihr eine Übersicht über Alle User die vollen Zugriff das Webinterface von eurem Bot haben und die Möglichkeit diese zu Entfernen.
@@ -26,7 +26,7 @@ Hier erhaltet ihr eine Übersicht über Alle User die vollen Zugriff das Webinte
 
 <hr>
 
-###Add Confirmed User:
+### Add Confirmed User:
 <img src="http://i.imgur.com/t1W3dIg.png"/>
 
 Hier kann man User hinzufügen die Vollen zugriff auf das Webinterface Eures Bots haben sollen
