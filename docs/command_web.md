@@ -1,6 +1,6 @@
-#Commands:
+# Commands:
 
-###Command Erstellen:
+### Command Erstellen:
 
 Zum erstellen eines Command trägt man im Oberen Feld den entsprechenden Namen das Command ein, Wichtig ist das dieser mit einem "!" beginnt:
 <img src="http://i.imgur.com/UUSSSZN.png"/>
@@ -11,7 +11,7 @@ Und als Nächstes den Text den der Bot Ausgeben soll wenn der Command benutzt wi
 Zum Schluss einfach auf "Submit" Drücken und Fertig.
 
 
-###Commands mit Benutzerlevel:
+### Commands mit Benutzerlevel:
 Auch ist es Möglich ein Command einer bestimmten Userlevel zugänglich zu machen.
 Hierfür wählt man zusätzlich noch im Dropdownmenü bei "Userlevel" das Entsprechende Userlevel
 <img src="http://i.imgur.com/gc8NMRb.png"/>
@@ -29,7 +29,7 @@ Wählt man das Userlevel "Custom" kann man den Nummerischen Wert für die Custom
 
 <hr>
 
-###Commands Editieren:
+### Commands Editieren:
 
 Zum Editieren eines Commands wählt man Rechts "Edit" aus
 <img src="http://i.imgur.com/HybHyae.png"/>
@@ -49,7 +49,7 @@ Folgende Werte Entsprechen den Standard Userleveln:
 
 <hr>
 
-###Commands Löschen:
+### Commands Löschen:
 
 Zum Löschen eines Commands wählt man Rechts "Delete" aus
 <img src="http://i.imgur.com/HybHyae.png"/>
@@ -59,7 +59,7 @@ Und um das löschen zu Bestätigen drückt man im sich öffnenden Popup Fenster 
 
 <hr>
 
-###Weitere Parameter für den Commands Text:
+### Weitere Parameter für den Commands Text:
 
 Um deine Commands bei der Ausgabe etwas an zu passen gibt es eine handvoll weiterer Parameter für den Commandstext.
 
