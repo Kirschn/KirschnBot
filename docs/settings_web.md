@@ -1,4 +1,4 @@
-# Settings
+# Settings (Web)
 
 ### Custom Chataccount
 <img src="http://i.imgur.com/Fgp0dBT.png"/>

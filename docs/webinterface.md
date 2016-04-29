@@ -1,6 +1,6 @@
 Bedienung des KirschnBot über das Webinterface.
-
-# Commands
+# Webinterface Übersicht
+## Commands
 	
 ## Command Overview
 Übersicht über Alle Commands.	

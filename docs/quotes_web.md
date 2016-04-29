@@ -1,4 +1,4 @@
-# Quotes
+# Quotes (Web)
 
 ### Quotes (übersicht)
 <img src="http://i.imgur.com/5dgEvLN.png"/>

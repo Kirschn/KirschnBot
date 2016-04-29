@@ -1,4 +1,4 @@
-# Quotes
+# Quotes IRC
 Bedienung des KirschnBot über den Twitchchat.
 ### Quote Erstellen
 	Paramter:	!addquote QuoteName "Dein Quote Text" - Name, Jahreszahl

@@ -1,4 +1,4 @@
-# Users
+# Users (Web)
 
 ### Configuration
 <img src="http://i.imgur.com/2qkJLyC.png"/>
