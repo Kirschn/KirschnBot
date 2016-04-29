@@ -1,6 +1,6 @@
-#Users:
+# Users:
 
-###Configuration:
+### Configuration:
 <img src="http://i.imgur.com/2qkJLyC.png"/>
 
 - Read your moderators from the Twitch Chat:
@@ -17,7 +17,7 @@ Hier kann man den Nummerischen Wert des Userlevels "Viewer" innerhalb des Bots a
 
 <hr>
 
-###Custom Userlevel:
+### Custom Userlevel:
 <img src="http://i.imgur.com/UD0yIfn.png"/>
 
 Hier werden die Userlevel mit einem "Custome Userlevel" Angezeigt so wie der Nummerische wert der Userlevelguppe dem dieser Userlevel innerhalb des Bots angehört.
@@ -26,7 +26,7 @@ Hier werden die Userlevel mit einem "Custome Userlevel" Angezeigt so wie der Num
 
 <hr>
 
-###Add User:
+### Add User:
 <img src="http://i.imgur.com/W3y46KX.png"/>
 
 Username:
