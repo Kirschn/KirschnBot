@@ -1,5 +1,7 @@
 # Quotes IRC
+
 Bedienung des KirschnBot über den Twitchchat.
+
 ### Quote Erstellen
 	Paramter:	!addquote QuoteName "Dein Quote Text" - Name, Jahreszahl
 	Beispiel:	!addquote lustigeszitat "Ich habe etwas lustiges gesagt" - LustigerStreamer, 2016
