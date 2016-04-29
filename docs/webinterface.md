@@ -187,8 +187,8 @@ Möglichkeit Listen und Items zu Erstellen
 				(Ist die Liste noch nicht vorhanden wird sie Erstellt)
 - Item:	Feld zum Eintragen eines Items in die Oben angegebene Liste
 		
-		
 <hr>
+
 ### Settings
 
 #### Custom Chataccount
