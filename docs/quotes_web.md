@@ -1,6 +1,6 @@
-#Quotes:
+# Quotes:
 
-###Quotes (übersicht):
+### Quotes (übersicht):
 <img src="http://i.imgur.com/5dgEvLN.png"/>
 
 In dieser Übersicht kann man Alle erstellten Quotes einsehen.
@@ -13,7 +13,7 @@ Hierbei wird Angezeigt:
 
 <hr>
 
-###Add Quote:
+### Add Quote:
 <img src="http://i.imgur.com/LUodtrF.png"/>
 
 Quote Name:
@@ -24,7 +24,7 @@ Quote Text:
 
 <hr>
 
-###Edit Quote:
+### Edit Quote:
 <img src="http://i.imgur.com/024GfsL.png"/>
 
 Zu diesem Fenster kommt man wenn man in der Übersicht Rechts beim entsprechenden Quote auf "Edit" Klickt
