@@ -1,4 +1,4 @@
-# Commands:
+# Commands IRC
 Bedienung des KirschnBot über den Twitchchat.
 
 ### Command Erstellen:
