@@ -144,6 +144,7 @@ Configuration:
 		
 		
 <hr>
+
 ## Quotes
 
 ### Quote Overview
