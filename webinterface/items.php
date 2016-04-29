@@ -84,9 +84,9 @@ $_SESSION["onetimetoken"] = $token;
                 $("#tablecontainer").load(reloadurl);
             }});
         });
-        function deletecommand(id, name) {
+        function deletecommand(id) {
             if(window.confirm("Do you really want to delete " + name + "?")) {
-                $.get("function/deleteitem.php?commandname="+name+"&commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
+                $.get("function/deleteitem.php?commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
                     $("#deletecommodal").html(data);
                     $("#commanddelete").modal();
                     $("#tablecontainer").load(reloadurl);
@@ -97,8 +97,6 @@ $_SESSION["onetimetoken"] = $token;
         function editcommanddialog(cid, ctext, commandname) {
             $.post("https://kirschnbot.tk/function/edititem_include.php", {
                 id: cid,
-                commandtext: ctext,
-                commandname: commandname,
                 onetimetoken: "<?php echo $_SESSION["onetimetoken"]; ?>",
                 action: "editform"
             }).done(function (data) {
@@ -262,6 +260,46 @@ desired effect
 
         <!-- Main content -->
         <section class="content">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Item</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" id="addcommand" method="post" action="function/addcommand.php">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="commandname">List:</label> <small>If the list does not exist it will be created</small>
+                            <input type="text" class="form-control" id="commandtext" name="commandtext" placeholder="teas">
+                        </div>
+                        <input type="hidden" value="<?php echo $token; ?>" name="token" />
+                        <div class="form-group">
+                            <label>Item</label>
+                            <textarea class="form-control" rows="3" name="commandname" placeholder='a very, very expensive'></textarea>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <!-- Modal -->
+                <div class="modal fade" id="commandcreate" tabindex="-1" role="dialog" aria-labelledby="commandcreate">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="commandaddname">Add Iteme</h4>
+                            </div>
+                            <div class="modal-body" id="addcommodal">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Items</h3>
@@ -277,46 +315,7 @@ desired effect
             </div>
 
 
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Add Item</h3>
-                    </div><!-- /.box-header -->
-                    <!-- form start -->
-                    <form role="form" id="addcommand" method="post" action="function/addcommand.php">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="commandname">List:</label> <small>If the list does not exist it will be created</small>
-                                <input type="text" class="form-control" id="commandtext" name="commandtext" placeholder="teas">
-                            </div>
-                            <input type="hidden" value="<?php echo $token; ?>" name="token" />
-                            <div class="form-group">
-                                <label>Item</label>
-                                <textarea class="form-control" rows="3" name="commandname" placeholder='a very, very expensive'></textarea>
-                            </div>
-                        </div><!-- /.box-body -->
 
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                    <!-- Modal -->
-                    <div class="modal fade" id="commandcreate" tabindex="-1" role="dialog" aria-labelledby="commandcreate">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="commandaddname">Add Iteme</h4>
-                                </div>
-                                <div class="modal-body" id="addcommodal">
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="modal fade" id="commanddelete" tabindex="-1" role="dialog" aria-labelledby="commanddelete">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">

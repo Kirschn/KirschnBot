@@ -83,9 +83,9 @@ $_SESSION["onetimetoken"] = $token;
                 $("#tablecontainer").load("commandtable.php");
             }});
         });
-        function deletecommand(id, name) {
+        function deletecommand(id) {
             if(window.confirm("Do you really want to delete " + name + "?")) {
-                $.get("function/deletecommand.php?commandname="+name+"&commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
+                $.get("function/deletecommand.php?commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
                     $("#deletecommodal").html(data);
                     $("#commanddelete").modal();
                     $("#tablecontainer").load("commandtable.php");
@@ -93,12 +93,9 @@ $_SESSION["onetimetoken"] = $token;
 
             }
         }
-        function editcommanddialog(cid, ctext, cuserlevel, ccommandname) {
+        function editcommanddialog(cid) {
             $.post("https://kirschnbot.tk/function/editcommand_include.php", {
                 id: cid,
-                commandtext: ctext,
-                userlevel: cuserlevel,
-                commandname: ccommandname,
                 onetimetoken: "<?php echo $_SESSION["onetimetoken"]; ?>",
                 action: "editform"
             }).done(function (data) {
@@ -299,8 +296,8 @@ desired effect
                                     <?php if ($canmanage) {?>
                                         <td>
 
-                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["userlevel"]); ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
+                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
+                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
                                             <button type="button" class="btn btn-primary" onclick="$.get('function/switchwhispercom.php?token=<?php echo $_SESSION['onetimetoken']; ?>&comid=<?php echo $r["id"]; ?>&setto=<?php echo ($r["whispercommand"] == "0" ? "true" : "false") ?>').done($('#tablecontainer').load('commandtable.php'))"><?php echo ($r["whispercommand"] == "0" ? "Normal Answer" : "Whisper") ?> </button>
                                         </td>
                                     <?php } ?>

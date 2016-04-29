@@ -13,11 +13,11 @@ if (!isset($_GET["channel"])) {
         die();
     }
 } else {
-    $username = htmlspecialchars($_GET["channel"]);
+    $username = htmlentities($_GET["channel"]);
 }
 include "sqlinit.php";
 $sqlconnection->set_charset("utf8");
-$username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
+$username = mysqli_real_escape_string($sqlconnection, htmlentities($username));
 $sql = "SELECT id, name, text, username FROM quotes WHERE channel='#".strtolower($username)."';";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
@@ -82,9 +82,9 @@ $_SESSION["onetimetoken"] = $token;
                 $("#tablecontainer").load("quotetable.php");
             }});
         });
-        function deletecommand(id, name) {
-            if(window.confirm("Do you really want to delete " + name + "?")) {
-                $.get("function/deletequote.php?commandname="+name+"&commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
+        function deletecommand(id) {
+            if(window.confirm("Do you really want to delete this?")) {
+                $.get("function/deletequote.php?commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
                     $("#deletecommodal").html(data);
                     $("#commanddelete").modal();
                     $("#tablecontainer").load("quotetable.php");
@@ -92,11 +92,9 @@ $_SESSION["onetimetoken"] = $token;
 
             }
         }
-        function editcommanddialog(cid, ctext, commandname) {
+        function editcommanddialog(cid) {
             $.post("https://kirschnbot.tk/function/editquote_include.php", {
                 id: cid,
-                commandtext: ctext,
-                commandname: commandname,
                 onetimetoken: "<?php echo $_SESSION["onetimetoken"]; ?>",
                 action: "editform"
             }).done(function (data) {
@@ -260,6 +258,46 @@ desired effect
 
         <!-- Main content -->
         <section class="content">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Quote</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" id="addcommand" method="post" action="function/addcommand.php">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="commandname">Quote Name</label>
+                            <input type="text" class="form-control" id="commandname" name="commandname" placeholder="bigbaka">
+                        </div>
+                        <input type="hidden" value="<?php echo $token; ?>" name="token" />
+                        <div class="form-group">
+                            <label>Quote Text</label>
+                            <textarea class="form-control" rows="3" name="commandtext" placeholder='"ayy lmao" - Baka, 2016'></textarea>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <!-- Modal -->
+                <div class="modal fade" id="commandcreate" tabindex="-1" role="dialog" aria-labelledby="commandcreate">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="commandaddname">Add Quote</h4>
+                            </div>
+                            <div class="modal-body" id="addcommodal">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Quotes</h3>
@@ -297,9 +335,8 @@ desired effect
                                     </td>
                                     <?php if ($canmanage) {?>
                                         <td>
-
-                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["name"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["name"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
+                                            <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
+                                            <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
                                         </td>
                                     <?php } ?>
                                 </tr>
@@ -317,46 +354,7 @@ desired effect
             </div>
 
 
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Add Quote</h3>
-                    </div><!-- /.box-header -->
-                    <!-- form start -->
-                    <form role="form" id="addcommand" method="post" action="function/addcommand.php">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="commandname">Quote Name</label>
-                                <input type="text" class="form-control" id="commandname" name="commandname" placeholder="bigbaka">
-                            </div>
-                            <input type="hidden" value="<?php echo $token; ?>" name="token" />
-                            <div class="form-group">
-                                <label>Quote Text</label>
-                                <textarea class="form-control" rows="3" name="commandtext" placeholder='"ayy lmao" - Baka, 2016'></textarea>
-                            </div>
-                        </div><!-- /.box-body -->
 
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                    <!-- Modal -->
-                    <div class="modal fade" id="commandcreate" tabindex="-1" role="dialog" aria-labelledby="commandcreate">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="commandaddname">Add Quote</h4>
-                                </div>
-                                <div class="modal-body" id="addcommodal">
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="modal fade" id="commanddelete" tabindex="-1" role="dialog" aria-labelledby="commanddelete">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">

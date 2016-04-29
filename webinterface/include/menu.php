@@ -6,7 +6,7 @@
     <li class="<?php echo($_SERVER['PHP_SELF'] == "/quotes.php" ? "" : "in") ?>active"><a href="quotes.php"><i class="fa fa-quote-right"></i> <span>Quotes</span></a></li>
     <li class="<?php echo($_SERVER['PHP_SELF'] == "/items.php" ? "" : "in") ?>active"><a href="items.php"><i class="fa fa-list"></i> <span>Items</span></a></li>
 <li class="<?php echo($_SERVER['PHP_SELF'] == "/botsettings.php" ? "" : "in") ?>active"><a href="botsettings.php"><i class="fa fa-wrench"></i> <span>Settings</span></a></li>
-    <li class="<?php echo($_SERVER['PHP_SELF'] == "/docs" ? "" : "in") ?>active"><a href="docs/"><i class="fa fa-book"></i> <span>Docs (German)</span></a></li>
+    <li class="<?php echo($_SERVER['PHP_SELF'] == "/docs" ? "" : "in") ?>active"><a target="blank" href="http://kirschnbot.readthedocs.io/en/latest/"><i class="fa fa-book"></i> <span>Docs (German)</span></a></li>
 </ul><!-- /.sidebar-menu -->
 <?php include 'function/togglebot.php'; ?>
 </section>

@@ -13,11 +13,11 @@ if (!isset($_GET["channel"])) {
         die();
     }
 } else {
-    $username = htmlspecialchars($_GET["channel"]);
+    $username = htmlentities($_GET["channel"]);
 }
 include 'sqlinit.php';
 $sqlconnection->set_charset("utf8");
-$username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
+$username = mysqli_real_escape_string($sqlconnection, htmlentities($username));
 $sql = "SELECT name, text, username, id FROM quotes WHERE channel='#".strtolower($username)."';";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
@@ -62,10 +62,8 @@ if (isset($_SESSION['kbot_managementbot'])) {
             </td>
             <?php if ($canmanage) {?>
                 <td>
-
-                    <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["name"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                    <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["name"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
-                </td>
+                    <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
+                    <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;</td>
             <?php } ?>
         </tr>
         <?php

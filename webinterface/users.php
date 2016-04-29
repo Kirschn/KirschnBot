@@ -79,11 +79,10 @@ $_SESSION["onetimetoken"] = $token;
             $("#userconfig").load("function/config_users.php");
             $("#userleveltable").load("function/usertable.php");
         }
-        function deleteuserset(id, username) {
-            if(window.confirm("Delete " + username + " from database?")) {
+        function deleteuserset(id) {
+            if(window.confirm("Delete this user from the database?")) {
                 $.post("function/usertable.php", {
                     userid: id,
-                    username: username,
                     removeuser: 1
                 }).done(function() {
                     reload();

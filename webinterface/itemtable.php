@@ -84,8 +84,8 @@ if (isset($_SESSION['kbot_managementbot'])) {
             </td>
             <?php if ($canmanage) { ?>
                 <td>
-                    <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["item"]); ?>', '<?php echo htmlspecialchars($r["list"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                    <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["item"]); ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
+                    <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
+                    <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
                 </td>
             <?php } ?>
         </tr>

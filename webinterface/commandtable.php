@@ -63,8 +63,8 @@ $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, r
             <?php if ($canmanage) {?>
                 <td>
 
-                    <a onclick="editcommanddialog('<?php echo $r["id"]; ?>', '<?php echo htmlspecialchars($r["text"]); ?>', '<?php echo htmlspecialchars($r["userlevel"]); ?>', '<?php echo htmlspecialchars($r["commandname"]); ?>')"><i class="fa fa-pencil"></i> Edit </a>
-                    <a onclick="deletecommand('<?php echo $r["id"]; ?>', '<?php echo $r["commandname"]; ?>')"><i class="fa fa-ban"></i></i> Delete </a>&nbsp;&nbsp;&nbsp;
+                    <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
+                    <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn btn-primary" onclick="$.get('function/switchwhispercom.php?token=<?php echo $_SESSION['onetimetoken']; ?>&comid=<?php echo $r["id"]; ?>&setto=<?php echo ($r["whispercommand"] == "0" ? "true" : "false") ?>').done($('#tablecontainer').load('commandtable.php'))"><?php echo ($r["whispercommand"] == "0" ? "Normal Answer" : "Whisper") ?> </button>
                 </td>
             <?php } ?>

@@ -353,6 +353,24 @@ desired effect
     </div>
         <div class="box box-primary">
             <div class="box-header with-border">
+                <h3 class="box-title">Add Whitelisted Link</h3>
+            </div><!-- /.box-header -->
+            <!-- form start -->
+
+            <div class="box-body" id="addlinkwhitelistbody">
+                <label for="addlinkwhitelist">
+                    Add Link
+                </label>
+                <input type="text" class="form-control" placeholder="google.de" id="addlinkwhitelist" />
+            </div><!-- /.box-body -->
+
+            <div class="box-footer">
+                <button type="button" class="btn btn-primary" onclick="addwhitelistedlink()">Add</button>
+            </div>
+
+        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
                 <h3 class="box-title">Link Whitelist</h3>
             </div><!-- /.box-header -->
             <!-- form start -->
@@ -361,24 +379,6 @@ desired effect
                 Loading...
             </div><!-- /.box-body -->
 
-
-        </div>
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Add Whitelisted Link</h3>
-            </div><!-- /.box-header -->
-            <!-- form start -->
-
-            <div class="box-body" id="linkwhitelist">
-                <label for="addlinkwhitelist">
-                    Add Link
-                </label>
-                <input type="text" class="form-control" placeholder="google.de" id="addlinkwhitelist">
-            </div><!-- /.box-body -->
-
-            <div class="box-footer">
-                <button type="button" class="btn btn-primary" onclick="addwhitelistedlink()">Add</button>
-            </div>
 
         </div>
     </section>
@@ -400,18 +400,6 @@ desired effect
     </div>
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Phrase Blacklist</h3>
-        </div><!-- /.box-header -->
-        <!-- form start -->
-
-        <div class="box-body" id="blacklist">
-            Loading...
-        </div><!-- /.box-body -->
-
-
-    </div>
-    <div class="box box-primary">
-        <div class="box-header with-border">
             <h3 class="box-title">Add Blacklisted Phrase</h3>
         </div><!-- /.box-header -->
         <!-- form start -->
@@ -426,6 +414,20 @@ desired effect
         <div class="box-footer">
             <button type="button" class="btn btn-primary" onclick="addblacklistedphrase()">Add</button>
         </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Phrase Blacklist</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+
+        <div class="box-body" id="blacklist">
+            Loading...
+        </div><!-- /.box-body -->
+
+
+    </div>
+
     </section>
     </div>
 

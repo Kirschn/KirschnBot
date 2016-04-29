@@ -4,9 +4,10 @@ if (isset($_GET["token"])) {
     if ($_GET["token"] == $_SESSION["onetimetoken"]) {
         include "../sqlinit.php";
         $sqlconnection->set_charset("utf8");
-        if (isset($_GET["commandid"]) && isset($_GET["commandname"])) {
+        if (isset($_GET["commandid"])) {
             if ($_GET["commandid"] !== "") {
-                $sql = 'DELETE FROM `quotes` WHERE `id`="' . htmlspecialchars($_GET["commandid"]) . '" AND name="' . htmlspecialchars($_GET["commandname"]) . '";';
+                $sql = 'DELETE FROM `quotes` WHERE `id`="' . mysqli_real_escape_string($sqlconnection, $_GET["commandid"]) . '" AND channel="#' . htmlspecialchars($_SESSION["kbot_managementbot"]) . '";';
+                echo $sql;
                 mysqli_query($sqlconnection, $sql);
                 echo "Operation complete.";
             } else {
