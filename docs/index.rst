@@ -5,14 +5,14 @@ KirschnBot Dokumentation
    :caption: Inhalt
    :name: mastertoc
 
-   anti-spam_web
-   command_otf
+   webinterface
+   menu_web
    command_web
    items_web
-   menu_web
-   quotes_otf
    quotes_web
+   anti-spam_web
    settings_web
    users_web
-   webinterface
+   command_otf
+   quotes_otf
 
