@@ -1,7 +1,9 @@
 # Commands IRC
+
 Bedienung des KirschnBot über den Twitchchat.
 
 ### Command Erstellen
+
 	Paramter:	!addcom !deincommand Dein Commands Text
 	Beispiel:	!addcom !hallo Hallo ich bin ein Command.
 
@@ -11,6 +13,7 @@ Dadurch kann jeder diese Command ausführen
 
 
 ### Commande mit Userlevel
+
 Auch ist es Möglich ein Command einer bestimmten Usergruppe zugänglich zu machen.
 Hierfür benutzt man hinter "!addcom" den Userlevel Parameter "-ul=" so hat man die Möglichkeit zu entscheiden ob ein Command nur für Moderatoren, Subscriber oder den Streamer zur Verfügung steht.
 
@@ -26,6 +29,7 @@ Die Parameter für die einzelnen Usergruppen sind:
 
 
 ### Userlevel (Erweitert)
+
 Des weiteren ist es Möglich neben der Beschreibung des Userlevels auch möglich den Nummerischen Wert zu Benutzen
 
 	Parameter:	!addcom -ul=100 !deincommand Dein Commands Text
@@ -71,6 +75,7 @@ Parameter für die Userlevel sind:
 <hr>
 
 ## Commande Löschen
+
 	Parameter:	!delcom !deincommand
 	Parameter2:	!removecom !deinfehl
 	Beispiel:	!delcom !hallo
