@@ -1,6 +1,6 @@
-#Lists & Items:
+# Lists & Items:
 
-###Übersicht:
+### Übersicht:
 <img src="http://i.imgur.com/aUt25Wz.png"/>
 
 In dieser Übersicht kann man Alle erstellten Listen und Items einsehen.
@@ -16,7 +16,7 @@ Hierbei wird Angezeigt:
 
 <hr>
 
-###Add Item:
+### Add Item:
 <img src="http://i.imgur.com/qRm0WJa.png"/>
 
 List:
@@ -27,7 +27,7 @@ Item:
 
 <hr>
 
-###Edit List/Item:
+### Edit List/Item:
 <img src="http://i.imgur.com/m31BEf1.png"/>
 
 Zu diesem Fenster kommt man wenn man in der Übersicht Rechts beim entsprechenden Item auf "Edit" Klickt
@@ -40,7 +40,7 @@ Item:
 
 <hr>
 
-###Delete List/Item:
+### Delete List/Item:
 
 Um ein Item aus der Datenbank zu löschen drückt man einfach in der Übersicht rechts beim entsprechenden Item auf "Delete"
 Ist eine Liste Leer sollte diese ebenfalls gelöscht werden
