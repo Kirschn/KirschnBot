@@ -1,6 +1,6 @@
-#Quotes:
+# Quotes:
 Bedienung des KirschnBot über den Twitchchat.
-###Quote Erstellen:
+### Quote Erstellen:
 	Paramter:	!addquote QuoteName "Dein Quote Text" - Name, Jahreszahl
 	Beispiel:	!addquote lustigeszitat "Ich habe etwas lustiges gesagt" - LustigerStreamer, 2016
 	 
@@ -11,7 +11,7 @@ Nutzt man hingegen "!zitat QuoteName" oder "!quote QuoteName" so gibt der Bot da
 
 <hr>
 
-###Quotes Editieren:
+### Quotes Editieren:
 
 Quote Text Editieren:
 
