@@ -1,8 +1,11 @@
 Bedienung des KirschnBot über das Webinterface.
+
 # Webinterface Übersicht
+
 ## Commands
 	
 ## Command Overview
+
 Übersicht über Alle Commands.	
 
 - Command:	Entsprechender Chat Command (zB. !test).
@@ -12,6 +15,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 
 ## Add Command
+
 ##### Möglichkeit ein Command zu erstellen.
 	
 -  Command:		Feld zum eintragen des Entsprechenden Commands (zB. !DeinCommand) <b>WICHTIG</b>: Das Command muss mit einem "!" beginnen.
@@ -29,6 +33,7 @@ Bedienung des KirschnBot über das Webinterface.
 			
 			
 ### Weitere Parameter
+
 Parameter um Commands Individuell an zu passen.
 	
 - $query - 
@@ -56,6 +61,7 @@ Parameter um Commands Individuell an zu passen.
 ## Users
 
 Configuration:
+
 ### Einstellen der Userlevel.
 	
 > "Read your moderators from the Twitch Chat:"
@@ -82,6 +88,7 @@ Configuration:
 ## Anti-Spam
 
 ### Filter
+
 #### Einstellen welche Filter Aktiv sein sollen.
 
 - Auto-Timeout URLs in your chat:
@@ -92,6 +99,7 @@ Configuration:
 		
 		
 #### Link Filter
+
  Einstellen des Link Filters.
 	
 - Timeout length:
@@ -139,6 +147,7 @@ Configuration:
 ## Quotes
 
 ### Quote Overview
+
 Übersicht über Alle Quotes.
 	
 - Name:		Name des Quotes der benötigt wird um den Quote im Chat Direkt auf zu rufen (Beispiel: !quote 0).
@@ -148,15 +157,18 @@ Configuration:
 		
 		
 #### Add Quote
+
 Möglichkeit ein Quote zu erstellen
 
 - Quote Name:	Feld zum eintragen des Entsprechenden QuoteNamen um diesen direkt im Chat ab zu Rufen (Beispiel: !Quote QuoteName).
 - Quote Text:	Feld zum eintragen des QuoteTextes der im Chat augegeben wird.
 
 <hr>
+
 ### Items
 
 #### List & Item Overview
+
 Übersicht über Alle Listen und die Enthaltenen Items.
 	
 - Filter:  Dropdown Menü zum Filtern der Listen.
@@ -167,6 +179,7 @@ Möglichkeit ein Quote zu erstellen
 		
 		
 #### Add Item
+
 Möglichkeit Listen und Items zu Erstellen
 
 - List:	Feld zum Auswählen in Welche Liste das Item erstellt werden soll
@@ -178,6 +191,7 @@ Möglichkeit Listen und Items zu Erstellen
 ### Settings
 
 #### Custom Chataccount
+
 Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.
 	
 - Username:	 Feld zum Eintragen des Usernamens des zu Nutzenden Bot Accounts.
@@ -187,6 +201,7 @@ Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.
 		
 		
 #### Confirmed Users
+
 Übersicht über Alle User die vollen Zugiff auf das Eigene Bot Webinterface haben
 	
 - Username:	 Twitchname der User die Vollen zugriff auf das Webinterface haben
@@ -194,6 +209,7 @@ Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.
 	
 	
 #### Add Confirmed User
+
 Möglichkeit Bestimmten Usern zugriff auf das Bot Webinterface zu geben.
 	
 - Username:	 Feld zum eintragen des Twitchnamen des Users der vollen Zugriff auf das Webinterface haben soll.
