@@ -1,8 +1,8 @@
 Bedienung des KirschnBot über das Webinterface.
 
-#Commands:
+# Commands:
 	
-##Command Overview:
+## Command Overview:
 Übersicht über Alle Commands.	
 
 - Command:	Entsprechender Chat Command (zB. !test).
@@ -11,15 +11,15 @@ Bedienung des KirschnBot über das Webinterface.
 -  Actions:	 Möglichkeit das entsprechende Command zu Editieren & Löschen oder es per Wisper auszugeben.
 
 
-##Add Command:
-#####Möglichkeit ein Command zu erstellen.
+## Add Command:
+##### Möglichkeit ein Command zu erstellen.
 	
 -  Command:		Feld zum eintragen des Entsprechenden Commands (zB. !DeinCommand) <b>WICHTIG</b>: Das Command muss mit einem "!" beginnen.
 -  Userlevel*:		Dropdown Menü zum Auwählen des Userlevels welches zum Ausführen des Command benötigt wird.
 -  Command Text:	Feld zum eintragen des Textes und der Parameter die beim Auführen des Command ausgegeben werden
 		
 
-###Mögliche Userlevel:
+### Mögliche Userlevel:
 
 - "Everyone"		- Alle können diesen Command benutzen
 - "Subscriber"	- Nur Subscriber, Moderator und der Streamer können diesen Command benutzen.
@@ -28,7 +28,7 @@ Bedienung des KirschnBot über das Webinterface.
 - "Custom"		- Nur Viewer mit einem Custom Userlevel können diesen Command benutzen (kann unter "Users" festgelegt werden)
 			
 			
-###Weitere Parameter:
+### Weitere Parameter:
 Parameter um Commands Individuell an zu passen.
 	
 - $query - 
@@ -53,10 +53,10 @@ Parameter um Commands Individuell an zu passen.
 		
 <hr>
 
-##Users:
+## Users:
 
 Configuration:
-###Einstellen der Userlevel.
+### Einstellen der Userlevel.
 	
 > "Read your moderators from the Twitch Chat:"
 > Auswählen ob Userlevel die den Moderator Status haben Automatisch aus dem Twitch Chat gelesen werden.
@@ -79,10 +79,10 @@ Configuration:
 		
 <hr>
 
-##Anti-Spam:
+## Anti-Spam:
 
-###Filter:
-####Einstellen welche Filter Aktiv sein sollen.
+### Filter:
+#### Einstellen welche Filter Aktiv sein sollen.
 
 - Auto-Timeout URLs in your chat:
  Aktiviert den Linkfilter im Chat.
@@ -91,7 +91,7 @@ Configuration:
  Aktiviert den Blacklistfilter im Chat.
 		
 		
-####Link Filter:
+#### Link Filter:
  Einstellen des Link Filters.
 	
 - Timeout length:
@@ -136,9 +136,9 @@ Configuration:
 		
 		
 <hr>
-##Quotes:
+## Quotes:
 
-###Quote Overview:
+### Quote Overview:
 Übersicht über Alle Quotes.
 	
 - Name:		Name des Quotes der benötigt wird um den Quote im Chat Direkt auf zu rufen (Beispiel: !quote 0).
@@ -147,16 +147,16 @@ Configuration:
 - Actions:	Möglichkeit Den entsprechenden Quote zu Editieren oder Löschen
 		
 		
-####Add Quote:
+#### Add Quote:
 Möglichkeit ein Quote zu erstellen
 
 - Quote Name:	Feld zum eintragen des Entsprechenden QuoteNamen um diesen direkt im Chat ab zu Rufen (Beispiel: !Quote QuoteName).
 - Quote Text:	Feld zum eintragen des QuoteTextes der im Chat augegeben wird.
 
 <hr>
-###Items:
+### Items:
 
-####List & Item Overview:
+#### List & Item Overview:
 Übersicht über Alle Listen und die Enthaltenen Items.
 	
 - Filter:  Dropdown Menü zum Filtern der Listen.
@@ -166,7 +166,7 @@ Möglichkeit ein Quote zu erstellen
 - Actions: Möglichkeit das Entsprechende Item zu Editieren oder Löschen (Leere Listen sollten Automatisch gelöscht werden).
 		
 		
-####Add Item:
+#### Add Item:
 Möglichkeit Listen und Items zu Erstellen
 
 - List:	Feld zum Auswählen in Welche Liste das Item erstellt werden soll
@@ -175,9 +175,9 @@ Möglichkeit Listen und Items zu Erstellen
 		
 		
 <hr>
-###Settings:
+### Settings:
 
-####Custom Chataccount:
+#### Custom Chataccount:
 Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.
 	
 - Username:	 Feld zum Eintragen des Usernamens des zu Nutzenden Bot Accounts.
@@ -186,14 +186,14 @@ Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.
 - Reset to "KirschnBot":	Schaltfläche um wieder den Standard Bot Account "KirschnBot" zu nutzen.
 		
 		
-####Confirmed Users:
+#### Confirmed Users:
 Übersicht über Alle User die vollen Zugiff auf das Eigene Bot Webinterface haben
 	
 - Username:	 Twitchname der User die Vollen zugriff auf das Webinterface haben
 - Actions:	 Möglichkeit die Rechte für den Vollzugriff zu Entziehen
 	
 	
-####Add Confirmed User:
+#### Add Confirmed User:
 Möglichkeit Bestimmten Usern zugriff auf das Bot Webinterface zu geben.
 	
 - Username:	 Feld zum eintragen des Twitchnamen des Users der vollen Zugriff auf das Webinterface haben soll.
