@@ -1,6 +1,7 @@
 # Anti-Spam
 
 ### Filter
+
 <img src="http://i.imgur.com/gkF3R4i.png"/>
 
 Auto-Timeout URLs in your chat
@@ -12,6 +13,7 @@ Auto-Timeout blacklisted phrases in your chat
 <hr>
 
 ### Link Filter
+
 <img src="http://i.imgur.com/IjPHWlP.png"/>
 
 >Timeout length:
@@ -32,6 +34,7 @@ Timeout text:
 <hr>
 
 ### Link Whitelist
+
 <img src="http://i.imgur.com/39UsNxP.png"/>
 
 Hier kann man Alle links die sich in der Whitelist des Bots befinden einsehen und gegebenenfalls Entfernen
@@ -40,6 +43,7 @@ In diesem Beispiel ist die URL "kirschnbot.tk" auf der Whitelist und somit kann 
 <hr>
 
 ### Add Whitelisted Link
+
 <img src="http://i.imgur.com/QAdUk7A.png"/>
 
 Add Link:
@@ -49,6 +53,7 @@ Add Link:
 <hr>
 
 ### Blacklist Filter
+
 <img src="http://i.imgur.com/rss9w22.png"/>
 
 Timeout length:
@@ -69,6 +74,7 @@ Timeout text:
 <hr>
 
 ### Phrase Blacklist
+
 <img src="http://i.imgur.com/nFLUJKt.png"/>
 
 Hier kann man Alle Wörter und Sätze die sich in der Blacklist des Bots befinden einsehen und gegebenenfalls Entfernen
@@ -78,6 +84,7 @@ somit wird man Timeoutet wenn man diesen Satz im Chat schreibt.
 <hr>
 
 ### Add Blacklisted Phrase
+
 <img src="http://i.imgur.com/tvA89bf.png"/>
 
 Phrase:
