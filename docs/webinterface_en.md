@@ -17,8 +17,7 @@ Usage of the KirschnBot-Webinterface
 
 option to add a command to the bot
 
-- **Command:** field to set the name of the command (i.e. !YourCommand)  
-    **Important:** The name of the command **must** beginn with an exclamation point ("!")!
+- **Command:** field to set the name of the command (i.e. !YourCommand) **Important:** The name of the command **must** beginn with an exclamation point ("!")!
 - **Userlevel:** dropdown menu to set the userlevel needed to execute the command
 - **Command text:** field to add the response the command will return when triggered
 
