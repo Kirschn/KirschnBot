@@ -1,4 +1,8 @@
 <?php
+if (isset($_GET["channel"])) {
+    header("Location: http://kirschn.de");
+    die();
+}
 session_start();
     if (isset($_SESSION["kbot_logon"])) {
         $login = true;

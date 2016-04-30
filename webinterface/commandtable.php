@@ -24,13 +24,21 @@ if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
         $canmanage = true;
     } else {
-        if (isset(mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel='#" . $username . "';"))[0])) {
+        if ($login) {
+            $cacheuser = $_SESSION["kbot_realusername"];
+        } else {
+            $cacheuser = "nUll";
+        }
+        if (isset(mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel LIKE '" . $username . "' AND name='$cacheuser';"))[0])) {
             $canmanage = true;
         } else {
             $canmanage = false;
         }
     }
 } else {
+    $canmanage = false;
+}
+if(isset($_GET["channel"])) {
     $canmanage = false;
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));

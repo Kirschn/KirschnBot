@@ -8,7 +8,7 @@
 <li class="<?php echo($_SERVER['PHP_SELF'] == "/botsettings.php" ? "" : "in") ?>active"><a href="botsettings.php"><i class="fa fa-wrench"></i> <span>Settings</span></a></li>
     <li class="<?php echo($_SERVER['PHP_SELF'] == "/docs" ? "" : "in") ?>active"><a target="blank" href="http://kirschnbot.readthedocs.io/en/latest/"><i class="fa fa-book"></i> <span>Docs (German)</span></a></li>
 </ul><!-- /.sidebar-menu -->
-<?php include 'function/togglebot.php'; ?>
+<?php if($login) { include 'function/togglebot.php'; }?>
 </section>
 <!-- <li class="treeview">
     <a href="#"><i class="fa fa-ban"></i> <span>Anti-Spam</span> <i class="fa fa-angle-left pull-right"></i></a>

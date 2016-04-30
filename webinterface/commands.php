@@ -14,6 +14,7 @@ if (!isset($_GET["channel"])) {
     }
 } else {
     $username = htmlspecialchars($_GET["channel"]);
+    $canmanage = false;
 }
 include "sqlinit.php";
 $sqlconnection->set_charset("utf8");
@@ -24,7 +25,12 @@ if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
         $canmanage = true;
     } else {
-        if (isset(mysqli_fetch_array($sqlconnection, mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel='#" . $username . "';"))[0])) {
+        if ($login) {
+            $cacheuser = $_SESSION["kbot_realusername"];
+        } else {
+            $cacheuser = "nUll";
+        }
+        if (isset(mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT name FROM canmanage WHERE channel LIKE '" . $username . "' AND name='$cacheuser';"))[0]) && !isset($_GET["channel"])) {
             $canmanage = true;
         } else {
             $canmanage = false;
@@ -32,6 +38,10 @@ if (isset($_SESSION['kbot_managementbot'])) {
     }
 } else {
     $canmanage = false;
+}
+if(isset($_GET["channel"])) {
+    header("Location: commandviewer.php?channel=" . $_GET["channel"]);
+    die();
 }
 $botconfig = mysqli_fetch_array(mysqli_query($sqlconnection, "SELECT modlevel, regularlevel FROM botconfig WHERE channel='#" . $username . "';"));
 
@@ -274,7 +284,7 @@ desired effect
                                 <th>Command</th>
                                 <th>Return</th>
                                 <th>Userlevel</th>
-                                <?php if ($canmanage) {?><th width="130px">Actions</th><?php }; ?>
+                                <?php if ($canmanage && $login) {  echo '<th width="130px">Actions</th>'; }; ?>
                             </tr>
                             </thead>
                             <tbody>
@@ -293,7 +303,7 @@ desired effect
                                     <td>
                                         <?php echo $r["userlevel"]; ?>
                                     </td>
-                                    <?php if ($canmanage) {?>
+                                    <?php if ($canmanage) { ?>
                                         <td>
 
                                             <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>

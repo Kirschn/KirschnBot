@@ -1,5 +1,8 @@
 <?php
-
+session_start();
+if(!isset($_SESSION["kbot_realusername"])) {
+    die();
+}
 if (isset($_POST["channel"]) && isset($_POST["token"])){
     session_start();
     if (!isset($_SESSION["kbot_realusername"])) {

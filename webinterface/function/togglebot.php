@@ -1,11 +1,9 @@
 <?php
-if (isset($_GET["action"])) {
-    session_start();
-}
+session_start();
 if (isset($_SESSION["kbot_logon"])) {
     $login = true;
 } else {
-    $login = false;
+    die();
 }
 $username = $_SESSION["kbot_managementbot"];
 include "sqlinit.php";
