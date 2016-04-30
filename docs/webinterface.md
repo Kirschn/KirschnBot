@@ -34,7 +34,8 @@ Bedienung des KirschnBot über das Webinterface.
 			
 ### Weitere Parameter
 
-Parameter um Commands Individuell an zu passen.
+Parameter um Commands individuell an zu passen.
+Index ist hierbei ein numerischer Wert und gibt die Position des Wortes im Kommando aus.
 	
 - $query - 
   Gibt alles aus was der User hinter !Command schreibt
