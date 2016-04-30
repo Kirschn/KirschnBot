@@ -4,12 +4,12 @@
 
 <img src="http://i.imgur.com/QTgdhF1.png"/>
 
-Command: Hier trägt man den Namen des Commands ein über den er im Chat abrufbar ist, Wichtig ist das dieser mit einem "!" beginnt.
+Command: Hier trägt man den Namen des Commands ein über den er im Chat abrufbar ist, **Wichtig** ist das dieser mit einem "**!**" beginnt.
 
 Command Text: Hier wird der Text eingetragen der bei der Benutzung des Entsprechenden Command befehls vom Bot im Chat Ausgegeben wird.
 Dieser Text kann sowohl Normalen Text als auch Parameter Enthalten (Siehe: "Weitere Parameter für den Commands Text")
 
-Wichtig: Commands ohne veränderung des Userlevels sind für Alle User im Chat benutzbar, dazu Nachfolgend weitere Informationen.
+**Wichtig:** Commands ohne veränderung des Userlevels sind für Alle User im Chat benutzbar, dazu Nachfolgend weitere Informationen.
 
 ### Commands mit Benutzerlevel
 Auch ist es Möglich ein Command einer bestimmten Userlevel zugänglich zu machen.
