@@ -134,7 +134,7 @@ Option to add an item to a given list (also to create the list itself)
 Option to use the KirschnBot with a custom chataccount
 
 - **Username:** Field to enter the username of the account
-- **OAuth-Token:** Field to enter the OAuth-Token needed to authenticate KirschnBot on Twitch (The OAuth-Token can be generated here: [Twitch Chat OAuth Password Generator](https://twitchapps.com/tmi/){:target="_blank"} )
+- **OAuth-Token:** Field to enter the OAuth-Token needed to authenticate KirschnBot on Twitch (The OAuth-Token can be generated here: <a href="https://twitchapps.com/tmi/" target="_blank">Twitch Chat OAuth Password Generator</a>
 - **Reset to "KirschnBot":** button to reset the bot to the KirschnBot-account
  
 ##### Confirmed Users
