@@ -21,5 +21,5 @@ if (isset($_SESSION['kbot_managementbot'])) {
     }
 } else {
 }
-mysqli_query($sqlconnection, "UPDATE timer SET active = (CASE active WHEN 1 THEN 0 ELSE 1 END) WHERE channel='$username'");
+mysqli_query($sqlconnection, "UPDATE timer SET active = (CASE active WHEN 1 THEN 0 ELSE 1 END) WHERE channel='#$username'");
 ?>

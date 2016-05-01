@@ -79,7 +79,7 @@ $_SESSION["onetimetoken"] = $token;
     <![endif]-->
     <script>
         $(document).ready(function () {
-            $("#addcommand").ajaxForm({url: 'function/addqtimer.php', type: "post", success: function(data) {
+            $("#addcommand").ajaxForm({url: 'function/addtimer.php', type: "post", success: function(data) {
                 $("#addcommodal").html(data);
                 $("#commandcreate").modal();
                 $("#addcommand").resetForm();
