@@ -1,6 +1,6 @@
 # Commands (Web)
 
-## Command (Übersicht)
+## Commands (Übersicht)
 
 In der Übersicht könnt ihr sehen Welche Commands sich derzeit im Bot befinden.
 
