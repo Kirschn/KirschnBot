@@ -4,15 +4,19 @@
 <img src="http://i.imgur.com/aUt25Wz.png"/>
 
 In dieser Übersicht kann man Alle erstellten Listen und Items einsehen.
-Hierbei wird Angezeigt:
->List (Dropdown): Dies Ermögtlich bei Vielen Items ein Filtern nach bestimmten Listen
 
+**List (Dropdown):**
+>Dies Ermögtlich bei Vielen Items ein Filtern nach bestimmten Listen
 
-	List:		Hier steht der Name der Listen der die Items zugeordnet sind die dann über den Command Parameter "$[rnglist(listname)]" ausgegeben werden können
-	Beispiel: 	Parameter $[rnglist(liste1)] würde nur die Items aus "liste1" zufällig wiedergeben
-	
-	Item:		Hier Steht das Entsprechende Item das der Bot Ausgeben kann
-	Actions:	Hier befinden sich die Optionen zum Editieren (Edit) und Löschen (Delete) von Items
+**List:**
+>Hier steht der Name der Listen der die Items zugeordnet sind die dann über den Command Parameter "$[rnglist(listname)]" ausgegeben werden können
+	Beispiel:	Parameter $[rnglist(liste1)] würde nur die Items aus "liste1" zufällig wiedergeben
+
+**Item:**
+>Hier Steht das Entsprechende Item das der Bot Ausgeben kann
+
+**Actions:**
+>Hier befinden sich die Optionen zum Editieren (Edit) und Löschen (Delete) von Items
 
 <hr>
 
