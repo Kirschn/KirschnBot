@@ -18,7 +18,7 @@ if (!isset($_GET["channel"])) {
 include 'sqlinit.php';
 $sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlentities($username));
-$sql = "SELECT id, text, name, timerinteval, active, linex FROM timer WHERE channel='#".strtolower($username)."';";
+$sql = "SELECT id, text, name, timerinterval, active, linex FROM timer WHERE channel='#".strtolower($username)."';";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
 if (isset($_SESSION['kbot_managementbot'])) {
     if ($_SESSION['kbot_managementbot'] == $username) {
