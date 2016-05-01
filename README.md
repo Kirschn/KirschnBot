@@ -8,3 +8,6 @@ and the third one for the Whisper feature (you have to connect to the group chat
 The Database runs on MySQL and has the capability to connect to multiple servers or clusters.
 
 For more information, just look here: http://kirschnbot.tk
+
+
+<a href="http://bit.ly/23gQJBt"><img src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_donate_cc_147x47.png" /></a>

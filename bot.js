@@ -352,7 +352,7 @@ setTimeout(function () {
         }
 
         var awschannel = [];
-
+        // Starts channel join
         function join(channel) {
             util.log("Start: Joining Channel: " + channel);
             sqlconnection.query("SELECT id, ircusername, ircoauthtoken FROM botconfig WHERE channel='" + channel + "';", function (err, results) {
@@ -1218,19 +1218,19 @@ setTimeout(function () {
                         }
                     });
                 }
-                if (splitmessagelowercase[0] == "!delcom" || splitmessagelowercase[0] == "!removelt" || splitmessagelowercase[0] == "!deletecommand") {
+                if (splitmessagelowercase[0] == "!delcom" || splitmessagelowercase[0] == "!deletecommand" || splitmessagelowercase[0] == "!remcom" || splitmessagelowercase[0] == "!removecommand") {
                     getuserlevel(nick, channel, function (level) {
                         if (level <= thischanmodlevel(channel)) {
-                            if (splitmessagelowercase[1].substr(0, 1) == "!") {
+                            if (splitmessagelowercase[1][0] === "!") {
                                 var commandname = splitmessagelowercase[1];
                             } else {
                                 var commandname = "!" + splitmessagelowercase[1];
                             }
                             // CHECK IF COMMAND EXISTS
-                            util.log("SQL: SELECT id FROM commands WHERE commandname=" + mysql.escape(commandname) + ";");
-                            sqlconnection.query("SELECT id FROM commands WHERE commandname=" + mysql.escape(commandname) + ";", function (err, results) {
+                            util.log("SQL: SELECT id FROM commands WHERE commandname=" + mysql.escape(commandname) + " AND channel=\"" + channel + "\";");
+                            sqlconnection.query("SELECT id FROM commands WHERE commandname=" + mysql.escape(commandname) + " AND channel=\"" + channel + "\";", function (err, results) {
                                 if (results[0] !== undefined) {
-                                    sqlconnection.query("DELETE FROM `commands` WHERE `id`=" + results[0].id + ";", function (err, results) {
+                                    sqlconnection.query("DELETE FROM `commands` WHERE `id`=" + results[0].id + " AND channel=\"" + channel + "\";", function (err, results) {
                                         if (err == null) {
                                             funcret(channel, nick + " -> Delete successful");
                                             refreshbotconfig(channel);
