@@ -1,6 +1,6 @@
 # Lists & Items (Web)
 
-## Übersicht
+## Item/List (Übersicht)
 <img src="http://i.imgur.com/aUt25Wz.png"/>
 
 In dieser Übersicht kann man Alle erstellten Listen und Items einsehen.
@@ -8,7 +8,7 @@ Hierbei wird Angezeigt:
 >List (Dropdown): Dies Ermögtlich bei Vielen Items ein Filtern nach bestimmten Listen
 
 
-	List:		Hier steht der Name der Listen der die Items zugeordnet sind die dann über den Command Paramter "$[rnglist(listname)]" ausgegeben werden können
+	List:		Hier steht der Name der Listen der die Items zugeordnet sind die dann über den Command Parameter "$[rnglist(listname)]" ausgegeben werden können
 	Beispiel: 	Parameter $[rnglist(liste1)] würde nur die Items aus "liste1" zufällig wiedergeben
 	
 	Item:		Hier Steht das Entsprechende Item das der Bot Ausgeben kann
@@ -16,7 +16,7 @@ Hierbei wird Angezeigt:
 
 <hr>
 
-## Add Item
+## Item/List Erstellen
 <img src="http://i.imgur.com/qRm0WJa.png"/>
 
 **List:**
@@ -27,7 +27,7 @@ Hierbei wird Angezeigt:
 
 <hr>
 
-## Edit List/Item
+## List/Item Editieren
 <img src="http://i.imgur.com/m31BEf1.png"/>
 
 Zu diesem Fenster kommt man wenn man in der Übersicht Rechts beim entsprechenden Item auf "**Edit**" Klickt
@@ -40,7 +40,7 @@ Zu diesem Fenster kommt man wenn man in der Übersicht Rechts beim entsprechende
 
 <hr>
 
-## Delete List/Item
+## List/Item Löschen
 
 Um ein Item aus der Datenbank zu löschen drückt man einfach in der Übersicht rechts beim entsprechenden Item auf "**Delete**"
 Ist eine Liste Leer sollte diese ebenfalls gelöscht werden
