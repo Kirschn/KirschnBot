@@ -1,4 +1,21 @@
-# Commands Webinterface
+# Commands (Web)
+
+## Command (Übersicht)
+
+In der Übersicht könnt ihr sehen Welche Commands sich derzeit im Bot befinden.
+
+**Command:**
+>Hier wird der Name und Auslöser des Command angezeigt.
+
+**Return**
+>Hier wird der Text & die Parameter Angezeigt die beim Auslösen des Command ausgegeben werden.
+
+**Userlevel**
+>Hier wird das Benötigte mindest Userlevel was zum Ausführen des Commands als Nummerischer wert Angezeigt.
+
+**Actions**
+>Hier werden die Optionen zum Löschen (Delete) und Editieren (Edit) so wie die Möglichkein eine Command ausgabe Normal oder über Whisper aus zu geben.
+
 
 ## Command Erstellen
 
