@@ -115,7 +115,7 @@ Mit dem Command "**!delcom**" / "**!removecom**" vor dem Command Namen wird in d
 	Eingabe:	!give
 	Ausgabe:	"Gibt dir (Ein zufälligen Gegenstand der sich in der Liste "Give" befindet)"
 
-**$rngnumber(min,max) - Gibt eine Zufällige Nummer zwischen Min und Max wieder**
+**[$rngnumber(min,max)] - Gibt eine Zufällige Nummer zwischen Min und Max wieder**
 
 	Parameter:	!addcom !deincommand Beispieltext mit $rngnumber(min,max)
 	Beispiel: 	!addcom !dice Du Würfelst eine $rngnumber(1,6)
