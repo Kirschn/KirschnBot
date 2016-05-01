@@ -88,25 +88,25 @@ $_SESSION["onetimetoken"] = $token;
         });
         function deletecommand(id) {
             if(window.confirm("Do you really want to delete this?")) {
-                $.get("function/deletequote.php?commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
+                $.get("function/deletetimer.php?commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
                     $("#deletecommodal").html(data);
                     $("#commanddelete").modal();
-                    $("#tablecontainer").load("quotetable.php");
+                    reload();
                 });
 
             }
         }
         function editcommanddialog(cid) {
-            $.post("https://kirschnbot.tk/function/editquote_include.php", {
+            $.post("https://kirschnbot.tk/function/edittimer_include.php", {
                 id: cid,
                 onetimetoken: "<?php echo $_SESSION["onetimetoken"]; ?>",
                 action: "editform"
             }).done(function (data) {
                 $("#editcommmodal").html(data);
                 $("#commandedit").modal();
-                $("#editcommandcommand").ajaxForm({url: 'https://kirschnbot.tk/function/editquote_include.php', type: "post", success: function(dataformpost) {
+                $("#editcommandcommand").ajaxForm({url: 'https://kirschnbot.tk/function/edittimer_include.php', type: "post", success: function(dataformpost) {
                     $("#editcommmodal").html(dataformpost);
-                    $("#tablecontainer").load("quotetable.php");
+                    reload();
                 }
                 });
             });
