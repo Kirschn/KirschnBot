@@ -140,6 +140,7 @@ Mit dem Command "**!delcom**" / "**!removecom**" vor dem Command Namen wird in d
 Wobei hier die Zahl die anstelle von "**index**" benutzt wird, den Stellenwert der Wörter des auszugebenden Wortes wiederspiegelt. 
 
 **//// TODO ////**
+
 NOTE: the "else" variable is triggered, if the query word isn't available!
 
 - $[index]elserngnumber(min,max) - should be self explainatory
