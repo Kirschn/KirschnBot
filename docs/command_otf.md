@@ -115,7 +115,7 @@ $[rnglist(listname)] - Gibt ein Zufälliges Item aus der Angegebenen Liste wiede
 	Eingabe:	!give
 	Ausgabe:	"Gibt dir (Ein zufälligen Gegenstand der sich in der Liste "Give" befindet)"
 
-$rngnumber(min,max) - Gibt eine Zufällige Nummer zwischen Min und Max wieder returns a random number between min and max
+$rngnumber(min,max) - Gibt eine Zufällige Nummer zwischen Min und Max wieder
 
 	Parameter:	!addcom !deincommand Beispieltext mit $rngnumber(min,max)
 	Beispiel: 	!addcom !dice Du Würfelst eine $rngnumber(1,6)
