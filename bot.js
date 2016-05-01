@@ -352,7 +352,7 @@ setTimeout(function () {
         }
 
         var awschannel = [];
-
+        // Starts channel join
         function join(channel) {
             util.log("Start: Joining Channel: " + channel);
             sqlconnection.query("SELECT id, ircusername, ircoauthtoken FROM botconfig WHERE channel='" + channel + "';", function (err, results) {
