@@ -105,7 +105,7 @@ Um deine Commands bei der Ausgabe etwas an zu passen gibt es eine handvoll weite
 	<img src="http://i.imgur.com/YNWCPlC.png"/>
 	
 	
-**$rngnumber(min,max) - Gibt eine Zufällige Nummer zwischen Min und Max wieder**
+**$[rngnumber(min,max)] - Gibt eine Zufällige Nummer zwischen Min und Max wieder**
 >Beispiel:
 	<img src="http://i.imgur.com/jkgEeox.png"/>
 	
