@@ -73,7 +73,7 @@ if (isset($_SESSION['kbot_managementbot'])) {
                         $vorsilbe = "En";
                     }
                     ?>
-                    <button type="submit" class="btn btn-primary" onclick="$.get('function/togglebot.php?token=<?php echo $_SESSION["onetimetoken"]; ?>&action=0&actiondo=0', function(data) {$('#activatebot').load('function/togglebot.php?action=0')})"><?php echo $vorsilbe; ?>able</button>
+                    <button type="submit" class="btn btn-primary" onclick="$.get('function/toggletimer.php?token=<?php echo $_SESSION["onetimetoken"]; ?>', function(data) {reload();})"><?php echo $vorsilbe; ?>able</button>
                     <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
                     <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;</td>
                     

@@ -79,16 +79,13 @@ $_SESSION["onetimetoken"] = $token;
     <![endif]-->
     <script>
         $(document).ready(function () {
-            $("#addcommand").ajaxForm({url: 'function/addquote.php', type: "post", success: function(data) {
+            $("#addcommand").ajaxForm({url: 'function/addqtimer.php', type: "post", success: function(data) {
                 $("#addcommodal").html(data);
                 $("#commandcreate").modal();
                 $("#addcommand").resetForm();
-                $("#tablecontainer").load("quotetable.php");
+                reload();
             }});
         });
-        function reload() {
-            $("#tablecontainer").load("timertable.php");
-        }
         function deletecommand(id) {
             if(window.confirm("Do you really want to delete this?")) {
                 $.get("function/deletequote.php?commandid="+id+"&token=<?php echo $_SESSION["onetimetoken"]; ?>", function(data) {
@@ -113,6 +110,9 @@ $_SESSION["onetimetoken"] = $token;
                 }
                 });
             });
+        }
+        function reload() {
+            $("#tablecontainer").load("timertable.php");
         }
 
 
@@ -276,9 +276,17 @@ desired effect
                             <label for="commandname">Name</label>
                             <input type="text" class="form-control" id="commandname" name="commandname" placeholder="socialmedia">
                         </div>
+                        <div class="form-group">
+                            <label for="interval">Interval (Minutes)</label>
+                            <input type="text" class="form-control" id="interval" name="interval" placeholder="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="lines">Lines (how many lines have to appear in 5 minutes to activate the timer)</label>
+                            <input type="text" class="form-control" id="lines" name="lines" placeholder="5">
+                        </div>
                         <input type="hidden" value="<?php echo $token; ?>" name="token" />
                         <div class="form-group">
-                            <label>Quote Text</label>
+                            <label>Output Text</label>
                             <textarea class="form-control" rows="3" name="commandtext" placeholder='my social media links are...'></textarea>
                         </div>
                     </div><!-- /.box-body -->
