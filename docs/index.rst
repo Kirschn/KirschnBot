@@ -15,4 +15,5 @@ KirschnBot Dokumentation
    users_web
    command_otf
    quotes_otf
+   timer_otf
 
