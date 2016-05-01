@@ -9,14 +9,16 @@ Diese Option ermöglicht es dem KirschnBot einen anderen Account zu nutzen welch
 > Hier wird der Username des zu Nutzenden Accounts eingegeben.
 
 **OAuth Token:**
->Hier wird der OAuth-Token des zu Nutzenden Accounts eingetragen
-	Beispiel: oauth:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+> Hier wird der OAuth-Token des zu Nutzenden Accounts eingetragen
+
+		Beispiel: oauth:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 	
->Einen OAuth-Token generieren kann man indem man Sich mit dem entsprechenden Account bei Twitch einloggt und folgende Seite Aufruft.
-	https://twitchapps.com/tmi/
+> Einen OAuth-Token generieren kann man indem man Sich mit dem entsprechenden Account bei Twitch einloggt und folgende Seite Aufruft.
+
+		https://twitchapps.com/tmi/
 
 **Reset to "KirschnBot":**
->Diese Schaltfläche ermögtlich es vom Costum Account wieder auf den Eigentlichen KirschnBot Account zurück zu wechseln.
+> Diese Schaltfläche ermögtlich es vom Costum Account wieder auf den Eigentlichen KirschnBot Account zurück zu wechseln.
 
 <hr>
 
