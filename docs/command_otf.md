@@ -55,10 +55,10 @@ Mit dem Command "**!editcom text**" ist es möglich den Ausgabe Text des Command
 
 **Userlevel Editieren/Hinzufügen:**
 
-	Parameter:	!editcom userlevel !deincommand moderator
-	Beispiel:	!editcom userlevel !hallo moderator
+	Parameter:	!editcom userlevel !deincommand mod
+	Beispiel:	!editcom userlevel !hallo mod
 
-Durch den Command "**!editcom userlevel**" und dem Syntax "**moderator**" hinter dem Commands Namen "**!hallo**" wird dieser Command nur für **Moderatoren und höher** benutzbar.
+Durch den Command "**!editcom userlevel**" und dem Syntax "**mod**" hinter dem Commands Namen "**!hallo**" wird dieser Command nur für **Moderatoren und höher** benutzbar.
 Natürlich ist auch hier wie bei der Erstellung neben der direkten Angabe des Userlevels auch der Nummerische Wert möglich.
 
 	Parameter:	!editcom userlevel !deincommand 100

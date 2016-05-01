@@ -13,17 +13,6 @@ Nutzt man hingegen "!zitat QuoteName" oder "!quote QuoteName" so gibt der Bot da
 
 <hr>
 
-## Quotes Editieren
-
-Quote Text Editieren:
-
-	Parameter:	!editzitat text QuoteName "Dein Editierter Quote Text" - Name, Jahreszahl"
-	Beispiel:	!editzitat text lustigeszitat "Hier ist nun das Editierte Quote" - LustigerStreamer, 2016
-
-Mit dem Befehl "!editquote text" oder "!editzitat text" ist es möglich den Ausgabe Text des Quotes zu Editieren.
-
-<hr>
-
 ## Quotes Löschen:
 
 	Parameter:	!delquote QuoteName
