@@ -77,11 +77,11 @@ Parameter für die Userlevel sind:
 ## Commands Löschen
 
 	Parameter:	!delcom !deincommand
-	Parameter2:	!removecom !deinfehl
+	Parameter2:	!remcom !deinfehl
 	Beispiel:	!delcom !hallo
-	Beispiel2:	!removecom !hallo
+	Beispiel2:	!remcom !hallo
 
-Mit dem Command "**!delcom**" / "**!removecom**" vor dem Command Namen wird in diesem Beispiel der Command "**!hallo**" gelöscht und steht dadurch nicht mehr zur Verfügung.
+Mit dem Command "**!delcom**" / "**!remcom**" vor dem Command Namen wird in diesem Beispiel der Command "**!hallo**" gelöscht und steht dadurch nicht mehr zur Verfügung.
 
 <hr>
 
