@@ -23,9 +23,9 @@ Hierfür benutzt man hinter "**!addcom**" den Userlevel Parameter "**-ul=**" so 
 In diesem Beispiel ist der Command "**!hallo**" nur für **Mods und den Streamer** ausführbar.
 Die Parameter für die einzelnen Usergruppen sind:
 
-- "**-ul=sub**"	- Nur Subscriber, Moderatoren und der Streamer können diesen command benutzen.
-- "**-ul=mod**" - Nur Moderatoren und der Streamer können diesen command benutzen.
-- "**-ul=owner**" - Nur der Streamer kann diesen command benutzen.
+	"**-ul=sub**"		- Nur Subscriber, Moderatoren und der Streamer können diesen command benutzen.
+	"**-ul=mod**"		- Nur Moderatoren und der Streamer können diesen command benutzen.
+	"**-ul=owner**"		- Nur der Streamer kann diesen command benutzen.
 
 
 ## Userlevel (Erweitert)
@@ -38,9 +38,9 @@ Des weiteren ist es Möglich neben der Beschreibung des Userlevels auch möglich
 Auch in diesem Beispiel ist der Command "**!hallo**" nur für **Mods und den Streamer** ausführbar.
 Die Standard Parameter für die einzelnen Usergruppen sind:
 
-- "**-ul=500**"	- Nur Subscriber, Moderatoren und der Streamer können diesen command benutzen.
-- "**-ul=100**" - Nur Moderatoren und der Streamer können diesen command benutzen.
-- "**-ul=0**" - Nur der Streamer kann diesen command benutzen.
+	"**-ul=500**"		- Nur Subscriber, Moderatoren und der Streamer können diesen command benutzen.
+	"**-ul=100**"		- Nur Moderatoren und der Streamer können diesen command benutzen.
+	"**-ul=0**"		- Nur der Streamer kann diesen command benutzen.
 
 <hr>
 
@@ -67,10 +67,10 @@ Natürlich ist auch hier wie bei der Erstellung neben der direkten Angabe des Us
 Auch hier wird der Command "**!hallo**" nun durch den Nummerischen Wert "**100**" nur für **Moderatoren und höher** benutzbar.
 Parameter für die Userlevel sind:
 
-- "**viewer**" (Nummerischer Standard: 999)
-- "**subscriber**" (Nummerischer Standard: 500)
-- "**moderator**" (Nummerischer Standard: 100)
-- "**streamer**" (Nummerischer Standard: 0)
+	"**viewer**"		(Nummerischer Standard: 999)
+	"**subscriber**"	(Nummerischer Standard: 500)
+	"**moderator**"		(Nummerischer Standard: 100)
+	"**streamer**		(Nummerischer Standard: 0)
 
 <hr>
 
