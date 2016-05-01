@@ -62,10 +62,17 @@ if (isset($_SESSION['kbot_managementbot'])) {
                 <?php echo $r["timerinterval"]; ?>
             </td>
             <td>
-                <?php echo $r["lines"]; ?>
+                <?php echo $r["linex"]; ?>
             </td>
             <?php if ($canmanage) {?>
                 <td>
+                    <?php
+                    if ($r["active"]) {
+                        $vorsilbe = "Dis";
+                    } else {
+                        $vorsilbe = "En";
+                    }
+                    ?>
                     <button type="submit" class="btn btn-primary" onclick="$.get('function/togglebot.php?token=<?php echo $_SESSION["onetimetoken"]; ?>&action=0&actiondo=0', function(data) {$('#activatebot').load('function/togglebot.php?action=0')})"><?php echo $vorsilbe; ?>able</button>
                     <a onclick="editcommanddialog('<?php echo $r["id"]; ?>')"><i class="fa fa-pencil"></i> Edit </a>
                     <a onclick="deletecommand('<?php echo $r["id"]; ?>')"><i class="fa fa-ban"></i></i>&nbsp;Delete </a>&nbsp;&nbsp;&nbsp;</td>
