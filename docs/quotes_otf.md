@@ -27,8 +27,8 @@ Mit dem Befehl "!editquote text" oder "!editzitat text" ist es möglich den Ausg
 ## Quotes Löschen:
 
 	Parameter:	!delquote QuoteName
-	Parameter2:	!removequote QuoteName
+	Parameter2:	!remquote QuoteName
 	Beispiel:	!delquote Lustigeszitat
-	Beispiel2:	!removequote Lustigestitat
+	Beispiel2:	!remquote Lustigestitat
 
-Mit dem Befehl "!delquote" oder "!removequote" vor dem QuoteNamen wird in diesem Beispiel das Quote "Lustigeszitat" gelöscht und steht dadurch nicht mehr zur Verfügung.
+Mit dem Befehl "!delquote" oder "!remquote" vor dem QuoteNamen wird in diesem Beispiel das Quote "Lustigeszitat" gelöscht und steht dadurch nicht mehr zur Verfügung.
