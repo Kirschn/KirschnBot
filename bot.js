@@ -1168,7 +1168,7 @@ setTimeout(function () {
                             if (splitmessagelowercase[1] == "userlevel") {
                                 var level = activebots["users"][channel].regularlevel;
                                 if (isNaN(splitmessagelowercase[3])) {
-                                    if (splitmessagelowercase[3] == "-ul=mod" || splitmessagelowercase[3] == "-ul=moderator" || splitmessagelowercase[3] == "mod" || splitmessagelowercase[3] == "moderator") {
+                                    if (splitmessagelowercase[3] == "-ul=mod" || splitmessagelowercase[3] == "-ul=moderator" ||  splitmessagelowercase[3] == "mods" || splitmessagelowercase[3] == "mod" || splitmessagelowercase[3] == "moderator") {
                                         util.log("Parsing Userlevel as: Mod");
                                         level = activebots["users"][channel].modlevel;
                                     } else if (splitmessagelowercase[3] == "-ul=reg" || splitmessagelowercase[3] == "-ul=regular" || splitmessagelowercase[3] == "reg" || splitmessagelowercase[3] == "regular" || splitmessagelowercase[3] == "-ul=viewer" || splitmessagelowercase[3] == "viewer") {
