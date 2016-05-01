@@ -4,12 +4,18 @@
 <img src="http://i.imgur.com/5dgEvLN.png"/>
 
 In dieser Übersicht kann man Alle erstellten Quotes einsehen.
-Hierbei wird Angezeigt:
 
-	Name:		Hier steht der Name des Quotes der benötigt wird um den Quote im Chat Direkt auf zu rufen (Beispiel: !Quote 0)
-	Quote:		Hier Steht der Entsprechende Text den der Bot Ausgeben kann
-	Created by:	Hier wird angezeigt welcher User den Quote angelegt hat, dies dient nur der übersicht.
-	Actions:	Hier befinden sich die Optionen zum Editieren (Edit) und Löschen (Delete) von Quotesn
+**Name:**
+>Hier steht der Name des Quotes der benötigt wird um den Quote im Chat Direkt auf zu rufen (Beispiel: !Quote 0)
+
+**Quote:**
+>Hier Steht der Entsprechende Text den der Bot Ausgeben kann
+
+**Created by:**
+>Hier wird angezeigt welcher User den Quote angelegt hat, dies dient nur der übersicht.
+
+**Actions:**
+>Hier befinden sich die Optionen zum Editieren (Edit) und Löschen (Delete) von Quotesn
 
 <hr>
 
