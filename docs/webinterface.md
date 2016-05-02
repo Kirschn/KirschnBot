@@ -27,6 +27,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 **Command:**
 > Feld zum eintragen des Entsprechenden Commands (zB. !DeinCommand)
+
 > <b>WICHTIG</b>: Das Command muss mit einem "!" beginnen.
 
 **Userlevel:**
@@ -60,6 +61,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 **$[rngnumber(min,max)]**
 > Gibt eine Zufällige Nummer zwischen Min und Max wieder
+
 > min & max sind hierbei ein Nummerischer Wert
 
 **$[rnglist(listname)]**
@@ -67,6 +69,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 **$[index]**
 > Gibt ein Spezifisches Wort aus der Eingabe Nachricht wieder
+
 >Index ist hierbei ein numerischer Wert und gibt die Position des Wortes im Kommando aus.
 
 /////TODO/////
@@ -100,8 +103,12 @@ Bedienung des KirschnBot über das Webinterface.
 **"Standard userlevel for your Viewers:"**
 > Festlegen des Nummerischen Wert des Userlevels "Viewer" innerhalb des Bots.
 
+### Übersicht:
+
 **Custom Userlevel:**
 > Übersicht über die Angelegeten Custom Userlevel und Möglichkeit diese zu Löschen.
+
+### User hinzufügen:
 
 **Add User:**
 > Usern bestimmte Userlevel zuordnen und Custom Userlevel erstellen (Custom Userlevel haben immer einen numerischen Wert).
@@ -126,6 +133,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 **Timeout length:**
 > Definiert die Länge die der Bot Timeoutet wenn ein Link gepostet wird
+
 > (Längen: Purge (1sec), 1 Minute, 5 Minuten, 10 Minuten, 30 Minuten)
 
 **Send Timeout Notification:**
@@ -146,6 +154,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 **Timeout length:**
 > Definiert die Länge die der Bot Timeoutet wenn ein Wort/Satz auf der Blacklist gepostet wird
+
 > (Längen: Purge (1sec), 1 Minute, 5 Minuten, 10 Minuten, 30 Minuten)
 
 **Send Timeout Notification:**
@@ -204,6 +213,7 @@ Dropdown Menü zum Filtern der Listen.
 
 List:
 > Name der Listen der die Items zugeordnet sind die dann über den Command Paramter "$[rnglist(listname)]" ausgegeben werden können.
+
 > Wenn spezifisches Wort nicht gegeben ist wird eine zufällige ganze Zahl zwischen min und max ausgegeben
 
 **Item:**
@@ -219,6 +229,7 @@ List:
 
 **List:**
 > Feld zum Auswählen in Welche Liste das Item erstellt werden soll
+
 > (Ist die Liste noch nicht vorhanden wird sie Erstellt)
 
 **Item:**
@@ -274,6 +285,7 @@ List:
 
 **$[rngnumber(min,max)]**
 > Gibt eine Zufällige Nummer zwischen Min und Max wieder
+
 > min & max sind hierbei ein Nummerischer Wert
 
 **$[rnglist(listname)]**
@@ -281,6 +293,7 @@ List:
 
 **$[index]**
 > Gibt ein Spezifisches Wort aus der Eingabe Nachricht wieder
+
 >Index ist hierbei ein numerischer Wert und gibt die Position des Wortes im Kommando aus.
 
 <hr>
@@ -289,13 +302,14 @@ List:
 
 ### Custom Chataccount
 
-***Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.**
+***Möglichkeit einen Custom Chataccount für den KirschnBot zu Nutzen.***
 	
 **Username:**
 > Feld zum Eintragen des Usernamens des zu Nutzenden Bot Accounts.
 
 **OAuth Token:**
 > Feld zum Eintragen des OAuth-Token des zu Nutzenden Bot Accounts.
+
 > (OAuth-Token Generieren: https://twitchapps.com/tmi/ Aufrufen und mit dem zu Nutzenden Bot Account einloggen)
 
 **Reset to "KirschnBot":**
