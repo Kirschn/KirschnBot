@@ -84,7 +84,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 ## Users
 
-###Configuration:
+### Configuration:
 
 ***Einstellen der Userlevel.***
 
@@ -102,7 +102,7 @@ Bedienung des KirschnBot über das Webinterface.
 
 **Custom Userlevel:**
 > Übersicht über die Angelegeten Custom Userlevel und Möglichkeit diese zu Löschen.
-	
+
 **Add User:**
 > Usern bestimmte Userlevel zuordnen und Custom Userlevel erstellen (Custom Userlevel haben immer einen numerischen Wert).
 
