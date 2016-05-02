@@ -1,4 +1,4 @@
-# Timer (web)
+# Timer (Web)
 
 ## Timer (Übersicht)
 <img src="http://i.imgur.com/eCErM1B.png"/>
