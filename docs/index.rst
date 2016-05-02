@@ -10,6 +10,7 @@ KirschnBot Dokumentation
    command_web
    items_web
    quotes_web
+   timer_web
    anti-spam_web
    settings_web
    users_web
