@@ -43,7 +43,7 @@ In dieder Übersicht kann man Alle erstellten Timer einsehen
 <hr>
 
 ## Timer Editieren
-(Bild folgt)
+<img src="http://i.imgur.com/Z0YeeRG.png"/>
 
 Zu diesem Fenster kommt man wenn man in der Übersicht Rechts beim entsprechenden Timer auf "**Edit**" Klickt
 
