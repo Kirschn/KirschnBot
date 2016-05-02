@@ -26,7 +26,8 @@ Bedienung des KirschnBot über das Webinterface.
 > Möglichkeit ein Command zu erstellen.
 
 **Command:**
-> Feld zum eintragen des Entsprechenden Commands (zB. !DeinCommand) <b>WICHTIG</b>: Das Command muss mit einem "!" beginnen.
+> Feld zum eintragen des Entsprechenden Commands (zB. !DeinCommand)
+> <b>WICHTIG</b>: Das Command muss mit einem "!" beginnen.
 
 **Userlevel:**
 > Dropdown Menü zum Auwählen des Userlevels welches zum Ausführen des Command benötigt wird.
@@ -47,7 +48,6 @@ Bedienung des KirschnBot über das Webinterface.
 ### Weitere Parameter
 
 ***Parameter um Commands individuell an zu passen.***
->Index ist hierbei ein numerischer Wert und gibt die Position des Wortes im Kommando aus.
 
 **$query**
 > Gibt alles aus was der User hinter !Command schreibt
@@ -58,14 +58,16 @@ Bedienung des KirschnBot über das Webinterface.
 **$[http(https://webseite.com)]**
 > Gibt den Source Code der gewählten Webseite wieder
 
-**$rngnumber(min,max)**
+**$[rngnumber(min,max)]**
 > Gibt eine Zufällige Nummer zwischen Min und Max wieder
+> min & max sind hierbei ein Nummerischer Wert
 
 **$[rnglist(listname)]**
 > Gibt ein Zufälliges Item aus der Angegebenen Liste wieder (Listen und Items können unter "Items" angelegt werden)
 
 **$[index]**
 > Gibt ein Spezifisches Wort aus der Eingabe Nachricht wieder
+>Index ist hierbei ein numerischer Wert und gibt die Position des Wortes im Kommando aus.
 
 /////TODO/////
 **$[index]elserngnumber(min,max)**
@@ -103,7 +105,6 @@ Bedienung des KirschnBot über das Webinterface.
 	
 **Add User:**
 > Usern bestimmte Userlevel zuordnen und Custom Userlevel erstellen (Custom Userlevel haben immer einen numerischen Wert).
-
 
 <hr>
 
@@ -146,7 +147,7 @@ Bedienung des KirschnBot über das Webinterface.
 **Timeout length:**
 > Definiert die Länge die der Bot Timeoutet wenn ein Wort/Satz auf der Blacklist gepostet wird
 > (Längen: Purge (1sec), 1 Minute, 5 Minuten, 10 Minuten, 30 Minuten)
-	
+
 **Send Timeout Notification:**
 > Aktivieren der Nachricht wenn der Bot ein Wort/Satz auf der Blacklist Timeoutet
 
@@ -202,8 +203,8 @@ Filter:
 Dropdown Menü zum Filtern der Listen.
 
 List:
->- Name der Listen der die Items zugeordnet sind die dann über den Command Paramter "$[rnglist(listname)]" ausgegeben werden können.
->- Wenn spezifisches Wort nicht gegeben ist wird eine zufällige ganze Zahl zwischen min und max ausgegeben
+> Name der Listen der die Items zugeordnet sind die dann über den Command Paramter "$[rnglist(listname)]" ausgegeben werden können.
+> Wenn spezifisches Wort nicht gegeben ist wird eine zufällige ganze Zahl zwischen min und max ausgegeben
 
 **Item:**
 > Item der Entsprechenden Liste das der Bot Ausgeben kann.
@@ -222,6 +223,65 @@ List:
 
 **Item:**
 > Feld zum Eintragen eines Items in die Oben angegebene Liste
+
+<hr>
+
+## Timer
+
+### Timer Overview
+
+***Übersicht über Alle Timer.***
+
+**Name:**
+> Name des entsprechenden Timers.
+
+**Text**
+> Text der vom Timer Ausgegeben wird.
+
+**Interval:**
+> Interval in dem ein Timer Ausgelöst wird.
+
+**Lines**
+> Anzahl an Chatnachrichten innerhalb von 5 Minuten die zum Triggern des Timers benötigt werden.
+
+**Actions:**
+> Möglichkeit Den entsprechenden Timer zu Starten/Stoppen Editieren oder Löschen
+
+
+### Add Timer
+
+***Möglichkeit ein Timer zu erstellen***
+
+**Name:**
+> Feld zum eintragen des Entsprechenden Timer Namen.
+
+**Interval**
+> Feld zum eintragen des Intervals nach dem der Timer in ausgegebn wird (in Minuten)
+
+**Lines**
+> Feld zum eintragen der Anzahl an Chatnachrichten innerhalb von 5 Minuten die zum Triggern des Timers benötigt werden.
+
+**Quote Text:**
+> Feld zum eintragen des Timer Textes der im Chat augegeben wird.
+
+
+### Weitere Parameter
+
+***Parameter um Commands individuell an zu passen.***
+
+**$[http(https://webseite.com)]**
+> Gibt den Source Code der gewählten Webseite wieder
+
+**$[rngnumber(min,max)]**
+> Gibt eine Zufällige Nummer zwischen Min und Max wieder
+> min & max sind hierbei ein Nummerischer Wert
+
+**$[rnglist(listname)]**
+> Gibt ein Zufälliges Item aus der Angegebenen Liste wieder (Listen und Items können unter "Items" angelegt werden)
+
+**$[index]**
+> Gibt ein Spezifisches Wort aus der Eingabe Nachricht wieder
+>Index ist hierbei ein numerischer Wert und gibt die Position des Wortes im Kommando aus.
 
 <hr>
 
