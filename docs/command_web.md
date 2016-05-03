@@ -62,7 +62,7 @@ Folgende Werte Entsprechen den Standard Userleveln:
 	"Everyone"		- 999 - Alle können diesen Command benutzen
 	"Subscriber"	- 500 - Nur Subscriber, Moderatoren und der Streamer können diesen Command benutzen.
 	"Moderator"		- 100 - Moderatoren und der Streamer können diesen Command Benutzen.
-	"Streamer"		- 000 - Nur der Streamer kann diesen Command benutzen.
+	"Streamer"		- 005 - Nur der Streamer kann diesen Command benutzen.
 	"Custom"		- ### - Nur Viewer mit einer Custom Userlevel können diesen Command benutzen ("###" durch Gewählten Custom Wert ersetzen) (siehe: Erklärung zu "Users")
 
 

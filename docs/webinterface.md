@@ -39,10 +39,10 @@ Bedienung des KirschnBot über das Webinterface.
 
 ### Mögliche Userlevel
 
-- "Everyone"		- Alle können diesen Command benutzen
+- "Everyone"	- Alle können diesen Command benutzen
 - "Subscriber"	- Nur Subscriber, Moderator und der Streamer können diesen Command benutzen.
-- "Moderator"		- Nur Moderator und der Streamer können diesen Command Benutzen.
-- "Streamer"		- Nur der Streamer kann diesen Command benutzen.
+- "Moderator"	- Nur Moderator und der Streamer können diesen Command Benutzen.
+- "Streamer"	- Nur der Streamer kann diesen Command benutzen.
 - "Custom"		- Nur Viewer mit einem Custom Userlevel können diesen Command benutzen (kann unter "Users" festgelegt werden)
 
 
