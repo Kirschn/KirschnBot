@@ -6,7 +6,7 @@ $canmanage = false;
 include "sqlinit.php";
 $sqlconnection->set_charset("utf8");
 $username = mysqli_real_escape_string($sqlconnection, htmlspecialchars($username));
-$sql = "SELECT commandname, text, userlevel, id, whispercommand FROM commands WHERE channel='#".strtolower($username)."' AND userlevel > 4;";
+$sql = "SELECT commandname, text, userlevel, id, whispercommand FROM commands WHERE channel='#".strtolower($username)."' AND userlevel > 5;";
 $commandsunparsed = mysqli_query($sqlconnection, $sql);
 
 ?>
