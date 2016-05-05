@@ -40,7 +40,7 @@ Die Standard Parameter für die einzelnen Usergruppen sind:
 
 	"-ul=500"		- Nur Subscriber, Moderatoren und der Streamer können diesen command benutzen.
 	"-ul=100"		- Nur Moderatoren und der Streamer können diesen command benutzen.
-	"-ul=0"		- Nur der Streamer kann diesen command benutzen.
+	"-ul=5"         - Nur der Streamer kann diesen command benutzen.
 
 <hr>
 
@@ -70,7 +70,7 @@ Parameter für die Userlevel sind:
 	"viewer"		(Nummerischer Standard: 999)
 	"subscriber"	(Nummerischer Standard: 500)
 	"moderator"		(Nummerischer Standard: 100)
-	"streamer"		(Nummerischer Standard: 0)
+	"streamer"		(Nummerischer Standard: 5)
 
 <hr>
 
