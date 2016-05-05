@@ -14,6 +14,10 @@ if (isset($_POST["onetimetoken"]) && !isset($_POST["action"])) {
     die();
 } else if (isset($_POST["id"])) {
     session_start();
+    if(!isset($_SESSION["kbot_managementbot"])) {
+        echo "Session expired";
+        die();
+    }
     include 'sqlinit.php';
     $sqlconnection->set_charset("utf8");
     $sql = "SELECT name, timerinterval, text, linex FROM timer WHERE id='" . intval($_POST["id"]) . "' AND channel='#".strtolower($_SESSION["kbot_managementbot"])."'";
