@@ -279,7 +279,7 @@
 		<div class="container">
 			<div class="row row-bottom-padded-sm">
 				<div class="col-md-12 section-heading text-center">
-					<h2 class="to-animate">Featues</h2>
+					<h2 class="to-animate">Features</h2>
 					<div class="row">
 						<div class="col-md-8 col-md-offset-2 to-animate">
 							<h3>Every software needs some purposes, so here are some:</h3>
