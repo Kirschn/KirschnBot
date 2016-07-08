@@ -1382,9 +1382,11 @@ setTimeout(function () {
                         }
                         var sql = "INSERT botactionsdone (type, channel, chatbot, initby, name, userlevel, text) SELECT type, channel, chatbot, initby, name, userlevel, text FROM bottodo WHERE id=" + mysql.escape(current.id) + ";";
                         sqlconnection.query(sql, function (err, results) {
+                            console.log("Inserted Actions into Logging Table")
                             if (err !== null) {
                                 console.log("SQL ERROR: " + err);
                             } else {
+                                
                                 var sql = "DELETE FROM `bottodo` WHERE `id`=" + mysql.escape(current.id) + ";";
                                 sqlconnection.query(sql, function (err, results) {
                                     if (err !== null) {
@@ -1396,6 +1398,8 @@ setTimeout(function () {
                         })
                     })
 
+                } else {
+                    console.log("No Actions!");
                 }
             })
         }
